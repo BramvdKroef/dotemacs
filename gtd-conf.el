@@ -3,44 +3,44 @@
 ;; $Id: gtd-conf.el,v 1.9 2010-03-01 14:21:12 bram Exp $
 
 ; Muse major mode
-(require 'muse-mode)     ; load authoring mode
-(require 'muse-html)     ; load publishing styles I use
-(require 'muse-latex)
-(require 'muse-texinfo)
-(require 'muse-docbook)
-(require 'muse-project)  ; publish files in projects
+;(require 'muse-mode)     ; load authoring mode
+;(require 'muse-html)     ; load publishing styles I use
+;(require 'muse-latex)
+;(require 'muse-texinfo)
+;(require 'muse-docbook)
+;(require 'muse-project)  ; publish files in projects
 
 ; Planner mode
-(require 'planner)
-(setq planner-project "WikiPlanner")
-(setq muse-project-alist
-      '(("WikiPlanner" 
-         ("~/.emacs.d/Plans" ;; where your Planner pages are located 
-          :default "TaskPool" ;; use value of `planner-default-page' 
-          :major-mode planner-mode :visit-link planner-visit-link) 
+;(require 'planner)
+;(setq planner-project "WikiPlanner")
+;(setq muse-project-alist
+;      '(("WikiPlanner" 
+;         ("~/.emacs.d/Plans" ;; where your Planner pages are located 
+;          :default "TaskPool" ;; use value of `planner-default-page' 
+ ;         :major-mode planner-mode :visit-link planner-visit-link) 
 
           ;; This next part is for specifying where Planner pages 
           ;; should be published and what Muse publishing style to 
           ;; use. In this example, we will use the XHTML publishing 
           ;; style. 
 
-          (:base "planner-xhtml" 
+;          (:base "planner-xhtml" 
           ;; where files are published to 
           ;; (the value of `planner-publishing-directory', if 
           ;; you have a configuration for an older version 
           ;; of Planner) 
-           :path "~/.emacs.d/Plans/public_html"))
-	("Blog"
-	 ("~/.emacs.d/Blog"
-	  :default "index")
-	 (:base "html" :path "~/Blog/public_html"))
-	))
+;           :path "~/.emacs.d/Plans/public_html"))
+;	("Blog"
+;	 ("~/.emacs.d/Blog"
+;	  :default "index")
+;	 (:base "html" :path "~/Blog/public_html"))
+;	))
 
-(setq planner-use-other-window nil)
+;(setq planner-use-other-window nil)
 
 ;; Load gnus hooks (has to happen before loading remember or you can't remember emails
-(require 'planner-gnus)
-(planner-gnus-insinuate)
+;(require 'planner-gnus)
+;(planner-gnus-insinuate)
 
 ; Load remember
 ;;(require 'remember)
@@ -50,19 +50,19 @@
 
 ; Initialize bbdb
 (require 'bbdb)
-(require 'planner-bbdb)
+;(require 'planner-bbdb)
 (bbdb-initialize)
 (add-hook 'gnus-startup-hook 'bbdb-insinuate-gnus)
 (setq bbdb/news-auto-create-p t)
 (add-to-list 'hippie-expand-try-functions-list 'bbdb-complete-name t)
 
 ; Load publish and timeclock
-(require 'planner-publish)
-(load "~/.emacs.d/site-lisp/planner/contrib/schedule.el")
-(require 'planner-timeclock)
-(require 'planner-timeclock-summary)
+;(require 'planner-publish)
+;(load "~/.emacs.d/site-lisp/planner/contrib/schedule.el")
+;(require 'planner-timeclock)
+;(require 'planner-timeclock-summary)
 
-(require 'planner-erc)
+;(require 'planner-erc)
 
 ;; Clock out on lunch break
 (add-hook 'lunch-break-start-hook
@@ -71,32 +71,32 @@
 	       (timeclock-out)
 	       )))
 
-;; Show planner page and gnus
+;; Show gnus
 (add-hook 'lunch-break-stop-hook
 	  '(lambda ()
 	     (gnus)
 	     ))
 
-(muse-derive-style "inline-xhtml" "xhtml"
-                   :header ""
-                   :footer ""
-                   )
+;(muse-derive-style "inline-xhtml" "xhtml"
+;                   :header ""
+;                   :footer ""
+;                   )
 
 ;; Add latex style quotes
-(add-to-list 'muse-publish-markup-regexps '(3600 "``\(.+\)''" 0 quotedstring))
-(add-to-list 'muse-publish-markup-functions '(quotedstring . muse-publish-markup-quotedstring))
-(add-to-list 'muse-xhtml-markup-strings '(quotedstring . "&ldquo;%s&rdquo;"))
+;(add-to-list 'muse-publish-markup-regexps '(3600 "``\(.+\)''" 0 quotedstring))
+;(add-to-list 'muse-publish-markup-functions '(quotedstring . muse-publish-markup-quotedstring))
+;(add-to-list 'muse-xhtml-markup-strings '(quotedstring . "&ldquo;%s&rdquo;"))
 
-(defun muse-publish-markup-quotedstring ()
-  (message (match-string 1))
-  (unless (get-text-property (match-beginning 0) 'muse-link)
-    (let ((text (match-string 1)))
-      (delete-region (match-beginning 0) (match-end 0))
-      (muse-insert-markup (muse-markup-text 'quotedstring text)))))
+;(defun muse-publish-markup-quotedstring ()
+;  (message (match-string 1))
+;  (unless (get-text-property (match-beginning 0) 'muse-link)
+;    (let ((text (match-string 1)))
+;      (delete-region (match-beginning 0) (match-end 0))
+;      (muse-insert-markup (muse-markup-text 'quotedstring text)))))
 
 (setq org-agenda-files
-      '("~/.emacs.d/org/work.org"
-        "~/.emacs.d/org/personal.org")
+      '("~/Dropbox/org/work.org"
+        "~/Dropbox/org/personal.org")
       org-clock-persist 'history
       org-agenda-custom-commands
       '(("d" todo "DELEGATED" nil))
@@ -126,7 +126,7 @@
 
 (require 'remember)
 (org-remember-insinuate)
-(setq org-directory "~/.emacs.d/org/")
+(setq org-directory "~/Dropbox/org")
 (setq org-default-notes-file (concat org-directory "/notes.org"))
 ;; turn on fly-spell mode in org-mode
 (add-hook 'org-mode-hook 'flyspell-mode)
