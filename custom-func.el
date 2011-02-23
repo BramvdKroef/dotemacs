@@ -27,6 +27,11 @@
     (set-buffer-file-coding-system 'unix 't)
     ))
 
+(defun my-to-work-agenda ()
+  (interactive)
+  (find-file (concat org-directory "/work.org"))
+  )
+
 ;; Delete trailing whitespace and indent the buffer
 (defun cleanup ()
   "indent whole buffer"
@@ -79,11 +84,11 @@
 
 (defun close-all ()
   (interactive)
-    
-  (set-buffer "&bitlbee")
-  (erc-quit-server "")
-  
-  (bitlbee-stop)
+
+  (when (get-buffer "&bitlbee")
+      (set-buffer "&bitlbee")
+      (erc-quit-server "")
+      (bitlbee-stop))
 
   (bbdb-save-db)
   (let ((gnus-interactive-exit nil))
