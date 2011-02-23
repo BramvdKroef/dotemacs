@@ -1,4 +1,5 @@
-(add-to-list 'load-path "/usr/share/emacs/site-lisp/w3m")
+(add-to-list 'load-path "~/.emacs.d/site-lisp/")
+(add-to-list 'load-path "~/.emacs.d/site-lisp/w3m")
 (if window-system
     (require 'w3m-load))
 
@@ -34,3 +35,4 @@
 (add-to-list 'load-path "~/.emacs.d/site-lisp/w3m")
 ;;(add-to-list 'load-path "~/.emacs.d/site-lisp/php-mode")
 (add-to-list 'load-path "~/.emacs.d/site-lisp/twittering-mode")
+(add-to-list 'load-path "~/.emacs.d/site-lisp/bitlbee/lisp")
