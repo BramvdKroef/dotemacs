@@ -1,5 +1,5 @@
 ;; --- nXML mode ---
-(load  "rng-auto.el")
+;;(load  "rng-auto.el")
 
 (add-to-list 'auto-mode-alist
 	     (cons (concat "\\." (regexp-opt '("xml" "xsd" "sch" "rng" "xslt" "svg" "rss") t) "\\'")
@@ -49,8 +49,7 @@
      (yas/initialize)
      (yas/load-directory "~/.emacs.d/snippets")
      ;; Adapt faces of highlights to the dark theme (or else you can't read the text)
-     (set-face-background 'yas/field-highlight-face "DarkSlateGrey")
-     ))
+     (set-face-background 'yas/field-highlight-face "DarkSlateGrey")))
 
 ;; Prepend snippet expand to hippie expand list
 (add-to-list 'hippie-expand-try-functions-list 'yas/hippie-try-expand)
@@ -71,12 +70,10 @@
 ;; Require growl.el on mac (sends notifications)
 (if (or (eq system-type 'darwin)
 	(eq system-type 'macos))
-
    (progn
      ;;(autoload 'growl "growl")
      (eval-after-load "growl"
-       '(setq growl-program "/usr/local/bin/growlnotify")))
-  )
+       '(setq growl-program "/usr/local/bin/growlnotify"))))
 
 ;; Jabber
 ;;(if (require 'jabber nil t)
@@ -101,9 +98,11 @@
 ;; Espresso mode
 ;; espresso is now included in emacs 23.2 as js-mode
 (autoload 'espresso-mode "espresso")
-(add-to-list 'auto-mode-alist '("\\.js$" . espresso-mode))
-(add-to-list 'auto-mode-alist '("\\.json$" . espresso-mode))
-(add-to-list 'auto-mode-alist '("\\.conkerorrc\\'" . espresso-mode))
+(add-to-list 'auto-mode-alist '("\\.js$" . javascript-mode))
+(add-to-list 'auto-mode-alist '("\\.json$" . javascript-mode))
+(add-to-list 'auto-mode-alist '("\\.conkerorrc\\'" . javascript-mode))
+
+(add-to-list 'auto-mode-alist '("\\.stumpwmrc\\'" . lisp-mode))
 
 ;; Flymake mode
 (require 'flymake)
@@ -126,7 +125,8 @@
        "Use php to check the syntax of the current file."
        (let* ((temp
 	       (flymake-init-create-temp-buffer-copy
-		(if (string-match "/ftp:" buffer-file-name)
+		(if (or (string-match "/ftp:" buffer-file-name)
+                        (string-match "/scp:" buffer-file-name))
 		    'flymake-create-temp-with-folder-structure
 		    'flymake-create-temp-inplace)))
 
@@ -175,8 +175,7 @@
      (define-key espresso-mode-map '[M-S-down] 'flymake-goto-next-error)
      (define-key espresso-mode-map "\C-ce" 'my-flymake-show-err)
 
-     (add-hook 'espresso-mode-hook (lambda () (flymake-mode 1)))
-     ))
+     (add-hook 'espresso-mode-hook (lambda () (flymake-mode 1)))))
 
 
 ;; Ledger mode
@@ -209,11 +208,9 @@
   "The author of mozRepl.el doesn't understand delegates so I had to write this function in order to be
 able to send strings"
   (comint-send-string (inferior-moz-process)
-                      str)
-  )
+                      str))
 (defun moz-stop()
-  (comint-delchar-or-maybe-eof (inferior-moz-process))
-  )
+  (comint-delchar-or-maybe-eof (inferior-moz-process)))
 
 (defun conkeror-reload ()
   "Reloads the current page in conkeror"
@@ -226,8 +223,8 @@ able to send strings"
 			   url
 			   "');\n")))
 ;; open links in conkeror
-(setq browse-url-browser-function 'conkeror-open-url)
-
+;;(setq browse-url-browser-function 'conkeror-open-url)
+(setq browse-url-browser-function 'browse-url-generic)
 
 ;;(defun javascript-custom-setup ()
 ;;  (moz-minor-mode 1))
