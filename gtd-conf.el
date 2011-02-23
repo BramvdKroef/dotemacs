@@ -126,7 +126,6 @@
 
 (require 'remember)
 (org-remember-insinuate)
-(setq org-directory "~/Dropbox/org")
 (setq org-default-notes-file (concat org-directory "/notes.org"))
 ;; turn on fly-spell mode in org-mode
 (add-hook 'org-mode-hook 'flyspell-mode)
