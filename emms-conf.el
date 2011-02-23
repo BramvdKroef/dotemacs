@@ -16,10 +16,7 @@
 ;; Use my custom mp3 tag reader instead of mp3info (which only reads v1)
 (require 'emms-info-eyed3)
 (require 'emms-info-ogginfo)
-(setq emms-info-functions (quote (emms-info-ogginfo emms-info-eyed3)))
-
-(setq emms-info-ogginfo-program-name "/usr/local/bin/ogginfo"
-      emms-info-eyed3-program-name "/usr/local/bin/eyeD3")
+(setq emms-info-functions '(emms-info-ogginfo emms-info-eyed3))
 
 (require 'emms-streams)
 
@@ -40,7 +37,7 @@
 (setq emms-lastfm-client-api-key "35d768105e509b60cb562afb868bb98e")
 (setq emms-lastfm-client-api-secret-key "1f860debfd1cd58f1a03cccd13d33387")
 
-(emms-lastfm-scrobbler-enable)
+;;(emms-lastfm-scrobbler-enable)
 
 ;; Enable album covers
 (require 'emms-cover)
