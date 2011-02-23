@@ -1,8 +1,8 @@
 
 ; Set gnus inbox reading
 (setq gnus-select-method '(nnml ""))
-;;(setq gnus-secondary-select-methods
-;;      '((nntp "comp.emacs")))
+(setq gnus-secondary-select-methods '())
+
 (setq nnmail-crosspost nil)
 (setq nnmail-split-methods
       '(("mail.junk" "^X-Spam-Status: Yes")
@@ -21,11 +21,11 @@
 	("mail.junk" "")))
 
 ;(eval-after-load "mail-source" '(require 'pop3))
-;(setq pop3-debug t)
+(setq pop3-debug t)
 
 (setq mail-sources 
-      '((file :path "/var/mail/bram"))
-      )
+      '((file :path "/var/mail/bram")))
+
 (setq gnus-keep-backlog 500)
 
 (setq gnus-auto-expirable-newsgroups "mail.junk\\|mail.server")
@@ -57,8 +57,7 @@
 (setq send-mail-function 'smtpmail-send-it
       message-send-mail-function 'smtpmail-send-it
       smtpmail-starttls-credentials
-      '(("secure.timeswebdesign.com" 587
-	 nil nil))
+      '(("secure.timeswebdesign.com" 587 nil nil))
       smtpmail-default-smtp-server "secure.timeswebdesign.com"
       smtpmail-smtp-server "secure.timeswebdesign.com"
       smtpmail-smtp-service 587
@@ -69,7 +68,6 @@
       ;;  "bvanderkroef" ""))
 
       starttls-use-gnutls t
-      starttls-gnutls-program "/usr/local/bin/gnutls-cli"
       starttls-extra-arguments nil)
 
 (add-hook 'message-mode-hook 'flyspell-mode)
