@@ -15,6 +15,7 @@
 	("mail.junk" "^Subject:.*Undelivered Mail Returned to Sender")
 	("mail.junk" "^Subject:.*Out of Office")
 	("mail.junk" "^From:.*support@rackspace.com")
+        ("mail.junk" "^From: Facebook")
 	("mail.update" "updates@fortfrances.com")
 	("mail.update" "office@fortfrances.com")
 	("mail.update" "linda@fortfrances.com")
@@ -72,10 +73,20 @@
 
 (add-hook 'message-mode-hook 'flyspell-mode)
 
+;; extract text from Word attachments with antiword and display in email 
 (add-to-list 'mm-inlined-types "application/msword")
 (add-to-list 'mm-inline-media-tests
 	     '("application/msword"
 	       (lambda (handle)
 		 (mm-inline-render-with-stdin handle nil
 					      "antiword" "-"))
+	       identity))
+
+;; extract text from MS .docx documents with docx2txt.pl
+(add-to-list 'mm-inlined-types "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+(add-to-list 'mm-inline-media-tests
+	     '("application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+	       (lambda (handle)
+                 (mm-inline-render-with-file handle nil
+					      "docx2txt.pl" 'file "-"))
 	       identity))
