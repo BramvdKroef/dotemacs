@@ -128,8 +128,7 @@ seconds it is deleted from the kill-ring."
 (autoload 'lorem-ipsum-insert "lorem-ipsum" "Autoload lorem ipsum generator" t)
 ;; Graphiz dot major mode
 (autoload 'graphviz-dot-mode "graphviz-dot-mode" "" t)
-;; Password generator
-(autoload 'generate-password "passwordgenerator" "" t)
+
 ;; Configure the calendar and holidays
 (load "calendar-conf")
 ;; Configure emms player
