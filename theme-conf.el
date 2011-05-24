@@ -62,7 +62,7 @@
                             :inverse-video nil :box nil :strike-through nil
                             :overline nil :underline nil :slant normal :weight
                             normal :width normal
-                            :height 150
+                            :height 140
                             :family "Inconsolata-g"
                             :embolden t))))
      
@@ -243,13 +243,12 @@
      (zmacs-region ((t (:background "DarkSlateGray")))))))
 
 ;; test a face
- (custom-set-faces '(default ((t (:stipple nil :background "black" :foreground "#9367ee"
-                             :inverse-video nil :box nil :strike-through nil
-                             :overline nil :underline nil :slant normal :weight
-                             normal :width normal
-                             :height 140
-                             :family "Inconsolata-g"
-                             :embolden t)))))
+ ;; (custom-set-faces '(default ((t (:stipple nil :background "black" :foreground "#9367ee"
+ ;;                             :inverse-video nil :box nil :strike-through nil
+ ;;                             :overline nil :underline nil :slant normal :weight
+ ;;                             normal :width normal
+ ;;                             :family "Inconsolata-g-12"
+ ;;                             :embolden t)))))
 
  ;(mode-line ((t (:background "LightSteelBlue4" 
 ;                                               :height 130
