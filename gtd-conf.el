@@ -126,8 +126,8 @@
 ;;      ("W" agenda "" ((org-agenda-ndays 21)))
 
 (require 'remember)
-(org-remember-insinuate)
 (setq org-default-notes-file (concat org-directory "/bookmarks.org"))
+(org-remember-insinuate)
 ;; turn on fly-spell mode in org-mode
 (add-hook 'org-mode-hook 'flyspell-mode)
 (add-hook 'lunch-break-start-hook
