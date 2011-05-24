@@ -79,8 +79,6 @@
 ;;(if (require 'jabber nil t)
 ;;    (load "jabber-conf.el"))
 
-(if (require 'erc nil t)
-    (load "erc-conf.el"))
 
 (autoload 'no-word "no-word" "word to txt")
 (add-to-list 'auto-mode-alist '("\\.doc\\'" . no-word))
@@ -117,41 +115,39 @@
     (when err
       (message err))))
 
+(defun flymake-php-init()
+  "Use php to check the syntax of the current file."
+  (let* ((temp
+          (flymake-init-create-temp-buffer-copy
+           (if (or (string-match "/ftp:" buffer-file-name)
+                   (string-match "/scp:" buffer-file-name)
+                   (string-match "/scpc:" buffer-file-name))
+               'flymake-create-temp-with-folder-structure
+             'flymake-create-temp-inplace)))
 
+         (local (file-relative-name temp (file-name-directory
+                                          buffer-file-name))))
+    (list "php" (list "-f" local "-l"))))
+
+(defun flymake-php-add-hooks ()
+  ;; The php syntax check uses the -l (lint) option so the file won't be executed
+
+  (add-to-list 'flymake-err-line-patterns
+               '("\\(Parse\\|Fatal\\) error: +\\(.*?\\) in \\(.*?\\) on line \\([0-9]+\\)$" 3 4 nil 2))
+
+  (add-to-list 'flymake-allowed-file-name-masks '("\\.php$" flymake-php-init))
+  (add-to-list 'flymake-allowed-file-name-masks '("\\.inc$" flymake-php-init))
+  ;; Drupal-type extensions
+  (add-to-list 'flymake-allowed-file-name-masks '("\\.module$" flymake-php-init))
+  ;; Automatically activating flymake for php-mode creates all kinds of trouble
+  ;; when the buffer isn't associated with a file
+  ;;(add-hook php-mode-hook (lambda () (flymake-mode 1)))
+  (define-key php-mode-map '[M-S-up] 'flymake-goto-prev-error)
+  (define-key php-mode-map '[M-S-down] 'flymake-goto-next-error)
+  (define-key php-mode-map "\C-ce" 'my-flymake-show-err))
+  
 (eval-after-load "php-mode"
-  '(progn
-     ;; The php syntax check uses the -l (lint) option so the file won't be executed
-     (defun flymake-php-init()
-       "Use php to check the syntax of the current file."
-       (let* ((temp
-	       (flymake-init-create-temp-buffer-copy
-		(if (or (string-match "/ftp:" buffer-file-name)
-                        (string-match "/scp:" buffer-file-name))
-		    'flymake-create-temp-with-folder-structure
-		    'flymake-create-temp-inplace)))
-
-		(local (file-relative-name temp (file-name-directory
-						 buffer-file-name)))
-	      )
-	 (list "php" (list "-f" local "-l"))))
-
-     (add-to-list 'flymake-err-line-patterns
-		  '("\\(Parse\\|Fatal\\) error: +\\(.*?\\) in \\(.*?\\) on line \\([0-9]+\\)$" 3 4 nil 2))
-
-     (add-to-list 'flymake-allowed-file-name-masks '("\\.php$" flymake-php-init))
-     (add-to-list 'flymake-allowed-file-name-masks '("\\.inc$" flymake-php-init))
-     ;; Drupal-type extensions
-     (add-to-list 'flymake-allowed-file-name-masks '("\\.module$" flymake-php-init))
-
-     ;; Automatically activating flymake for php-mode creates all kinds of trouble
-     ;; when the buffer isn't associated with a file
-     (add-hook 'php-mode-hook (lambda () (flymake-mode 1)))
-    
-     (define-key php-mode-map '[M-S-up] 'flymake-goto-prev-error)
-     (define-key php-mode-map '[M-S-down] 'flymake-goto-next-error)
-     (define-key php-mode-map "\C-ce" 'my-flymake-show-err)
-     ;; ---------------- 
-     ))
+  '(flymake-php-add-hooks))
 
 (eval-after-load "espresso"
   '(progn
@@ -263,3 +259,6 @@ able to send strings"
 ;;)
 
 (autoload 'etags-select-find-tag-at-point "etags-select" "Autoload etag-select" t)
+
+(if (require 'erc nil t)
+    (load "erc-conf.el"))
