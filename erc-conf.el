@@ -13,11 +13,12 @@
 (setq erc-nick-serv '(("localhost" . "&bitlbee")))
 (add-hook 'erc-after-connect
     	  '(lambda (server nick)
+             (message server)
     	     (let* ((login (login-lookup server "irc")))
 	       (if login
 		   (erc-message "PRIVMSG"
                                 (format "%s identify %s" 
-                                        (if (string-match server "localhost")
+                                        (if (string-match server "localhost.localdomain")
                                             "&bitlbee"
                                           (erc-default-target))
                                         (login-get login "password")))))))
@@ -39,9 +40,17 @@
 	  (growl (format "%s:%d" from (% (nth 1 (current-time)) 3)) msg)))))
   (add-hook 'erc-text-matched-hook 'erc-growl-on-nick))
 
+(defun my-kill-bitlbee ()
+  "Breaks the connection with the bitlbee channel and stops bitlbee."
+  (when (get-buffer "&bitlbee")
+    (set-buffer "&bitlbee")
+    (erc-quit-server "")
+    (bitlbee-stop)))
+
 (when (require 'bitlbee nil t)
   ;; Fire up the bitlbee server
   (bitlbee-start)
+  (sleep-for 1)
   ;; Connect
   (erc :server "localhost" :port 6667 :nick "bram")
 
@@ -54,4 +63,5 @@
     (add-hook 'lunch-break-stop-hook
 	      '(lambda ()
 		 (with-current-buffer "&bitlbee"
-		   (erc-cmd-AWAY ""))))))
+		   (erc-cmd-AWAY " ")))))
+  )
