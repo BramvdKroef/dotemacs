@@ -260,5 +260,7 @@ able to send strings"
 
 (autoload 'etags-select-find-tag-at-point "etags-select" "Autoload etag-select" t)
 
+(autoload 'pomodoro "pomodoro" "Autoload pomodoro" t)
+
 (if (require 'erc nil t)
     (load "erc-conf.el"))
