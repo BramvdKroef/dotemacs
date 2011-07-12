@@ -1,6 +1,7 @@
 # moz
 #http://www.emacswiki.org/emacs/MozRepl
 
+BASEDIR=~/.emacs.d/site-lisp/
 
 echo "Installing bitlbee.el"
 cd $BASEDIR

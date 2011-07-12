@@ -27,6 +27,11 @@
     (set-buffer-file-coding-system 'unix 't)
     ))
 
+(defun my-to-work-agenda ()
+  (interactive)
+  (find-file (concat org-directory "/work.org"))
+  )
+
 ;; Delete trailing whitespace and indent the buffer
 (defun cleanup ()
   "indent whole buffer"
@@ -79,15 +84,9 @@
 
 (defun close-all ()
   (interactive)
-    
-  (when (get-buffer "&bitlbee")
-    (set-buffer "&bitlbee")
-    (erc-quit-server "")
-    (bitlbee-stop))
 
-  (bbdb-save-db)
-  (let ((gnus-interactive-exit nil))
-    (gnus-group-exit))
+  (my-kill-bitlbee)
+  (my-kill-gnus)
 
   (save-some-buffers)
   
@@ -95,19 +94,15 @@
     (when shell-buffer
       (set-buffer shell-buffer)
       (comint-send-eof)
-      (delete-process "*shell*")
-      )
-    )
+      (delete-process "*shell*")))
 
   (let ((shell-buffer (get-buffer "*SQL*")))
     (when shell-buffer
       (set-buffer shell-buffer)
-      (comint-send-eof))
-    )
+      (comint-send-eof)))
 
   (sleep-for 2)
-  (save-buffers-kill-emacs)
-  )
+  (save-buffers-kill-emacs))
 
 
 (defun my-count-words-in-region (start end)
@@ -133,3 +128,14 @@
   (interactive)
   (shell-command-on-region (region-beginning) (region-end) "php -r 'eval(file_get_contents(\"php://stdin\"));'")
   )
+
+(defun generate-password (&optional n)
+  (interactive "p")
+  (message "%s" n)
+  (or (> n 1) (setq n 12))
+  (insert (shell-command-to-string (concat "echo -n `</dev/urandom "
+                                           "tr -dc A-Za-z0-9 "
+                                           "2> /dev/null "
+                                           "| head -c"
+                                           (number-to-string n)
+                                           "`"))))

@@ -1,5 +1,6 @@
 ;; --- nXML mode ---
-;(load  "rng-auto.el")
+
+;;(load  "rng-auto.el")
 
 (add-to-list 'auto-mode-alist
 	     (cons (concat "\\." (regexp-opt '("xml" "xsd" "sch" "rng" "xslt" "svg" "rss") t) "\\'")
@@ -49,8 +50,7 @@
      (yas/initialize)
      (yas/load-directory "~/.emacs.d/snippets")
      ;; Adapt faces of highlights to the dark theme (or else you can't read the text)
-     (set-face-background 'yas/field-highlight-face "DarkSlateGrey")
-     ))
+     (set-face-background 'yas/field-highlight-face "DarkSlateGrey")))
 
 ;; Prepend snippet expand to hippie expand list
 (add-to-list 'hippie-expand-try-functions-list 'yas/hippie-try-expand)
@@ -71,19 +71,15 @@
 ;; Require growl.el on mac (sends notifications)
 (if (or (eq system-type 'darwin)
 	(eq system-type 'macos))
-
    (progn
      ;;(autoload 'growl "growl")
      (eval-after-load "growl"
-       '(setq growl-program "/usr/local/bin/growlnotify")))
-  )
+       '(setq growl-program "/usr/local/bin/growlnotify"))))
 
 ;; Jabber
 ;;(if (require 'jabber nil t)
 ;;    (load "jabber-conf.el"))
 
-(if (require 'erc nil t)
-    (load "erc-conf.el"))
 
 (autoload 'no-word "no-word" "word to txt")
 (add-to-list 'auto-mode-alist '("\\.doc\\'" . no-word))
@@ -101,9 +97,11 @@
 ;; Espresso mode
 ;; espresso is now included in emacs 23.2 as js-mode
 (autoload 'espresso-mode "espresso")
-(add-to-list 'auto-mode-alist '("\\.js$" . espresso-mode))
-(add-to-list 'auto-mode-alist '("\\.json$" . espresso-mode))
-(add-to-list 'auto-mode-alist '("\\.conkerorrc\\'" . espresso-mode))
+(add-to-list 'auto-mode-alist '("\\.js$" . javascript-mode))
+(add-to-list 'auto-mode-alist '("\\.json$" . javascript-mode))
+(add-to-list 'auto-mode-alist '("\\.conkerorrc\\'" . javascript-mode))
+
+(add-to-list 'auto-mode-alist '("\\.stumpwmrc\\'" . lisp-mode))
 
 ;; Flymake mode
 (require 'flymake)
@@ -118,40 +116,39 @@
     (when err
       (message err))))
 
+(defun flymake-php-init()
+  "Use php to check the syntax of the current file."
+  (let* ((temp
+          (flymake-init-create-temp-buffer-copy
+           (if (or (string-match "/ftp:" buffer-file-name)
+                   (string-match "/scp:" buffer-file-name)
+                   (string-match "/scpc:" buffer-file-name))
+               'flymake-create-temp-with-folder-structure
+             'flymake-create-temp-inplace)))
 
+         (local (file-relative-name temp (file-name-directory
+                                          buffer-file-name))))
+    (list "php" (list "-f" local "-l"))))
+
+(defun flymake-php-add-hooks ()
+  ;; The php syntax check uses the -l (lint) option so the file won't be executed
+
+  (add-to-list 'flymake-err-line-patterns
+               '("\\(Parse\\|Fatal\\) error: +\\(.*?\\) in \\(.*?\\) on line \\([0-9]+\\)$" 3 4 nil 2))
+
+  (add-to-list 'flymake-allowed-file-name-masks '("\\.php$" flymake-php-init))
+  (add-to-list 'flymake-allowed-file-name-masks '("\\.inc$" flymake-php-init))
+  ;; Drupal-type extensions
+  (add-to-list 'flymake-allowed-file-name-masks '("\\.module$" flymake-php-init))
+  ;; Automatically activating flymake for php-mode creates all kinds of trouble
+  ;; when the buffer isn't associated with a file
+  ;;(add-hook php-mode-hook (lambda () (flymake-mode 1)))
+  (define-key php-mode-map '[M-S-up] 'flymake-goto-prev-error)
+  (define-key php-mode-map '[M-S-down] 'flymake-goto-next-error)
+  (define-key php-mode-map "\C-ce" 'my-flymake-show-err))
+  
 (eval-after-load "php-mode"
-  '(progn
-     ;; The php syntax check uses the -l (lint) option so the file won't be executed
-     (defun flymake-php-init()
-       "Use php to check the syntax of the current file."
-       (let* ((temp
-	       (flymake-init-create-temp-buffer-copy
-		(if (string-match "/ftp:" buffer-file-name)
-		    'flymake-create-temp-with-folder-structure
-		    'flymake-create-temp-inplace)))
-
-		(local (file-relative-name temp (file-name-directory
-						 buffer-file-name)))
-	      )
-	 (list "php" (list "-f" local "-l"))))
-
-     (add-to-list 'flymake-err-line-patterns
-		  '("\\(Parse\\|Fatal\\) error: +\\(.*?\\) in \\(.*?\\) on line \\([0-9]+\\)$" 3 4 nil 2))
-
-     (add-to-list 'flymake-allowed-file-name-masks '("\\.php$" flymake-php-init))
-     (add-to-list 'flymake-allowed-file-name-masks '("\\.inc$" flymake-php-init))
-     ;; Drupal-type extensions
-     (add-to-list 'flymake-allowed-file-name-masks '("\\.module$" flymake-php-init))
-
-     ;; Automatically activating flymake for php-mode creates all kinds of trouble
-     ;; when the buffer isn't associated with a file
-     (add-hook 'php-mode-hook (lambda () (flymake-mode 1)))
-    
-     (define-key php-mode-map '[M-S-up] 'flymake-goto-prev-error)
-     (define-key php-mode-map '[M-S-down] 'flymake-goto-next-error)
-     (define-key php-mode-map "\C-ce" 'my-flymake-show-err)
-     ;; ---------------- 
-     ))
+  '(flymake-php-add-hooks))
 
 (eval-after-load "espresso"
   '(progn
@@ -175,8 +172,7 @@
      (define-key espresso-mode-map '[M-S-down] 'flymake-goto-next-error)
      (define-key espresso-mode-map "\C-ce" 'my-flymake-show-err)
 
-     (add-hook 'espresso-mode-hook (lambda () (flymake-mode 1)))
-     ))
+     (add-hook 'espresso-mode-hook (lambda () (flymake-mode 1)))))
 
 
 ;; Ledger mode
@@ -209,11 +205,9 @@
   "The author of mozRepl.el doesn't understand delegates so I had to write this function in order to be
 able to send strings"
   (comint-send-string (inferior-moz-process)
-                      str)
-  )
+                      str))
 (defun moz-stop()
-  (comint-delchar-or-maybe-eof (inferior-moz-process))
-  )
+  (comint-delchar-or-maybe-eof (inferior-moz-process)))
 
 (defun conkeror-reload ()
   "Reloads the current page in conkeror"
@@ -226,7 +220,6 @@ able to send strings"
 			   url
 			   "');\n")))
 ;; open links in conkeror
-(setq browse-url-browser-function 'conkeror-open-url)
 (setq browse-url-browser-function 'browse-url-generic)
 
 ;;(defun javascript-custom-setup ()
@@ -266,3 +259,6 @@ able to send strings"
 ;;)
 
 (autoload 'etags-select-find-tag-at-point "etags-select" "Autoload etag-select" t)
+
+(if (require 'erc nil t)
+    (load "erc-conf.el"))

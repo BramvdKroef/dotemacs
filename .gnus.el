@@ -1,11 +1,15 @@
 
 ; Set gnus inbox reading
 (setq gnus-select-method '(nnml ""))
-;;(setq gnus-secondary-select-methods
-;;      '((nntp "comp.emacs")))
+(setq gnus-secondary-select-methods '())
+
 (setq nnmail-crosspost nil)
 (setq nnmail-split-methods
       '(("mail.junk" "^X-Spam-Status: Yes")
+        ("mail.junk" "X-YahooFilteredBulk:")
+        ("mail.personal" "^From:.*(kroef|goudzwaard)")
+        ("mail.stores" "^From:.*\\(amazon\\|mouser\\)")
+        ("mail.todo" "^To:.*(bram@fortfrances.com\\|bramvdkroef@yahoo.ca\\|bramvdk@yahoo.co.uk)")
 	("mail.todo" "^To:.*bram@fortfrances.com")
         ("mail.mailinglist" "^To:.*@gnu.org")
         ("mail.junk" "^Subject:.*Backup")
@@ -15,17 +19,22 @@
 	("mail.junk" "^Subject:.*Undelivered Mail Returned to Sender")
 	("mail.junk" "^Subject:.*Out of Office")
 	("mail.junk" "^From:.*support@rackspace.com")
+        ("mail.junk" "^From: Facebook")
 	("mail.update" "updates@fortfrances.com")
 	("mail.update" "office@fortfrances.com")
 	("mail.update" "linda@fortfrances.com")
 	("mail.junk" "")))
 
 ;(eval-after-load "mail-source" '(require 'pop3))
-;(setq pop3-debug t)
+(setq pop3-debug t)
 
-(setq mail-sources 
-      '((file :path "/var/mail/bram"))
-      )
+(setq mail-sources '())
+(if (file-exists-p "/var/mail/bram")
+    (add-to-list 'mail-sources '(file :path "/var/mail/bram")))
+
+(if (file-exists-p "/home/bram/mail/INBOX")
+    (add-to-list 'mail-sources '(file :path "/home/bram/mail/INBOX")))
+
 (setq gnus-keep-backlog 500)
 
 (setq gnus-auto-expirable-newsgroups "mail.junk\\|mail.server")
@@ -57,8 +66,7 @@
 (setq send-mail-function 'smtpmail-send-it
       message-send-mail-function 'smtpmail-send-it
       smtpmail-starttls-credentials
-      '(("secure.timeswebdesign.com" 587
-	 nil nil))
+      '(("secure.timeswebdesign.com" 587 nil nil))
       smtpmail-default-smtp-server "secure.timeswebdesign.com"
       smtpmail-smtp-server "secure.timeswebdesign.com"
       smtpmail-smtp-service 587
@@ -69,15 +77,24 @@
       ;;  "bvanderkroef" ""))
 
       starttls-use-gnutls t
-      starttls-gnutls-program "/usr/local/bin/gnutls-cli"
       starttls-extra-arguments nil)
 
 (add-hook 'message-mode-hook 'flyspell-mode)
 
+;; extract text from Word attachments with antiword and display in email 
 (add-to-list 'mm-inlined-types "application/msword")
 (add-to-list 'mm-inline-media-tests
 	     '("application/msword"
 	       (lambda (handle)
 		 (mm-inline-render-with-stdin handle nil
 					      "antiword" "-"))
+	       identity))
+
+;; extract text from MS .docx documents with docx2txt.pl
+(add-to-list 'mm-inlined-types "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+(add-to-list 'mm-inline-media-tests
+	     '("application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+	       (lambda (handle)
+                 (mm-inline-render-with-file handle nil
+					      "docx2txt.pl" 'file "-"))
 	       identity))

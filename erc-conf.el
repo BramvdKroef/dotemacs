@@ -1,65 +1,67 @@
+(require 'erc)
 
 (if (require 'erc-bbdb nil t)
     (erc-bbdb-enable))
 
 (erc-spelling-mode 1)
-(setq erc-modules '(autojoin button completion fill irccontrols match menu netsplit noncommands readonly
+(setq erc-modules '(autojoin button completion fill irccontrols
+                             match menu netsplit noncommands readonly
 			     ring scrolltobottom stamp track smiley))
 (require 'erc-nicklist nil t)
 (setq erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE"
 				"324" "329" "332" "333" "353" "477"))
-(setq erc-nick-serv '(("localhost" . "&bitlbee")
-		       ))
+(setq erc-nick-serv '(("localhost" . "&bitlbee")))
 (add-hook 'erc-after-connect
     	  '(lambda (server nick)
+             (message server)
     	     (let* ((login (login-lookup server "irc")))
 	       (if login
-		   (erc-message "PRIVMSG" (format "%s identify %s" 
-						  (if (string-match server "localhost")
-						      "&bitlbee"
-						    (erc-default-target))
-						  (login-get login "password")))
-		 )
-	       )
-	     ))
+		   (erc-message "PRIVMSG"
+                                (format "%s identify %s" 
+                                        (if (string-match server "localhost.localdomain")
+                                            "&bitlbee"
+                                          (erc-default-target))
+                                        (login-get login "password")))))))
 
 (when (require 'growl nil t)
   (defun erc-growl-on-nick (matched-type nick msg)
-    (when (and (string= matched-type "current-nick") (string-match "\\([^:]*\\).*:\\(.*\\)" msg)
-	       )
-      (let(
-	   (text (match-string 2 msg))
+    (when (and (string= matched-type "current-nick")
+               (string-match "\\([^:]*\\).*:\\(.*\\)" msg))
+      (let((text (match-string 2 msg))
 	   (from (erc-extract-nick nick)))
       
 	(when text
-	
-	  (let ((maxlength 128))
+          (let ((maxlength 128))
 	    (if ( > (length msg) maxlength )
-		(setq msg (concat (substring msg 0 20) ".. *snip* .. " (substring msg (- 30)) "."))))
+		(setq msg (concat (substring msg 0 20) ".. *snip* .. "
+                                  (substring msg (- 30)) "."))))
 	
 	  (setq msg (concat from " : " msg))
-	  (growl (format "%s:%d" from (% (nth 1 (current-time)) 3)) msg))
-	)))
+	  (growl (format "%s:%d" from (% (nth 1 (current-time)) 3)) msg)))))
+  (add-hook 'erc-text-matched-hook 'erc-growl-on-nick))
 
-  (add-hook 'erc-text-matched-hook 'erc-growl-on-nick)
-)
+(defun my-kill-bitlbee ()
+  "Breaks the connection with the bitlbee channel and stops bitlbee."
+  (when (get-buffer "&bitlbee")
+    (set-buffer "&bitlbee")
+    (erc-quit-server "")
+    (bitlbee-stop)))
 
 (when (require 'bitlbee nil t)
   ;; Fire up the bitlbee server
-  (setq bitlbee-executable "/usr/local/sbin/bitlbee")
   (bitlbee-start)
-
+  (sleep-for 1)
   ;; Connect
   (erc :server "localhost" :port 6667 :nick "bram")
 
-(when 'lunch-break
+  (when 'lunch-break
     (add-hook 'lunch-break-start-hook
 	      '(lambda ()
 		 (with-current-buffer "&bitlbee"
 		   (erc-cmd-AWAY "Food"))))
-
+    
     (add-hook 'lunch-break-stop-hook
 	      '(lambda ()
 		 (with-current-buffer "&bitlbee"
-		   (erc-cmd-AWAY "")))))
-)
+		   (erc-cmd-AWAY " ")))))
+  )

@@ -1,3 +1,4 @@
+
 ;; Make transparent
 (set-frame-parameter nil 'alpha '(85 85))
 
@@ -62,7 +63,7 @@
                             :overline nil :underline nil :slant normal :weight
                             normal :width normal
                             :height 140
-                            :family "Inconsolata"
+                            :family "Inconsolata-g"
                             :embolden t))))
      
      (minibuffer-prompt ((t (:foreground "royalblue1"))))
@@ -116,7 +117,7 @@
      (diff-index-face ((t (:bold t :weight bold :background "grey60"))))
      (diff-nonexistent-face ((t (:bold t :weight bold :background "grey60"))))
      (diff-removed-face ((t (nil))))
-     (fixed-pitch ((t (:family "Inconsolata"))))
+     (fixed-pitch ((t (:family "Inconsolata-g"))))
      (font-lock-builtin-face ((t (:foreground "SteelBlue"))))
      (font-lock-comment-face ((t (:italic t :foreground "#3c8249" :slant oblique))))
      (font-lock-constant-face ((t (:bold t :foreground "Gold" :weight bold))))
@@ -242,26 +243,17 @@
      (zmacs-region ((t (:background "DarkSlateGray")))))))
 
 ;; test a face
-(custom-set-faces '(default ((t (:stipple nil
-                                          :background "black"
-                                          :foreground "#9367ee"
-                                          :inverse-video nil
-                                          :box nil
-                                          :strike-through nil
-                                          :overline nil
-                                          :underline nil
-                                          :slant normal
-                                          :weight normal
-                                          :width normal
-                                          :height 140
-                                          :family "Inconsolata"
-                                          :embolden t)))))
+ ;; (custom-set-faces '(default ((t (:stipple nil :background "black" :foreground "#9367ee"
+ ;;                             :inverse-video nil :box nil :strike-through nil
+ ;;                             :overline nil :underline nil :slant normal :weight
+ ;;                             normal :width normal
+ ;;                             :family "Inconsolata-g-12"
+ ;;                             :embolden t)))))
 
  ;(mode-line ((t (:background "LightSteelBlue4" 
 ;                                               :height 130
 ;                                               :family "helv"
 ;                                               :foreground "white")))))
-
 
 ;; Set color theme 
 (if (require 'color-theme nil t)
@@ -277,3 +269,5 @@
   (set-foreground-color "#aea3ff")
   (set-background-color "black")
   (set-face-background 'region "blue"))
+
+(set-frame-font "Inconsolata-g-12")

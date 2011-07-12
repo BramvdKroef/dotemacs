@@ -28,6 +28,9 @@
 ;; no-tabs
 (setq-default indent-tabs-mode nil)
 
+;; enable copying to the clipboard
+(setq x-select-enable-clipboard t)
+
 ;; My keybindings. It is importand that this is loaded before the experimental stuff
 ;; so that, in case of an error, emacs is usable.
 (load "keybindings.el")
@@ -40,15 +43,16 @@
 ;; Easy PG is now included in emacs.
 ;;(require 'epa-setup)
 
-
 ;; This is where all the passwords are stored
-(setq authinfo-file "~/.authinfo.gpg"
-      ange-ftp-netrc-filename authinfo-file)
-
+(defvar authinfo-file "~/.authinfo.gpg")
+(require 'ange-ftp)
+(setq ange-ftp-netrc-filename authinfo-file)
 (setq ange-ftp-try-passive-mode t)
+
 
 ;;(require 'netrc)
 (autoload 'netrc-parse "netrc")
+(autoload 'netrc-machine "netrc")
 
 ;; Make looking up login information easier
 (defun login-lookup (machine port)
@@ -61,8 +65,7 @@
       (unless authinfo
 	(message "Couldn't parse authinfo file"))
       nil
-      )
-    ))
+      )))
 
 (defalias 'login-get 'netrc-get)
 
@@ -105,9 +108,7 @@ seconds it is deleted from the kill-ring."
 			    (message "Deleted password from kill-ring")
 			    ))
 	    )
-	(message "Couldn't find login")
-	)
-      ))
+	(message "Couldn't find login"))))
 
 (defun server-password ()
   "Look up root password for the server"
@@ -117,13 +118,11 @@ seconds it is deleted from the kill-ring."
 (defun password-to-clipboard-dev ()
   "Look up root password for bram@leapontheweb.com"
   (interactive)
-  (password-to-clipboard "leapontheweb.com" "ssh")
-  )
+  (password-to-clipboard "leapontheweb.com" "ssh"))
 (defun password-to-clipboard-rack ()
   "Look up root password for bvanderkroef@fortfrances.com"
   (interactive)
-  (password-to-clipboard "fortfrances.com" "ssh")
-  )
+  (password-to-clipboard "fortfrances.com" "ssh"))
 
 ;; Load the files in the home folder
 ;;-----------
@@ -131,8 +130,7 @@ seconds it is deleted from the kill-ring."
 (autoload 'lorem-ipsum-insert "lorem-ipsum" "Autoload lorem ipsum generator" t)
 ;; Graphiz dot major mode
 (autoload 'graphviz-dot-mode "graphviz-dot-mode" "" t)
-;; Password generator
-(autoload 'generate-password "passwordgenerator" "" t)
+
 ;; Configure the calendar and holidays
 (load "calendar-conf")
 ;; Configure emms player
@@ -159,13 +157,17 @@ seconds it is deleted from the kill-ring."
 				    '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))
 	    
 	    ;; Reckognize studlyCaps as seperate words when moving around
-	    (c-subword-mode 1)
-	    ))
+	    (subword-mode 1)))
 
 ; open .h files in c++ mode instead of c mode
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.less$" . css-mode))
 
+<<<<<<< HEAD
+=======
+;;(load "find-file-root.el")
+(setq ange-ftp-try-passive-mode t)
+>>>>>>> fa00361675e73624ed2db340213d11a0bbe01405
 (load "custom-func.el")
 
 (require 'lunch-break nil t)

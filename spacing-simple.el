@@ -5,7 +5,9 @@
 	(answer (cdr item))
 	quality)
     
-    (if (string= (read-string (concat question ": " )) answer)
+    (if (string= (replace-regexp-in-string
+                  "\n" " "
+                  (read-string (concat question ": " ))) answer)
 	;; Correct answer. Rate between 5 and 3 inclusive.
 	(setq quality (min 5 (max 3 (- 6 (string-to-number
 					  (read-string "Correct. How well did you remember the answer?

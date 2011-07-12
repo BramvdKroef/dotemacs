@@ -36,7 +36,7 @@
   :group 'emms-cover
   :type '(alist (list integer integer) (list integer integer))
   )
-(defcustom emms-cover-converter "/opt/local/bin/convert \"%in\" -resize %widthx%height \"%out\""
+(defcustom emms-cover-converter "convert \"%in\" -resize %widthx%height \"%out\""
   "This command resizes image %in to dimensions %width x %height and writes the result to %out"
   :group 'emms-cover
   :type 'string
@@ -129,7 +129,7 @@
       (let ((url (funcall func artist album))
             (coverpath))
 	  (when url
-              (setq coverpath (emms-cover-download-image url))
+              (setq coverpath (emms-cover-download-image url artist album))
               (emms-cover-remove-from-queue artist album)
 	      (throw 'emms-cover-download
 		     (replace-regexp-in-string "%size" (symbol-name size) coverpath))
@@ -204,9 +204,9 @@ well or if an error occured."
   "file:///Users/bram/.covers/No Image.large.gif"
   )
   
-(defun emms-cover-download-image (url)
+(defun emms-cover-download-image (url artist album)
   (let ((coverpath emms-cover-savepath)
-        (lagecover)
+        (largecover)
         (cover))
     (setq coverpath (replace-regexp-in-string "%artist" artist coverpath))
     (setq coverpath (replace-regexp-in-string "%album" album coverpath))

@@ -69,10 +69,6 @@
   )
 
 ;; Global keys
-(defun my-to-work-agenda ()
-  (interactive)
-  (find-file "~/Dropbox/org/work.org")
-  )
 (global-set-key (kbd "C-1") 'my-to-work-agenda)
 (global-set-key (kbd "C-2") 'my-gnus-get-news)
 (global-set-key (kbd "C-3") 'emms-smart-browse)

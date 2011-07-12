@@ -65,11 +65,11 @@
 ;(require 'planner-erc)
 
 ;; Clock out on lunch break
-(add-hook 'lunch-break-start-hook
-	  '(lambda ()
-	     (unless (equal (downcase (car timeclock-last-event)) "o")
-	       (timeclock-out)
-	       )))
+;; (add-hook 'lunch-break-start-hook
+;; 	  '(lambda ()
+;; 	     (unless (equal (downcase (car timeclock-last-event)) "o")
+;; 	       (timeclock-out)
+;; 	       )))
 
 ;; Show gnus
 (add-hook 'lunch-break-stop-hook
@@ -96,7 +96,8 @@
 
 (setq org-agenda-files
       '("~/Dropbox/org/work.org"
-        "~/Dropbox/org/personal.org")
+        "~/Dropbox/org/personal.org"
+        "~/Dropbox/org/bookmarks.org")
       org-clock-persist 'history
       org-agenda-custom-commands
       '(("d" todo "DELEGATED" nil))
@@ -125,9 +126,8 @@
 ;;      ("W" agenda "" ((org-agenda-ndays 21)))
 
 (require 'remember)
+(setq org-default-notes-file (concat org-directory "/bookmarks.org"))
 (org-remember-insinuate)
-(setq org-directory "~/Dropbox/org")
-(setq org-default-notes-file (concat org-directory "/notes.org"))
 ;; turn on fly-spell mode in org-mode
 (add-hook 'org-mode-hook 'flyspell-mode)
 (add-hook 'lunch-break-start-hook
