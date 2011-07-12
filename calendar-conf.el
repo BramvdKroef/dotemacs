@@ -3,6 +3,7 @@
 ;; $Id: calendar-conf.el,v 1.4 2009-02-27 22:05:15 twd Exp $
 
 (require 'calendar)
+(require 'holidays)
 (setq calendar-latitude [48 36 north])
 (setq calendar-longitude [93 23 east])
 (setq calendar-location-name "Fort Frances, CA")
