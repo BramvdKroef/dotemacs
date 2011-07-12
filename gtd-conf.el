@@ -94,6 +94,8 @@
 ;      (delete-region (match-beginning 0) (match-end 0))
 ;      (muse-insert-markup (muse-markup-text 'quotedstring text)))))
 
+(require 'org-clock)
+(require 'org-agenda)
 (setq org-agenda-files
       '("~/Dropbox/org/work.org"
         "~/Dropbox/org/personal.org"
