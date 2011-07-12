@@ -78,6 +78,7 @@
   (interactive)
   (shell-command "/usr/bin/fetchmail"))
 
+(require 'comint)
 (defun close-all ()
   (interactive)
 
