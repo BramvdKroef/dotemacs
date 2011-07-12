@@ -163,11 +163,7 @@ seconds it is deleted from the kill-ring."
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.less$" . css-mode))
 
-<<<<<<< HEAD
-=======
 ;;(load "find-file-root.el")
-(setq ange-ftp-try-passive-mode t)
->>>>>>> fa00361675e73624ed2db340213d11a0bbe01405
 (load "custom-func.el")
 
 (require 'lunch-break nil t)
