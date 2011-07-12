@@ -35,6 +35,8 @@
 (define-key global-map (kbd "RET") 'newline-and-indent)
 
 ;when a paren or brace or bracket is typed add the closing match
+
+(require 'skeleton)
 (setq skeleton-pair t)
 (global-set-key (kbd "[") 'skeleton-pair-insert-maybe)
 
