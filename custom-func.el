@@ -80,10 +80,10 @@
 (defun close-all ()
   (interactive)
     
-  (set-buffer "&bitlbee")
-  (erc-quit-server "")
-  
-  (bitlbee-stop)
+  (when (get-buffer "&bitlbee")
+    (set-buffer "&bitlbee")
+    (erc-quit-server "")
+    (bitlbee-stop))
 
   (bbdb-save-db)
   (let ((gnus-interactive-exit nil))
