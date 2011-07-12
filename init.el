@@ -38,20 +38,14 @@
 ;; EasyPG encryption. Has to be set up first because the conf files
 ;; need the password file.
 ;; Easy PG is now included in emacs.
-(require 'epa-setup)
+;;(require 'epa-setup)
 
-;; gpg2 works with gpg-agent 
-(setq epg-gpg-program "/opt/local/bin/gpg2"
-      epg-gpgsm-program "/opt/local/bin/gpgsm"
-      epg-gpg-home-directory "~/.gnupg")
 
 ;; This is where all the passwords are stored
 (setq authinfo-file "~/.authinfo.gpg"
       ange-ftp-netrc-filename authinfo-file)
 
-(setq w3m-command "/usr/local/bin/w3m")
-(setq ispell-program-name "/usr/local/bin/aspell")
-
+(setq ange-ftp-try-passive-mode t)
 
 ;;(require 'netrc)
 (autoload 'netrc-parse "netrc")
@@ -171,8 +165,6 @@ seconds it is deleted from the kill-ring."
 ; open .h files in c++ mode instead of c mode
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.less$" . css-mode))
-
-(load "find-file-root.el")
 
 (load "custom-func.el")
 
