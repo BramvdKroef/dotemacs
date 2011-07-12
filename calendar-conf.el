@@ -7,16 +7,16 @@
 (setq calendar-longitude [93 23 east])
 (setq calendar-location-name "Fort Frances, CA")
 
-(setq all-christian-calendar-holidays t)
+(setq calendar-christian-all-holidays-flag t)
 
 ;; remove some holidays
-(setq general-holidays nil)   ; get rid of too U.S.-centric holidays
-(setq hebrew-holidays nil)    ; get rid of religious holidays
-(setq islamic-holidays nil)   ; get rid of religious holidays
-(setq oriental-holidays nil)  ; get rid of Oriental holidays
-(setq bahai-holidays nil)     ; get rid of Baha'i holidays
+(setq holiday-general-holidays nil)   ; get rid of too U.S.-centric holidays
+(setq holiday-hebrew-holidays nil)    ; get rid of religious holidays
+(setq holiday-islamic-holidays nil)   ; get rid of religious holidays
+(setq holiday-oriental-holidays nil)  ; get rid of Oriental holidays
+(setq holiday-bahai-holidays nil)     ; get rid of Baha'i holidays
 
-(setq local-holidays
+(setq holiday-local-holidays
       '(
         (holiday-fixed 01 01 "New Year's Day")
         (holiday-fixed 02 14 "Valentine's Day")
@@ -49,7 +49,7 @@
 ; The above settings won't be used because calendar-holidays has already been
 ; generated; it has to be re-filled. 
 (setq calendar-holidays
-      (append local-holidays christian-holidays solar-holidays))
+      (append holiday-local-holidays holiday-christian-holidays holiday-solar-holidays))
 
 (defun insert-date (&optional days)
     (interactive "p*")
@@ -60,4 +60,4 @@
           days)))))
 
 ;; mark dates of holidays in the calendar
-(setq mark-holidays-in-calendar t)
+(setq calendar-mark-holidays-flag t)
