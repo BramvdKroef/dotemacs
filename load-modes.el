@@ -1,5 +1,5 @@
 ;; --- nXML mode ---
-(load  "rng-auto.el")
+;(load  "rng-auto.el")
 
 (add-to-list 'auto-mode-alist
 	     (cons (concat "\\." (regexp-opt '("xml" "xsd" "sch" "rng" "xslt" "svg" "rss") t) "\\'")
@@ -227,7 +227,7 @@ able to send strings"
 			   "');\n")))
 ;; open links in conkeror
 (setq browse-url-browser-function 'conkeror-open-url)
-
+(setq browse-url-browser-function 'browse-url-generic)
 
 ;;(defun javascript-custom-setup ()
 ;;  (moz-minor-mode 1))
