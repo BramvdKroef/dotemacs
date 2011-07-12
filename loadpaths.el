@@ -1,3 +1,4 @@
+(add-to-list 'load-path "~/.emacs.d/site-lisp")
 (add-to-list 'load-path "~/.emacs.d/site-lisp/w3m")
 (if window-system
     (require 'w3m-load))
