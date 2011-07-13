@@ -105,6 +105,7 @@
       '((sequence "TODO" "|" "DONE" "DEFERRED"))
       org-log-done 'time
       org-return-follows-link t
+      org-reverse-note-order t
       org-link-frame-setup '((vm . vm-visit-folder-other-frame)
                              (gnus . org-gnus-no-new-news)
                              (file . find-file))
@@ -117,7 +118,7 @@
 ;;  org-agenda-skip-deadline-if-done t
 ;;  org-agenda-skip-scheduled-if-done t
 ;;  org-agenda-start-on-weekday nil
-;;  org-reverse-note-order t
+
 ;;  org-fast-tag-selection-single-key (quote expert)
 ;;  org-agenda-custom-commands
 ;;    '(("d" todo "DELEGATED" nil)
