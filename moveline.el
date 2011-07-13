@@ -5,9 +5,9 @@
     (setq n 1)) 
   (let ((col (current-column)))
     (beginning-of-line)
-    (next-line 1)
+    (forward-line 1)
     (transpose-lines n)
-    (previous-line 1)
+    (forward-line -1)
     (forward-char col))) 
 
 (defun move-line-up (n)

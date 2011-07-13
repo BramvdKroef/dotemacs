@@ -6,6 +6,10 @@
 (setq nnmail-crosspost nil)
 (setq nnmail-split-methods
       '(("mail.junk" "^X-Spam-Status: Yes")
+        ("mail.junk" "X-YahooFilteredBulk:")
+        ("mail.personal" "^From:.*(kroef|goudzwaard)")
+        ("mail.stores" "^From:.*\\(amazon\\|mouser\\)")
+        ("mail.todo" "^To:.*(bram@fortfrances.com\\|bramvdkroef@yahoo.ca\\|bramvdk@yahoo.co.uk)")
 	("mail.todo" "^To:.*bram@fortfrances.com")
         ("mail.mailinglist" "^To:.*@gnu.org")
         ("mail.junk" "^Subject:.*Backup")
@@ -24,8 +28,12 @@
 ;(eval-after-load "mail-source" '(require 'pop3))
 (setq pop3-debug t)
 
-(setq mail-sources 
-      '((file :path "/var/mail/bram")))
+(setq mail-sources '())
+(if (file-exists-p "/var/mail/bram")
+    (add-to-list 'mail-sources '(file :path "/var/mail/bram")))
+
+(if (file-exists-p "/home/bram/mail/INBOX")
+    (add-to-list 'mail-sources '(file :path "/home/bram/mail/INBOX")))
 
 (setq gnus-keep-backlog 500)
 

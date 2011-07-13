@@ -40,6 +40,8 @@
 	  (growl (format "%s:%d" from (% (nth 1 (current-time)) 3)) msg)))))
   (add-hook 'erc-text-matched-hook 'erc-growl-on-nick))
 
+(require 'bitlbee)
+
 (defun my-kill-bitlbee ()
   "Breaks the connection with the bitlbee channel and stops bitlbee."
   (when (get-buffer "&bitlbee")

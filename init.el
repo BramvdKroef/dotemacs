@@ -43,6 +43,8 @@
 (defvar authinfo-file "~/.authinfo.gpg")
 (require 'ange-ftp)
 (setq ange-ftp-netrc-filename authinfo-file)
+(setq ange-ftp-try-passive-mode t)
+
 
 ;;(require 'netrc)
 (autoload 'netrc-parse "netrc")
@@ -158,7 +160,6 @@ seconds it is deleted from the kill-ring."
 (add-to-list 'auto-mode-alist '("\\.less$" . css-mode))
 
 ;;(load "find-file-root.el")
-(setq ange-ftp-try-passive-mode t)
 (load "custom-func.el")
 
 (require 'lunch-break nil t)

@@ -1,4 +1,5 @@
 ;; --- nXML mode ---
+
 ;;(load  "rng-auto.el")
 
 (add-to-list 'auto-mode-alist
@@ -219,7 +220,6 @@ able to send strings"
 			   url
 			   "');\n")))
 ;; open links in conkeror
-;;(setq browse-url-browser-function 'conkeror-open-url)
 (setq browse-url-browser-function 'browse-url-generic)
 
 ;;(defun javascript-custom-setup ()

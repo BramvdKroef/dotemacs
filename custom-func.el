@@ -27,10 +27,6 @@
     (set-buffer-file-coding-system 'unix 't)
     ))
 
-(defun my-to-work-agenda ()
-  (interactive)
-  (find-file (concat org-directory "/work.org"))
-  )
 
 ;; Delete trailing whitespace and indent the buffer
 (defun cleanup ()
@@ -82,6 +78,7 @@
   (interactive)
   (shell-command "/usr/bin/fetchmail"))
 
+(require 'comint)
 (defun close-all ()
   (interactive)
 
