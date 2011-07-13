@@ -21,10 +21,6 @@
 (setq current-language-environment "UTF-8")
 (setq default-input-method "rfc1345")
 
-;; Personal information
-(setq user-mail-address "bram@fortfrances.com")
-(setq user-full-name "Bram van der Kroef")
-
 ;; no-tabs
 (setq-default indent-tabs-mode nil)
 
