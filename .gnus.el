@@ -57,19 +57,35 @@
 (require 'smtpmail)
 (setq send-mail-function 'smtpmail-send-it
       message-send-mail-function 'smtpmail-send-it
-      smtpmail-starttls-credentials
-      '(("secure.timeswebdesign.com" 587 nil nil))
-      smtpmail-default-smtp-server "secure.timeswebdesign.com"
-      smtpmail-smtp-server "secure.timeswebdesign.com"
-      smtpmail-smtp-service 587
       smtpmail-debug-info t
       smtpmail-auth-credentials authinfo-file
-      ;; smtpmail-auth-credentials ; "~/.authinfo"
-      ;; '(("secure.timeswebdesign.com" 587 
-      ;;  "bvanderkroef" ""))
-
       starttls-use-gnutls t
       starttls-extra-arguments nil)
+
+(defvar smtp-accounts
+  '(("bram@fortfrances.com" "secure.emailsrvr.com" 587)
+    ("bram@vanderkroef.net" "smtp.gmail.com" 587)))
+
+(defun set-smtp (email-address)
+  "Goes through the smtp-accounts list and if one of the email
+addresses match the argument then the smtp settings are set to that account." 
+  (let ((server nil)
+        (port nil))
+    (dolist (account smtp-accounts)
+      (if (string= (car account) user-mail-address)
+          (setq server (nth 1 account)
+                port (nth 2 account))))
+    
+    (if (or (eq server nil) (eq port nil))
+        (error (concat "No smtp info available for " email-address)))
+    
+    (setq smtpmail-starttls-credentials
+          (list (list server port nil nil))
+          smtpmail-smtp-server server
+          smtpmail-smtp-service port)))
+
+;; set the smtp info to the default address
+(set-smtp user-mail-address)
 
 (add-hook 'message-mode-hook 'flyspell-mode)
 
@@ -90,3 +106,18 @@
                  (mm-inline-render-with-file handle nil
 					      "docx2txt.pl" 'file "-"))
 	       identity))
+
+;; extract text from OO.org .odt documents with odt2txt
+(add-to-list 'mm-inlined-types "application/vnd.oasis.opendocument.text")
+(add-to-list 'mm-inline-media-tests
+	     '("application/vnd.oasis.opendocument.text"
+	       (lambda (handle)
+                 (mm-inline-render-with-file handle nil
+                                             "odt2txt" 'file))
+	       identity))
+
+(defun my-kill-gnus ()
+  (bbdb-save-db)
+  (let ((gnus-interactive-exit nil))
+    (gnus-group-exit)))
+
