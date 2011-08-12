@@ -16,6 +16,7 @@
 (mouse-avoidance-mode 'animate)
 (setq transient-mark-mode t)
 
+(set-fill-column 80)
 
 (defun color-theme-bram ()
   "Dark Color theme by Bram."
