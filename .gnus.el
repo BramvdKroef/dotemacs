@@ -80,7 +80,7 @@ addresses match the argument then the smtp settings are set to that account."
   (let ((server nil)
         (port nil))
     (dolist (account smtp-accounts)
-      (if (string= (car account) user-mail-address)
+      (if (string= (car account) email-address)
           (setq server (nth 1 account)
                 port (nth 2 account))))
     
