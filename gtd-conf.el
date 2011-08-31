@@ -145,11 +145,3 @@
                  (org-clock-out)
 	       )))
 
-(defvar my-org-lessc-compiler
-  "lessc")
-(defun my-org-lessc-compile (plist filename pub-dir)
-  "Compile less files to css files"
-  (call-process my-org-lessc-compiler nil nil nil filename
-                (concat pub-dir (file-name-nondirectory
-                                 (file-name-sans-extension filename)) ".css"))
-     )
