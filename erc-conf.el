@@ -49,6 +49,8 @@
     (erc-quit-server "")
     (bitlbee-stop)))
 
+(add-hook 'my-kill-emacs-hook 'my-kill-bitlbee)
+
 (when (require 'bitlbee nil t)
   ;; Fire up the bitlbee server
   (bitlbee-start)
