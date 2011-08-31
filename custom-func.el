@@ -86,27 +86,9 @@ emacs is killed"
 (defun my-kill-emacs ()
   "Run all my-kill-emacs hooks."
   (interactive)
-  (run-hooks 'my-kill-emacs-hook))
-
-(require 'comint)
-(defun my-kill-emacs ()
-  (interactive)
-
-  (my-kill-gnus)
-
+  (run-hooks 'my-kill-emacs-hook)
   (save-some-buffers)
-  
-  (let ((shell-buffer (get-buffer "*shell*")))
-    (when shell-buffer
-      (set-buffer shell-buffer)
-      (comint-send-eof)
-      (delete-process "*shell*")))
-
-  (let ((shell-buffer (get-buffer "*SQL*")))
-    (when shell-buffer
-      (set-buffer shell-buffer)
-      (comint-send-eof)))
-
+  ;; Give hooks some time to shut down.
   (sleep-for 2)
   (save-buffers-kill-emacs))
 
