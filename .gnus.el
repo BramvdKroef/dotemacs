@@ -129,3 +129,4 @@ addresses match the argument then the smtp settings are set to that account."
   (let ((gnus-interactive-exit nil))
     (gnus-group-exit)))
 
+(add-hook 'my-kill-emacs-hook 'my-kill-gnus)
