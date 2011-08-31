@@ -67,5 +67,4 @@
     (add-hook 'lunch-break-stop-hook
 	      '(lambda ()
 		 (with-current-buffer "&bitlbee"
-		   (erc-cmd-AWAY " ")))))
-  )
+		   (erc-cmd-AWAY " "))))))
