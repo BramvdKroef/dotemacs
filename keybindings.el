@@ -132,5 +132,5 @@
 	    )
 	  )
 (global-set-key "\C-c\C-q" 'quick-calc)
-(global-set-key "\C-x\C-c" 'close-all)
+(global-set-key "\C-x\C-c" 'my-kill-emacs)
 
