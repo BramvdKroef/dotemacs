@@ -78,11 +78,20 @@
   (interactive)
   (shell-command "/usr/bin/fetchmail"))
 
+(defcustom my-kill-emacs-hook '()
+  "Add hooks to this list that have to be called right before
+emacs is killed"
+  :type '(repeat function))
+
+(defun my-kill-emacs ()
+  "Run all my-kill-emacs hooks."
+  (interactive)
+  (run-hooks 'my-kill-emacs-hook))
+
 (require 'comint)
-(defun close-all ()
+(defun my-kill-emacs ()
   (interactive)
 
-  (my-kill-bitlbee)
   (my-kill-gnus)
 
   (save-some-buffers)
