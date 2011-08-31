@@ -122,6 +122,9 @@ seconds it is deleted from the kill-ring."
 
 ;; Load the files in the home folder
 ;;-----------
+
+(load "custom-func.el")
+
 ;; Lorum Ipsum generator for creating random text
 (autoload 'lorem-ipsum-insert "lorem-ipsum" "Autoload lorem ipsum generator" t)
 ;; Graphiz dot major mode
@@ -160,7 +163,7 @@ seconds it is deleted from the kill-ring."
 (add-to-list 'auto-mode-alist '("\\.less$" . css-mode))
 
 ;;(load "find-file-root.el")
-(load "custom-func.el")
+
 
 (require 'lunch-break nil t)
 
@@ -175,6 +178,21 @@ seconds it is deleted from the kill-ring."
 (fset 'yes-or-no-p 'y-or-n-p)
 
 (org-agenda-list)
+
+(require 'comint)
+;; close all shells on shutdown
+(add-hook 'my-emacs-kill-hook
+          '(lambda ()
+             (let ((shell-buffer (get-buffer "*shell*")))
+               (when shell-buffer
+                 (set-buffer shell-buffer)
+                 (comint-send-eof)
+                 (delete-process "*shell*")))
+
+             (let ((shell-buffer (get-buffer "*SQL*")))
+               (when shell-buffer
+                 (set-buffer shell-buffer)
+                 (comint-send-eof)))))
 
 (message "Done loading in %ds"
 	 (destructuring-bind (hi lo ms) (current-time)
