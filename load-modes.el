@@ -262,5 +262,26 @@ able to send strings"
 
 (autoload 'pomodoro "pomodoro" "Autoload pomodoro" t)
 
+(require 'compile)
+
+(defun get-above-makefile ()
+  (expand-file-name "Makefile"
+                    (loop as d = default-directory then
+                          (expand-file-name ".." d)
+                          if (file-exists-p (expand-file-name "Makefile" d))
+                          return d)))
+
+(add-hook 'c-mode-hook
+          (lambda () (set (make-local-variable 'compile-command)
+                          (format "make -f %s" (get-above-makefile)))))
+
+(add-hook 'css-mode-hook
+          (lambda ()
+            (let ((file buffer-file-name))
+              (when (string= (file-name-extension file) "less")
+                (set (make-local-variable 'compile-command)
+                     (format "lessc %s %s" file
+                             (concat (file-name-sans-extension file) ".css")))))))
+
 (if (require 'erc nil t)
     (load "erc-conf.el"))
