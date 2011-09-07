@@ -48,7 +48,10 @@
 (eval-after-load "yasnippet"
   '(progn
      (yas/initialize)
-     (yas/load-directory "~/.emacs.d/snippets")
+     (setq yas/root-directory '("~/.emacs.d/site-lisp/yasnippet/snippets"
+                                "~/.emacs.d/site-lisp/snippets"))
+
+     (mapc 'yas/load-directory yas/root-directory)
      ;; Adapt faces of highlights to the dark theme (or else you can't read the text)
      (set-face-background 'yas/field-highlight-face "DarkSlateGrey")))
 
