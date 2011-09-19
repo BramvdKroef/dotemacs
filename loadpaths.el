@@ -36,3 +36,4 @@
 ;;(add-to-list 'load-path "~/.emacs.d/site-lisp/php-mode")
 (add-to-list 'load-path "~/.emacs.d/site-lisp/twittering-mode")
 (add-to-list 'load-path "~/.emacs.d/site-lisp/bitlbee/lisp")
+(add-to-list 'load-path "~/.emacs.d/site-lisp/tramp/lisp")
