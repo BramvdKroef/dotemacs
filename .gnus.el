@@ -130,3 +130,11 @@ addresses match the argument then the smtp settings are set to that account."
     (gnus-group-exit)))
 
 (add-hook 'my-kill-emacs-hook 'my-kill-gnus)
+
+;; Indexing using swish-e
+
+(require 'nnir)
+(setq nnir-search-engine 'swish-e)
+(setq nnir-swish-e-index-files
+      (list (expand-file-name "~/Mail/index.swish")))
+
