@@ -141,7 +141,7 @@ seconds it is deleted from the kill-ring."
 ;; setup major modes
 (load "load-modes.el")
 
-;;(setq default-major-mode 'indented-text-mode)
+(setq default-major-mode 'org-mode)
 
 ;; Turn on auto fill for all text modes (doesn't seem to be working)
 (add-hook 'text-mode-hook 'text-mode-hook-identify)
