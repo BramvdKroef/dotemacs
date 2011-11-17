@@ -53,11 +53,6 @@
 ;f5 for playing the last recorded macro
 (global-set-key [f5] 'call-last-kbd-macro)
 
-;f9 for planner
-(global-set-key "\C-c\C-t" 'planner-create-task-from-buffer)
-;;(global-set-key "\C-c\C-r" 'remember)
-(global-set-key (kbd "<f9> <f9>") 'planner-goto-today)
-
 ;f4 for ispell
 (global-set-key (kbd "<f4>") 'ispell)
 
@@ -88,13 +83,6 @@
 (global-set-key [(meta down)] 'move-line-down)
 
 (global-set-key "\C-z" nil)
-
-(add-hook 'planner-mode-hook
-	  (lambda ()
-	    (local-set-key "\C-i" 'planner-timeclock-in)
-	    (local-set-key "\C-o" 'timeclock-out)
-	    )
-	  )
 
 ;; volume keys
 (global-set-key "\C-xv1" 'volume-set-normal)
