@@ -40,6 +40,16 @@
 	  (growl (format "%s:%d" from (% (nth 1 (current-time)) 3)) msg)))))
   (add-hook 'erc-text-matched-hook 'erc-growl-on-nick))
 
+(defun erc-sound-notification (matched-type nick msg)
+  (when (and (string= matched-type "current-nick")
+             (string-match "\\([^:]*\\).*:\\(.*\\)" msg))
+    (let((text (match-string 2 msg))
+         (from (erc-extract-nick nick)))
+      
+      (when text
+        (play-sound-file "~/.emacs.d/site-lisp/notify.wav")))))
+(add-hook 'erc-text-matched-hook 'erc-sound-notification)
+
 (require 'bitlbee)
 
 (defun my-kill-bitlbee ()
@@ -54,7 +64,7 @@
 (when (require 'bitlbee nil t)
   ;; Fire up the bitlbee server
   (bitlbee-start)
-  (sleep-for 1)
+  (sleep-for 2)
   ;; Connect
   (erc :server "localhost" :port 6667 :nick "bram")
 
