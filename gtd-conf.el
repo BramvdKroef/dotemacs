@@ -58,6 +58,14 @@
 
 (require 'org-clock)
 (require 'org-agenda)
+(require 'remember)
+
+(org-clock-persistence-insinuate)
+(org-remember-insinuate)
+(add-hook 'remember-mode-hook 'org-remember-apply-template)
+;;(setq org-default-notes-file (concat org-directory
+;;"/bookmarks.org"))
+
 (setq org-agenda-files
       (list (concat org-directory "/work.org")
             (concat org-directory "/personal.org")
@@ -72,26 +80,16 @@
       org-reverse-note-order t
       org-link-frame-setup '((vm . vm-visit-folder-other-frame)
                              (gnus . org-gnus-no-new-news)
-                             (file . find-file)))
+                             (file . find-file))
+      org-remember-templates
+      (list (list "Todo item" ?t "* TODO %?\n  %a" (concat org-directory "/work.org")))
+      remember-annotation-functions '(org-remember-annotation)
+      remember-handler-functions '(org-remember-handler))
 
-(org-clock-persistence-insinuate)
 
 (defun my-to-work-agenda ()
   (interactive)
-  (find-file (concat org-directory "/work.org"))
-  )
-
-
-(require 'remember)
-(setq org-default-notes-file (concat org-directory "/bookmarks.org"))
-(org-remember-insinuate)
-(add-hook 'remember-mode-hook 'org-remember-apply-template)
-
-(setq org-remember-templates
-      (list (list 116 "* TODO %?\n  %a" (concat org-directory "/work.org") "Tasks"))
-      org-reverse-note-order t
-      remember-annotation-functions '(org-remember-annotation)
-      remember-handler-functions '(org-remember-handler))
+  (find-file (concat org-directory "/work.org")))
 
 ;; turn on fly-spell mode in org-mode
 (add-hook 'org-mode-hook 'flyspell-mode)
