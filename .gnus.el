@@ -25,6 +25,26 @@
 	("mail.update" "linda@fortfrances.com")
 	("mail.junk" "")))
 
+(setq nnmail-split-methods 'nnmail-split-fancy)
+(setq nnmail-split-fancy
+      '(| ("X-Spam-Status" "yes" "mail.junk")
+          ("X-YahooFilteredBulk" ".+" "mail.junk")
+          (from ".*@rackspace.com" "mail.junk")
+          (from ".*(kroef|goudzwaard).*" "mail.personal")
+          (from ".*\\(amazon\\|mouser\\).*" "mail.stores")
+          (to "bram@fortfrances\\.com" "mail.todo")
+          (to "bramvdkroef@yahoo\\.ca" "mail.todo")
+          (to "bramvdk@yahoo\\.co\\.uk" "mail.todo")
+          (to "bram@fortfrances.com" "mail.todo")
+          (to ".*@gnu.org" "mail.mailinglist")
+          ("subject" ".*Backup.*" "mail.junk")
+          (from ".*\\(apache\\|root\\|Server\\).*" "mail.server")
+          ("subject" ".*Undelivered Mail Returned to Sender.*" "mail.junk")
+          ("subject" ".*Out of Office" "mail.junk")
+          (from "Facebook" "mail.junk")
+          (any "\\(updates\\|office\\|linda\\)@fortfrances.com" "mail.update")
+          "mail.junk"))
+
 ;(eval-after-load "mail-source" '(require 'pop3))
 (setq pop3-debug t)
 
