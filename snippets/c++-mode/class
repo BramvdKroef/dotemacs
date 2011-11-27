@@ -1,0 +1,15 @@
+#name : class ... { ... }
+# --
+#ifndef __${1:$(yas/substr text "[^: ]*")}_h__
+#define __${1:$(yas/substr text "[^: ]*")}_h__
+
+/**
+ * 
+ */
+class ${1:`(file-name-sans-extension (file-name-nondirectory buffer-file-name))`} {
+public:
+    ${1:$(yas/substr text "[^: ]*")}($2);
+    virtual ~${1:$(yas/substr text "[^: ]*")}();
+};
+
+#endif

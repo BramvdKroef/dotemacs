@@ -39,6 +39,8 @@
 	 jde-mode-abbreviations (quote (("ab" . "abstract") ("bo" . "boolean") ("br" . "break") ("by" . "byte") ("byv" . "byvalue") ("cas" . "cast") ("ca" . "catch") ("ch" . "char") ("cl" . "class") ("co" . "const") ("con" . "continue") ("de" . "default") ("dou" . "double") ("el" . "else") ("ex" . "extends") ("fa" . "false") ("fi" . "final") ("fin" . "finally") ("fl" . "float") ("fo" . "for") ("fu" . "future") ("ge" . "generic") ("go" . "goto") ("impl" . "implements") ("impo" . "import") ("ins" . "instanceof") ("inte" . "interface") ("lo" . "long") ("na" . "native") ("ne" . "new") ("nu" . "null") ("pa" . "package") ("pri" . "private") ("pro" . "protected") ("pu" . "public") ("re" . "return") ("sh" . "short") ("st" . "static") ("su" . "super") ("sw" . "switch") ("sy" . "synchronized") ("th" . "this") ("thr" . "throw") ("thro" . "throws") ("tra" . "transient") ("tr" . "true") ("vo" . "void") ("vol" . "volatile") ("wh" . "while")))))
 
 
+(load-file "tramp-loaddefs.el")
+
 ;; Make buffer-switch and find-file list easier
 ;;(require 'ido)
 (ido-mode t)
@@ -48,7 +50,10 @@
 (eval-after-load "yasnippet"
   '(progn
      (yas/initialize)
-     (yas/load-directory "~/.emacs.d/snippets")
+     (setq yas/root-directory '("~/.emacs.d/site-lisp/yasnippet/snippets"
+                                "~/.emacs.d/site-lisp/snippets"))
+
+     (mapc 'yas/load-directory yas/root-directory)
      ;; Adapt faces of highlights to the dark theme (or else you can't read the text)
      (set-face-background 'yas/field-highlight-face "DarkSlateGrey")))
 
@@ -262,6 +267,26 @@ able to send strings"
 
 (autoload 'pomodoro "pomodoro" "Autoload pomodoro" t)
 
+(require 'compile)
+
+(defun get-above-makefile ()
+  (expand-file-name "Makefile"
+                    (loop as d = default-directory then
+                          (expand-file-name ".." d)
+                          if (file-exists-p (expand-file-name "Makefile" d))
+                          return d)))
+
+(add-hook 'c-mode-hook
+          (lambda () (set (make-local-variable 'compile-command)
+                          (format "make -f %s" (get-above-makefile)))))
+
+(add-hook 'css-mode-hook
+          (lambda ()
+            (let ((file buffer-file-name))
+              (when (string= (file-name-extension file) "less")
+                (set (make-local-variable 'compile-command)
+                     (format "lessc %s %s" file
+                             (concat (file-name-sans-extension file) ".css")))))))
 
 (if (and my-start-bitlbee-on-boot (require 'erc nil t))
     (load "erc-conf.el"))
