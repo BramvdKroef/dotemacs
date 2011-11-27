@@ -262,5 +262,6 @@ able to send strings"
 
 (autoload 'pomodoro "pomodoro" "Autoload pomodoro" t)
 
-(if (require 'erc nil t)
+
+(if (and my-start-bitlbee-on-boot (require 'erc nil t))
     (load "erc-conf.el"))
