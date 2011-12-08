@@ -52,10 +52,7 @@
      (yas/initialize)
      (setq yas/root-directory '("~/.emacs.d/site-lisp/yasnippet/snippets"
                                 "~/.emacs.d/site-lisp/snippets"))
-
-     (mapc 'yas/load-directory yas/root-directory)
-     ;; Adapt faces of highlights to the dark theme (or else you can't read the text)
-     (set-face-background 'yas/field-highlight-face "DarkSlateGrey")))
+     (mapc 'yas/load-directory yas/root-directory)))
 
 ;; Prepend snippet expand to hippie expand list
 (add-to-list 'hippie-expand-try-functions-list 'yas/hippie-try-expand)
@@ -111,8 +108,6 @@
 ;; Flymake mode
 (require 'flymake)
 ;;(autoload 'flymake-mode "flymake" "" t)
-
-(set-face-background 'flymake-errline "firebrick4")
 
 (defun my-flymake-show-err ()
   "Display error message at point"
@@ -190,15 +185,18 @@
 
 
 ;; Predictive
-;; (require 'predictive)
-;; (setq auto-completion-syntax-alist '(accept . word))
-;; (set-default 'predictive-auto-add-to-dict t)
-;; (setq predictive-main-dict 'brams-dictionary
-;;       predictive-auto-learn t
-;;       predictive-add-to-dict-ask nil
-;;       predictive-use-auto-learn-cache nil
-;;       predictive-which-dict t)
-;; (add-hook 'c-mode-common-hook 'predictive-mode)
+(autoload 'predictive-mode "predictive" "predictive" t)
+(setq auto-completion-syntax-alist '(accept . word))
+(set-default 'predictive-auto-add-to-dict t)
+(setq predictive-main-dict 'brams-dictionary
+      predictive-auto-learn t
+      predictive-add-to-dict-ask nil
+      predictive-use-auto-learn-cache nil
+      predictive-which-dict t)
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            (if (not (tramp-tramp-file-p (buffer-file-name)))
+                (predictive-mode))))
 
 ;; Pabbrev causes problems with files loaded over ftp
 (autoload 'pabbrev-mode "pabbrev" "Autoloads pabbrev mode" t)
@@ -270,15 +268,21 @@ able to send strings"
 (require 'compile)
 
 (defun get-above-makefile ()
-  (expand-file-name "Makefile"
-                    (loop as d = default-directory then
-                          (expand-file-name ".." d)
-                          if (file-exists-p (expand-file-name "Makefile" d))
-                          return d)))
+  (if (not (tramp-tramp-file-p default-directory))
+      (expand-file-name "Makefile"
+                        (let ((d default-directory))
+                          (while (not (or (file-exists-p (expand-file-name
+                                                          "Makefile" d))
+                                          (string-equal "/" d)))
+                            (setq d (directory-file-name
+                                     (file-name-directory d))))))
+    nil))
 
+;; This creates an infinite loop on remote files
 (add-hook 'c-mode-hook
-          (lambda () (set (make-local-variable 'compile-command)
-                          (format "make -f %s" (get-above-makefile)))))
+          (lambda () 
+            (set (make-local-variable 'compile-command)
+                 (format "make -f %s" (get-above-makefile)))))
 
 (add-hook 'css-mode-hook
           (lambda ()
@@ -287,6 +291,53 @@ able to send strings"
                 (set (make-local-variable 'compile-command)
                      (format "lessc %s %s" file
                              (concat (file-name-sans-extension file) ".css")))))))
+
+(require 'typopunct)
+(typopunct-change-language 'english t)
+(defconst typopunct-minus (decode-char 'ucs #x2212))
+(defconst typopunct-pm    (decode-char 'ucs #xB1))
+(defconst typopunct-mp    (decode-char 'ucs #x2213))
+(defadvice typopunct-insert-typographical-dashes
+  (around minus-or-pm activate)
+  (cond
+   ((or (eq (char-before) typopunct-em-dash)
+        (looking-back "\\([[:blank:]]\\|^\\)\\^"))
+    (delete-char -1)
+    (insert typopunct-minus))
+   ((looking-back "[^[:blank:]]\\^")
+    (insert typopunct-minus))
+   ((looking-back "+/")
+    (progn (replace-match "")
+           (insert typopunct-pm)))
+   (t ad-do-it)))
+(defun typopunct-insert-mp (arg)
+  (interactive "p")
+  (if (and (= 1 arg) (looking-back "-/"))
+      (progn (replace-match "")
+             (insert typopunct-mp))
+    (self-insert-command arg)))
+(define-key typopunct-map "+" 'typopunct-insert-mp)
+
+(defconst typopunct-ellipsis (decode-char 'ucs #x2026))
+(defconst typopunct-middot   (decode-char 'ucs #xB7)) ; or 2219
+(defun typopunct-insert-ellipsis-or-middot (arg)
+  "Change three consecutive dots to a typographical ellipsis mark."
+  (interactive "p")
+  (cond
+   ((and (= 1 arg)
+         (eq (char-before) ?^))
+    (delete-char -1)
+    (insert typopunct-middot))
+   ((and (= 1 arg)
+         (eq this-command last-command)
+         (looking-back "\\.\\."))
+    (replace-match "")
+    (insert typopunct-ellipsis))
+   (t
+    (self-insert-command arg))))
+(define-key typopunct-map "." 'typopunct-insert-ellipsis-or-middot)
+
+
 
 (if (require 'erc nil t)
     (load "erc-conf.el"))

@@ -48,3 +48,5 @@ wget http://www.emacswiki.org/emacs/download/csv-mode.el
 echo "Installing PHP-mode"
 wget http://www.emacswiki.org/emacs/download/php-mode.el
 
+echo "Installing typopunct.el"
+wget http://www.emacswiki.org/emacs/download/typopunct.el
