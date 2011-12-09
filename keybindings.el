@@ -66,7 +66,7 @@
   )
 
 ;; Global keys
-(global-set-key (kbd "C-1") 'my-to-work-agenda)
+(global-set-key (kbd "C-1") 'my-to-main-agenda)
 (global-set-key (kbd "C-2") 'my-gnus-get-news)
 (global-set-key (kbd "C-3") 'emms-smart-browse)
 (global-set-key (kbd "C-4") 'twit)

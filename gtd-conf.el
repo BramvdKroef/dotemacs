@@ -86,10 +86,10 @@
       remember-annotation-functions '(org-remember-annotation)
       remember-handler-functions '(org-remember-handler))
 
-
-(defun my-to-work-agenda ()
+(defvar my-org-main-agenda-file "work.org")
+(defun my-to-main-agenda ()
   (interactive)
-  (find-file (concat org-directory "/work.org")))
+  (find-file (concat org-directory "/" my-org-main-agenda-file)))
 
 ;; turn on fly-spell mode in org-mode
 (add-hook 'org-mode-hook 'flyspell-mode)
