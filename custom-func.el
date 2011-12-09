@@ -37,11 +37,10 @@
 
 (defun clean-dirty-html ()
   (interactive)
-  (perform-replace "<font [^>]*>" "" 't 't nil nil nil (point-min) (point-max))
-  (perform-replace "</font>" "" 't 't nil)
+  (perform-replace "</?font[^>]*>" "" 't 't nil nil nil (point-min) (point-max))
+  (perform-replace "</?span[^>]*>" "" 't 't nil nil nil (point-min) (point-max))
   (perform-replace " align=\"[^\"]*\"" "" 't 't nil nil nil (point-min) (point-max))
-  (perform-replace "<span [^>]*>" "" 't 't nil nil nil (point-min) (point-max))
-  (perform-replace "</span>" "" 't 't nil nil nil (point-min) (point-max))
+  (perform-replace " style=\"[^\"]*\"" "" 't 't nil nil nil (point-min) (point-max))
   )
 
 (defun volume-set (volume)
