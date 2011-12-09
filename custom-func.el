@@ -72,11 +72,6 @@
   (volume-set "1.3")
   (message "Very loud"))
 
-(defun fetchmail ()
-  "Start fetchmail or tell it to fetch mail"
-  (interactive)
-  (shell-command "/usr/bin/fetchmail"))
-
 (defcustom my-kill-emacs-hook '()
   "Add hooks to this list that have to be called right before
 emacs is killed"
