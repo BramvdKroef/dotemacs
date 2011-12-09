@@ -49,11 +49,15 @@
 (setq pop3-debug t)
 
 (setq mail-sources '())
-(if (file-exists-p "/var/mail/bram")
-    (add-to-list 'mail-sources '(file :path "/var/mail/bram")))
 
-(if (file-exists-p "/home/bram/mail/INBOX")
-    (add-to-list 'mail-sources '(file :path "/home/bram/mail/INBOX")))
+(let ((varmail (concat "/var/mail/" (user-login-name)))
+      (homemail (concat "/home/" (user-login-name) "/mail/INBOX")))
+
+  (if (file-exists-p varmail)
+      (add-to-list 'mail-sources `(file :path ,varmail)))
+
+  (if (file-exists-p homemail)
+      (add-to-list 'mail-sources `(file :path ,homemail))))
 
 (setq gnus-keep-backlog 500)
 
@@ -89,10 +93,6 @@
       smtpmail-auth-credentials authinfo-file
       starttls-use-gnutls t
       starttls-extra-arguments nil)
-
-(defvar smtp-accounts
-  '(("bram@fortfrances.com" "secure.emailsrvr.com" 587)
-    ("bram@vanderkroef.net" "smtp.gmail.com" 587)))
 
 (defun set-smtp (email-address)
   "Goes through the smtp-accounts list and if one of the email
@@ -155,6 +155,4 @@ addresses match the argument then the smtp settings are set to that account."
 
 (require 'nnir)
 (setq nnir-search-engine 'swish-e)
-(setq nnir-swish-e-index-files
-      (list (expand-file-name "~/Mail/index.swish")))
 
