@@ -338,6 +338,5 @@ able to send strings"
 (define-key typopunct-map "." 'typopunct-insert-ellipsis-or-middot)
 
 
-
-(if (require 'erc nil t)
+(if (and my-start-bitlbee-on-boot (require 'erc nil t))
     (load "erc-conf.el"))

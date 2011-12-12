@@ -8,7 +8,7 @@
       '(("mail.junk" "^X-Spam-Status: Yes")
         ("mail.junk" "X-YahooFilteredBulk:")
         ("mail.personal" "^From:.*(kroef|goudzwaard)")
-        ("mail.stores" "^From:.*\\(amazon\\|mouser\\)")
+        ("mail.stores" "^From:.*\\(amazon\\|mouser\\|thinkgeek\\.com\\|ferret\\)")
         ("mail.todo" "^To:.*(bram@fortfrances.com\\|bramvdkroef@yahoo.ca\\|bramvdk@yahoo.co.uk)")
 	("mail.todo" "^To:.*bram@fortfrances.com")
         ("mail.mailinglist" "^To:.*@gnu.org")
