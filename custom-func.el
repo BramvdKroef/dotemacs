@@ -37,11 +37,10 @@
 
 (defun clean-dirty-html ()
   (interactive)
-  (perform-replace "<font [^>]*>" "" 't 't nil nil nil (point-min) (point-max))
-  (perform-replace "</font>" "" 't 't nil)
+  (perform-replace "</?font[^>]*>" "" 't 't nil nil nil (point-min) (point-max))
+  (perform-replace "</?span[^>]*>" "" 't 't nil nil nil (point-min) (point-max))
   (perform-replace " align=\"[^\"]*\"" "" 't 't nil nil nil (point-min) (point-max))
-  (perform-replace "<span [^>]*>" "" 't 't nil nil nil (point-min) (point-max))
-  (perform-replace "</span>" "" 't 't nil nil nil (point-min) (point-max))
+  (perform-replace " style=\"[^\"]*\"" "" 't 't nil nil nil (point-min) (point-max))
   )
 
 (defun volume-set (volume)
@@ -72,11 +71,6 @@
   (interactive)
   (volume-set "1.3")
   (message "Very loud"))
-
-(defun fetchmail ()
-  "Start fetchmail or tell it to fetch mail"
-  (interactive)
-  (shell-command "/usr/bin/fetchmail"))
 
 (defcustom my-kill-emacs-hook '()
   "Add hooks to this list that have to be called right before

@@ -1,45 +1,31 @@
-* Intro
+# Intro
 
 These are my customizations for Emacs. Here is the breakdown:
 
 - loadpaths.el adds loadpaths to all the sub-directories that contain
   lisp files.
-
 - init.el loads all the other configuration files in order.
-
 - keybindings.el contains all my custom keybindings.
-
 - theme-conf.el defines my custom theme. Requires color-theme.
-
 - custom-func.el defines custom functions.
-
 - load-modes.el configures major modes.
-
 - calendar-conf.el configures Dutch and Canadian holidays.
-
 - emms-conf.el sets up and configures EMMS.
 -- emms-cover.el manages cover images for albums.
 -- emms-info-eyed3.el uses eyed3 to read mp3 info tags. Mp3info only
     supports ID3v1.
-
 - gtd-conf.el sets up org-mode, bbdb and remember.
-
 - erc-conf.el starts bitlbee and connects to it with erc.
-
 - .gnus.el -- email setup.
-
 - lunch-break.el adds a hook that puts everything on pause when I eat
   my lunch.
-
 - spacing-algorithm.el  helps me memorize data using a spacing
   algorithm.
-
 - spacing-simple.el frontend for spacing-algorithm that asks questions
   through the minibuffer.
-
 - test-data.el generates random user data.
 
-* Odds and ends
+# Odds and ends
 
 ~/.authinfo.gpg contains all my passwords in a netrc format. The file
 is encrypted with my private GnuPG key.
@@ -49,7 +35,7 @@ browser. The images are downloaded automatically by emms-cover.
 
 ~/.emacs.d/snippets/ contains my custom yasnippet snippets.
 
-* Building and updating
+# Building and updating
 
 I use a lot of libraries that don't come with Emacs and need to be
 installed separately. install.sh will checkout the latest source and

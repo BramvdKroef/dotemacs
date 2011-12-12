@@ -27,21 +27,25 @@
       (background-mode . dark)
       (border-color . "black")
       (cursor-color . "yellow")
-      (foreground-color . "mediumpurple3")
+      (foreground-color . "gray45")
       (mouse-color . "white"))
+     
      ((align-highlight-change-face . highlight)
       (align-highlight-nochange-face . secondary-selection)
+      ;; apropos
       (apropos-keybinding-face . underline)
       (apropos-label-face . italic)
       (apropos-match-face . secondary-selection)
       (apropos-property-face . bold-italic)
       (apropos-symbol-face . bold)
+      ;; ebnf
       (ebnf-except-border-color . "Black")
       (ebnf-line-color . "Black")
       (ebnf-non-terminal-border-color . "Black")
       (ebnf-repeat-border-color . "Black")
       (ebnf-special-border-color . "Black")
       (ebnf-terminal-border-color . "Black")
+      ;; gnus fonts
       (gnus-article-button-face . bold)
       (gnus-article-mouse-face . highlight)
       (gnus-carpal-button-face . bold)
@@ -59,6 +63,7 @@
       (vc-annotate-very-old-color . "#0046FF")
       (view-highlight-face . highlight)
       (widget-mouse-face . highlight))
+     
      (default ((t (:stipple nil :background "black" :foreground "#9367ee"
                             :inverse-video nil :box nil :strike-through nil
                             :overline nil :underline nil :slant normal :weight
@@ -67,18 +72,64 @@
                             :family "Inconsolata-g"
                             :embolden t))))
      
+     (bold ((t (:bold t :weight bold))))
+     (bold-italic ((t (:italic t :bold t :slant italic :weight bold))))
+     (border ((t (:background "black"))))
+     (italic ((t (:italic t :slant italic))))
+     (underline ((t (:underline t))))
+     (highlight ((t (:background "darkolivegreen"))))
+     
+     (cursor ((t (:background "steel blue"))))
+     (fixed-pitch ((t (:family "Inconsolata-g"))))
+     (variable-pitch ((t (:family "helv"))))
+     (fringe ((t (:family "outline-courier new" :width normal :weight
+                          normal :slant normal :underline nil
+                          :overline nil :strike-through 
+                          nil :box nil :inverse-video nil :stipple nil
+                          :background "grey4" :foreground "Wheat"))))
+     (header-line ((t (:family "Arial" :background "grey20"
+                               :foreground "grey75"
+                               :box (:line-width 3 :color "grey20"
+                                                 :style released-button)
+                               :height 0.9))))
+     (menu ((t (nil))))
+
      (minibuffer-prompt ((t (:foreground "royalblue1"))))
+     
+     ;; mode line
+     (mode-line ((t (:background "LightSteelBlue4" 
+                                 :height 130
+                                 :family "Helvetica"
+                                 :foreground "white"))))
+     (modeline-mousable-minor-mode
+      ((t (:background "grey" :foreground "black" :box
+                       (:line-width 2 :color "grey" :style released-button) 
+                       :height 0.9 :family "Arial")))) 
+     (modeline-mousable ((t (:background "grey" :foreground "black" :box (:line-width 2 :color "grey" :style released-button) :height 0.9 :family "Arial"))))
+     (modeline-buffer-id ((t (:background "grey" :foreground "black" :box nil :height 0.9 :family "Arial"))))
+     (mouse ((t (:background "white"))))
+     (primary-selection ((t (:background "DarkSlateGray"))))
+     (region ((t (:background "DarkSlateGray"))))
+     (secondary-selection ((t (:background "SkyBlue4"))))
+     
+     (scroll-bar ((t (nil))))
+
+     (tool-bar ((t (:background "grey75" :foreground "black" :box (:line-width 1 :style released-button)))))
+     (trailing-whitespace ((t (:background "white"))))
+     
+     ;; info
      (Info-title-1-face ((t (:bold t :weight bold :family "helv" :height 1.728))))
      (Info-title-2-face ((t (:bold t :family "helv" :weight bold :height 1.44))))
      (Info-title-3-face ((t (:bold t :weight bold :family "helv" :height 1.2))))
      (Info-title-4-face ((t (:bold t :family "helv" :weight bold))))
+
+     ;; bbdb
      (bbdb-company ((t (:italic t :slant italic))))
      (bbdb-field-name ((t (:bold t :weight bold))))
      (bbdb-field-value ((t (nil))))
      (bbdb-name ((t (:underline t))))
-     (bold ((t (:bold t :weight bold))))
-     (bold-italic ((t (:italic t :bold t :slant italic :weight bold))))
-     (border ((t (:background "black"))))
+
+     ;; change log
      (change-log-acknowledgement-face ((t (:italic t :slant oblique :foreground "AntiqueWhite3"))))
      (change-log-conditionals-face ((t (:foreground "Aquamarine"))))
      (change-log-date-face ((t (:italic t :slant oblique :foreground "BurlyWood"))))
@@ -90,7 +141,8 @@
      (clear-case-mode-string-face ((t (:bold t :family "Arial" :box (:line-width 2 :color "grey" :style released-button) :foreground "black" :background "grey" :weight bold :height 0.9))))
      (comint-highlight-input ((t (:bold t :weight bold))))
      (comint-highlight-prompt ((t (:foreground "cyan"))))
-     (cursor ((t (:background "yellow"))))
+
+     ;; customize
      (custom-button-face ((t (:background "lightgrey" :foreground "black" :box (:line-width 2 :style released-button)))))
      (custom-button-pressed-face ((t (:background "lightgrey" :foreground "black" :box (:line-width 2 :style pressed-button)))))
      (custom-changed-face ((t (:background "blue" :foreground "white"))))
@@ -108,8 +160,11 @@
      (custom-state-face ((t (:foreground "lime green"))))
      (custom-variable-button-face ((t (:bold t :underline t :weight bold))))
      (custom-variable-tag-face ((t (:bold t :family "helv" :foreground "light blue" :weight bold :height 1.2))))
-     (diff-added-face ((t (nil))))
-     (diff-changed-face ((t (nil))))
+
+     ;; diff
+     ;;(diff-added-face ((t (nil))))
+     ;;(diff-changed-face ((t (nil))))
+     ;;(diff-removed-face ((t (nil))))
      (diff-context-face ((t (:foreground "grey70"))))
      (diff-file-header-face ((t (:bold t :background "grey60" :weight bold))))
      (diff-function-face ((t (:foreground "grey70"))))
@@ -117,8 +172,13 @@
      (diff-hunk-header-face ((t (:background "grey45"))))
      (diff-index-face ((t (:bold t :weight bold :background "grey60"))))
      (diff-nonexistent-face ((t (:bold t :weight bold :background "grey60"))))
-     (diff-removed-face ((t (nil))))
-     (fixed-pitch ((t (:family "Inconsolata-g"))))
+     
+     
+     (diff-added ((t (:foreground "seagreen"))))
+     (diff-changed ((t (:foreground "yellow"))))
+     (diff-removed ((t (:foreground "indianred2"))))
+     
+     ;; font-lock
      (font-lock-builtin-face ((t (:foreground "SteelBlue"))))
      (font-lock-comment-face ((t (:italic t :foreground "#3c8249" :slant oblique))))
      (font-lock-constant-face ((t (:bold t :foreground "Gold" :weight bold))))
@@ -132,7 +192,8 @@
      (font-lock-type-face ((t (:bold t :foreground "PaleGreen" :weight bold))))
      (font-lock-variable-name-face ((t (:foreground "#1a93c0"))))
      (font-lock-warning-face ((t (:bold t :foreground "chocolate" :weight bold))))
-     (fringe ((t (:family "outline-courier new" :width normal :weight normal :slant normal :underline nil :overline nil :strike-through nil :box nil :inverse-video nil :stipple nil :background "grey4" :foreground "Wheat"))))
+
+     ;; gnus
      (gnus-cite-attribution-face ((t (:italic t :slant italic))))
      (gnus-cite-face-1 ((t (:foreground "light blue"))))
      (gnus-cite-face-10 ((t (:foreground "medium purple"))))
@@ -196,19 +257,23 @@
      (gnus-summary-normal-ticked-face ((t (:foreground "pink"))))
      (gnus-summary-normal-unread-face ((t (nil))))
      (gnus-summary-selected-face ((t (:underline t))))
-     (header-line ((t (:family "Arial" :background "grey20" :foreground "grey75" :box (:line-width 3 :color "grey20" :style released-button) :height 0.9))))
-     (highlight ((t (:background "darkolivegreen"))))
+
+     ;; info
      (info-header-node ((t (:italic t :bold t :weight bold :slant italic :foreground "white"))))
      (info-header-xref ((t (:bold t :weight bold :foreground "cyan"))))
      (info-menu-5 ((t (:foreground "red1"))))
      (info-menu-header ((t (:bold t :family "helv" :weight bold))))
      (info-node ((t (:italic t :bold t :foreground "white" :slant italic :weight bold))))
      (info-xref ((t (:bold t :foreground "cyan" :weight bold))))
-     (isearch ((t (:background "palevioletred2"))))
+
+     ;; isearch
+     (isearch ((t (:background "darkslateblue"))))
      (isearch-lazy-highlight-face ((t (:background "paleturquoise4"))))
-     (italic ((t (:italic t :slant italic))))
+
+     ;; makefile
      (makefile-space-face ((t (:background "hotpink"))))
-     (menu ((t (nil))))
+
+     ;; message
      (message-cited-text-face ((t (:foreground "red"))))
      (message-header-cc-face ((t (:bold t :foreground "green4" :weight bold))))
      (message-header-name-face ((t (:foreground "DarkGreen"))))
@@ -219,22 +284,15 @@
      (message-header-xheader-face ((t (:foreground "blue"))))
      (message-mml-face ((t (:foreground "ForestGreen"))))
      (message-separator-face ((t (:foreground "blue3"))))
-     (mode-line ((t (:background "LightSteelBlue4" 
-                                 :height 130
-                                 :family "Helvetica"
-                                 :foreground "white"))))
-     (modeline-mousable-minor-mode ((t (:background "grey" :foreground "black" :box (:line-width 2 :color "grey" :style released-button) :height 0.9 :family "Arial"))))
-     (modeline-mousable ((t (:background "grey" :foreground "black" :box (:line-width 2 :color "grey" :style released-button) :height 0.9 :family "Arial"))))
-     (modeline-buffer-id ((t (:background "grey" :foreground "black" :box (:line-width 2 :color "grey" :style released-button) :height 0.9 :family "Arial"))))
-     (mouse ((t (:background "white"))))
-     (primary-selection ((t (:background "DarkSlateGray"))))
-     (region ((t (:background "DarkSlateGray"))))
-     (scroll-bar ((t (nil))))
-     (secondary-selection ((t (:background "SkyBlue4"))))
-     (tool-bar ((t (:background "grey75" :foreground "black" :box (:line-width 1 :style released-button)))))
-     (trailing-whitespace ((t (:background "white"))))
-     (underline ((t (:underline t))))
-     (variable-pitch ((t (:family "helv"))))
+
+     ;; org
+     (org-todo ((t (:foreground "indianred2" :bold t))))
+     (org-done ((t (:foreground "lightgreen" :bold t))))
+     ;; yas
+     (yas/field-highlight-face ((t (:background "DarkSlateGrey"))))
+     ;; flymake
+     (flymake-errline ((t (:background "indianred2"))))
+     ;; widget
      (widget-button-face ((t (:bold t :weight bold))))
      (widget-button-pressed-face ((t (:foreground "red"))))
      (widget-documentation-face ((t (:foreground "lime green"))))
@@ -243,13 +301,17 @@
      (widget-single-line-field-face ((t (:background "dim gray"))))
      (zmacs-region ((t (:background "DarkSlateGray")))))))
 
+
 ;; test a face
- ;; (custom-set-faces '(default ((t (:stipple nil :background "black" :foreground "#9367ee"
- ;;                             :inverse-video nil :box nil :strike-through nil
- ;;                             :overline nil :underline nil :slant normal :weight
- ;;                             normal :width normal
- ;;                             :family "Inconsolata-g-12"
- ;;                             :embolden t)))))
+;;(custom-set-faces '(foreground-color ((t (:foreground "dimgray")))))
+
+;;(set-foreground-color "gray45")
+;; (custom-set-faces '(default ((t (:stipple nil :background "black" :foreground "#9367ee"
+;;                             :inverse-video nil :box nil :strike-through nil
+;;                             :overline nil :underline nil :slant normal :weight
+;;                             normal :width normal
+;;                             :family "Inconsolata-g-12"
+;;                             :embolden t)))))
 
  ;(mode-line ((t (:background "LightSteelBlue4" 
 ;                                               :height 130

@@ -25,15 +25,39 @@
 	("mail.update" "linda@fortfrances.com")
 	("mail.junk" "")))
 
+(setq nnmail-split-methods 'nnmail-split-fancy)
+(setq nnmail-split-fancy
+      '(| ("X-Spam-Status" "yes" "mail.junk")
+          ("X-YahooFilteredBulk" ".+" "mail.junk")
+          (from ".*@rackspace.com" "mail.junk")
+          (from ".*(kroef|goudzwaard).*" "mail.personal")
+          (from ".*\\(amazon\\|mouser\\).*" "mail.stores")
+          (to "bram@fortfrances\\.com" "mail.todo")
+          (to "bramvdkroef@yahoo\\.ca" "mail.todo")
+          (to "bramvdk@yahoo\\.co\\.uk" "mail.todo")
+          (to "bram@fortfrances.com" "mail.todo")
+          (to ".*@gnu.org" "mail.mailinglist")
+          ("subject" ".*Backup.*" "mail.junk")
+          (from ".*\\(apache\\|root\\|Server\\).*" "mail.server")
+          ("subject" ".*Undelivered Mail Returned to Sender.*" "mail.junk")
+          ("subject" ".*Out of Office" "mail.junk")
+          (from "Facebook" "mail.junk")
+          (any "\\(updates\\|office\\|linda\\)@fortfrances.com" "mail.update")
+          "mail.junk"))
+
 ;(eval-after-load "mail-source" '(require 'pop3))
 (setq pop3-debug t)
 
 (setq mail-sources '())
-(if (file-exists-p "/var/mail/bram")
-    (add-to-list 'mail-sources '(file :path "/var/mail/bram")))
 
-(if (file-exists-p "/home/bram/mail/INBOX")
-    (add-to-list 'mail-sources '(file :path "/home/bram/mail/INBOX")))
+(let ((varmail (concat "/var/mail/" (user-login-name)))
+      (homemail (concat "/home/" (user-login-name) "/mail/INBOX")))
+
+  (if (file-exists-p varmail)
+      (add-to-list 'mail-sources `(file :path ,varmail)))
+
+  (if (file-exists-p homemail)
+      (add-to-list 'mail-sources `(file :path ,homemail))))
 
 (setq gnus-keep-backlog 500)
 
@@ -69,10 +93,6 @@
       smtpmail-auth-credentials authinfo-file
       starttls-use-gnutls t
       starttls-extra-arguments nil)
-
-(defvar smtp-accounts
-  '(("bram@fortfrances.com" "secure.emailsrvr.com" 587)
-    ("bram@vanderkroef.net" "smtp.gmail.com" 587)))
 
 (defun set-smtp (email-address)
   "Goes through the smtp-accounts list and if one of the email
@@ -130,3 +150,9 @@ addresses match the argument then the smtp settings are set to that account."
     (gnus-group-exit)))
 
 (add-hook 'my-kill-emacs-hook 'my-kill-gnus)
+
+;; Indexing using swish-e
+
+(require 'nnir)
+(setq nnir-search-engine 'swish-e)
+
