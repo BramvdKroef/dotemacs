@@ -106,6 +106,10 @@ emacs is killed"
   (message "%d characters" (- (region-end) (region-beginning)))
   )
 
+(defun eval-php (str)
+  (shell-command-to-string
+   (concat "php -r " (shell-quote-argument str) "")))
+
 (defun eval-php-region ()
   (interactive)
   (shell-command-on-region (region-beginning) (region-end) "php -r 'eval(file_get_contents(\"php://stdin\"));'")
