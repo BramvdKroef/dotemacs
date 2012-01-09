@@ -106,6 +106,9 @@
 (add-to-list 'auto-mode-alist '("\\.stumpwmrc\\'" . lisp-mode))
 
 (add-hook 'css-mode-hook 'rainbow-mode)
+;; Turn off keyword colors ("red", "white", etc.) I don't use them and
+;; I'm getting a lot of false positives in keywords and strings.
+(setq rainbow-html-colors-alist nil)
 
 ;; Flymake mode
 (require 'flymake)
