@@ -23,7 +23,7 @@
   (interactive)
   (color-theme-install
    '(color-theme-bram
-     ((background-color . "black")
+     ((background-color . "gray10")
       (background-mode . dark)
       (border-color . "black")
       (cursor-color . "yellow")
@@ -64,7 +64,7 @@
       (view-highlight-face . highlight)
       (widget-mouse-face . highlight))
      
-     (default ((t (:stipple nil :background "black" :foreground "#9367ee"
+     (default ((t (:stipple nil :background "gray10" :foreground "#9367ee"
                             :inverse-video nil :box nil :strike-through nil
                             :overline nil :underline nil :slant normal :weight
                             normal :width normal
@@ -330,7 +330,7 @@
 	   )
   ;; if color-theme isn't found, manually set colors and faces
   (set-foreground-color "#aea3ff")
-  (set-background-color "black")
+  (set-background-color "gray10")
   (set-face-background 'region "blue"))
 
 (set-frame-font "Inconsolata-g-12")
