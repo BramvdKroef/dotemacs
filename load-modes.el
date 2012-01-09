@@ -98,12 +98,14 @@
 
 ;; Espresso mode
 ;; espresso is now included in emacs 23.2 as js-mode
-(autoload 'espresso-mode "espresso")
+;;(autoload 'espresso-mode "espresso")
 (add-to-list 'auto-mode-alist '("\\.js$" . javascript-mode))
 (add-to-list 'auto-mode-alist '("\\.json$" . javascript-mode))
 (add-to-list 'auto-mode-alist '("\\.conkerorrc\\'" . javascript-mode))
 
 (add-to-list 'auto-mode-alist '("\\.stumpwmrc\\'" . lisp-mode))
+
+(add-hook 'css-mode-hook 'rainbow-mode)
 
 ;; Flymake mode
 (require 'flymake)
@@ -150,7 +152,7 @@
 (eval-after-load "php-mode"
   '(flymake-php-add-hooks))
 
-(eval-after-load "espresso"
+(eval-after-load "javascript-mode"
   '(progn
      (defun flymake-javascript-init()
        "Use jslint.js to check the syntax of the current file."
@@ -168,11 +170,11 @@
 
      (add-to-list 'flymake-allowed-file-name-masks '("^\\(/Users\\|/Volumes\\|/var\\).*\\.js$" flymake-javascript-init))
 
-     (define-key espresso-mode-map '[M-S-up] 'flymake-goto-prev-error)
-     (define-key espresso-mode-map '[M-S-down] 'flymake-goto-next-error)
-     (define-key espresso-mode-map "\C-ce" 'my-flymake-show-err)
+     (define-key javascript-mode-map '[M-S-up] 'flymake-goto-prev-error)
+     (define-key javascript-mode-map '[M-S-down] 'flymake-goto-next-error)
+     (define-key javascript-mode-map "\C-ce" 'my-flymake-show-err)
 
-     (add-hook 'espresso-mode-hook (lambda () (flymake-mode 1)))))
+     (add-hook 'javascript-mode-hook (lambda () (flymake-mode 1)))))
 
 
 ;; Ledger mode
