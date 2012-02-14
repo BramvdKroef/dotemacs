@@ -105,6 +105,7 @@
 
 (add-to-list 'auto-mode-alist '("\\.stumpwmrc\\'" . lisp-mode))
 
+(autoload 'rainbow-mode "rainbow-mode" "" t)
 (add-hook 'css-mode-hook 'rainbow-mode)
 ;; Turn off keyword colors ("red", "white", etc.) I don't use them and
 ;; I'm getting a lot of false positives in keywords and strings.
@@ -198,10 +199,10 @@
       predictive-add-to-dict-ask nil
       predictive-use-auto-learn-cache nil
       predictive-which-dict t)
-(add-hook 'c-mode-common-hook
-          (lambda ()
-            (if (not (tramp-tramp-file-p (buffer-file-name)))
-                (predictive-mode))))
+;; (add-hook 'c-mode-common-hook
+;;           (lambda ()
+;;             (if (not (tramp-tramp-file-p (buffer-file-name)))
+;;                 (predictive-mode))))
 
 ;; Pabbrev causes problems with files loaded over ftp
 (autoload 'pabbrev-mode "pabbrev" "Autoloads pabbrev mode" t)
