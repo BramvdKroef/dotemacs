@@ -288,6 +288,7 @@
      ;; org
      (org-todo ((t (:foreground "indianred2" :bold t))))
      (org-done ((t (:foreground "lightgreen" :bold t))))
+     (org-clock-overlay ((t (:background "gray15"))))
      ;; yas
      (yas/field-highlight-face ((t (:background "DarkSlateGrey"))))
      ;; flymake
