@@ -43,3 +43,55 @@ build it. None of it is installed however, since I prefer to keep all
 of it in my site-lisp.
 
 To update the sources use update.sh.
+
+# package.el packages
+
+I use the following packages from ELPA and Marmelade:
+
+- bitlbee
+- color-theme
+- flymake-css
+- flymake-jslint
+- flymake-php
+- flymake-shell
+- graphviz-dot-mode
+- less-css-mode
+- lorem-ipsum
+- php-mode
+- rainbow-mode
+- tidy
+- twittering-mode
+- typopunct
+- window-number
+- yasnippet
+- yasnippet-bundle
+
+I would also like to use csv-mode but it has a syntax error.
+
+# Tools
+
+I use the following software with emacs:
+
+## Email
+ - fdm -- CLI IMAP/POP email client.
+ - antiword -- convert word documents to text.
+ - docx2txt.pl -- convert docx documents to text.
+ - odt2txt -- convert odt documents to text.
+ - swish -- for indexing emails.
+ - gnutls -- for sending emails.
+
+## EMMS
+ - ogginfo -- Read tags from .ogg music files.
+ - eyeD3 -- Read tags from mp3 files.
+ - mplayer -- Media player.
+
+## Flymake
+ - php -- for flymake-php to work.
+ - csslint -- for flymake-css to work.
+
+## Other
+ - gpg2 -- for encryption.
+ - aspell -- spell checking.
+ - bitlbee -- IM client.
+ 
+
