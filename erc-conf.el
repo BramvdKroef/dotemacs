@@ -23,22 +23,30 @@
                                           (erc-default-target))
                                         (login-get login "password")))))))
 
-(when (require 'growl nil t)
-  (defun erc-growl-on-nick (matched-type nick msg)
-    (when (and (string= matched-type "current-nick")
-               (string-match "\\([^:]*\\).*:\\(.*\\)" msg))
-      (let((text (match-string 2 msg))
-	   (from (erc-extract-nick nick)))
+(defun erc-notify-on-nick (matched-type nick msg)
+  "Send a notification when the user's nick is mentioned."
+  (when (and (string= matched-type "current-nick")
+             (string-match "\\([^:]*\\).*:\\(.*\\)" msg)
+             (not (string= (buffer-name) "&bitlbee")))
+    (let((text (match-string 2 msg))
+         (from (erc-extract-nick nick))
+         (icon "/usr/share/icons/hicolor/48x48/apps/emacs.png"))
       
-	(when text
-          (let ((maxlength 128))
-	    (if ( > (length msg) maxlength )
-		(setq msg (concat (substring msg 0 20) ".. *snip* .. "
-                                  (substring msg (- 30)) "."))))
+      (when text
+        (let ((maxlength 128))
+          (if ( > (length msg) maxlength )
+              (setq msg (concat (substring msg 0 20) ".. *snip* .. "
+                                (substring msg (- 30)) "."))))
 	
-	  (setq msg (concat from " : " msg))
-	  (growl (format "%s:%d" from (% (nth 1 (current-time)) 3)) msg)))))
-  (add-hook 'erc-text-matched-hook 'erc-growl-on-nick))
+        (setq msg (concat from " : " msg))
+        (shell-command (concat "notify-send"
+                               " -i " icon
+                               " bitlbee '"
+                               (format "%s:%d" from (% (nth 1
+                                                            (current-time)) 3))
+                               msg "'"))))))
+
+(add-hook 'erc-text-matched-hook 'erc-notify-on-nick)
 
 (defun erc-sound-notification (matched-type nick msg)
   (when (and (string= matched-type "current-nick")
