@@ -181,7 +181,7 @@
      ;; font-lock
      (font-lock-builtin-face ((t (:foreground "SteelBlue"))))
      (font-lock-comment-face ((t (:italic t :foreground "#3c8249" :slant oblique))))
-     (font-lock-constant-face ((t (:bold t :foreground "Gold" :weight bold))))
+     (font-lock-constant-face ((t (:bold t :foreground "dark turquoise" :weight bold))))
      (font-lock-doc-face ((t (:italic t :slant oblique :foreground "BurlyWood"))))
      (font-lock-doc-string-face ((t (:italic t :slant oblique :foreground "BurlyWood"))))
      (font-lock-function-name-face ((t (:bold t :foreground "#0e6fd3" :weight bold))))
