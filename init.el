@@ -31,6 +31,14 @@
 ;; so that, in case of an error, emacs is usable.
 (load "keybindings.el")
 
+(load "~/.emacs.d/package.el")
+
+(add-to-list 'package-archives '("marmalade"
+                                 . "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives '("ELPA"
+                                 . "http://tromey.com/elpa/"))
+(package-initialize)
+
 ;; Load theme configuration
 (load "theme-conf.el")
 
@@ -125,10 +133,11 @@ seconds it is deleted from the kill-ring."
 
 (load "custom-func.el")
 
+(if window-system
+    (require 'w3m-load))
+
 ;; Lorum Ipsum generator for creating random text
-(autoload 'lorem-ipsum-insert "lorem-ipsum" "Autoload lorem ipsum generator" t)
-;; Graphiz dot major mode
-(autoload 'graphviz-dot-mode "graphviz-dot-mode" "" t)
+(autoload 'lorem-ipsum-insert-paragraphs "lorem-ipsum" "Autoload lorem ipsum generator" t)
 
 ;; Configure the calendar and holidays
 (load "calendar-conf")
