@@ -39,7 +39,7 @@
 	 jde-mode-abbreviations (quote (("ab" . "abstract") ("bo" . "boolean") ("br" . "break") ("by" . "byte") ("byv" . "byvalue") ("cas" . "cast") ("ca" . "catch") ("ch" . "char") ("cl" . "class") ("co" . "const") ("con" . "continue") ("de" . "default") ("dou" . "double") ("el" . "else") ("ex" . "extends") ("fa" . "false") ("fi" . "final") ("fin" . "finally") ("fl" . "float") ("fo" . "for") ("fu" . "future") ("ge" . "generic") ("go" . "goto") ("impl" . "implements") ("impo" . "import") ("ins" . "instanceof") ("inte" . "interface") ("lo" . "long") ("na" . "native") ("ne" . "new") ("nu" . "null") ("pa" . "package") ("pri" . "private") ("pro" . "protected") ("pu" . "public") ("re" . "return") ("sh" . "short") ("st" . "static") ("su" . "super") ("sw" . "switch") ("sy" . "synchronized") ("th" . "this") ("thr" . "throw") ("thro" . "throws") ("tra" . "transient") ("tr" . "true") ("vo" . "void") ("vol" . "volatile") ("wh" . "while")))))
 
 
-(load-file "~/.emacs.d/site-lisp/tramp/lisp/tramp-loaddefs.el")
+;;(load-file "~/.emacs.d/site-lisp/tramp/lisp/tramp-loaddefs.el")
 
 ;; Make buffer-switch and find-file list easier
 ;;(require 'ido)
@@ -50,8 +50,7 @@
 (eval-after-load "yasnippet"
   '(progn
      (yas/initialize)
-     (setq yas/root-directory '("~/.emacs.d/site-lisp/yasnippet/snippets"
-                                "~/.emacs.d/site-lisp/snippets"))
+     (setq yas/root-directory '("~/.emacs.d/site-lisp/snippets"))
      (mapc 'yas/load-directory yas/root-directory)))
 
 ;; Prepend snippet expand to hippie expand list
@@ -66,17 +65,8 @@
 ;;(autoload 'tidy-buffer "tidy" "Run Tidy HTML parser on current buffer" t)
 ;;(autoload 'tidy-parse-config-file "tidy" "Parse the `tidy-config-file'" t)
 ;;(autoload 'tidy-save-settings "tidy" "Save settings to `tidy-config-file'" t)
-
-;; Typing game
-(autoload 'typing-of-emacs "typing" "The Typing Of Emacs, a game." t)
-
-;; Require growl.el on mac (sends notifications)
-(if (or (eq system-type 'darwin)
-	(eq system-type 'macos))
-   (progn
-     ;;(autoload 'growl "growl")
-     (eval-after-load "growl"
-       '(setq growl-program "/usr/local/bin/growlnotify"))))
+(setq tidy-config-file "~/.tidy"
+      tidy-temp-dir "/tmp")
 
 ;; Jabber
 ;;(if (require 'jabber nil t)
@@ -99,7 +89,6 @@
 ;; Espresso mode
 ;; espresso is now included in emacs 23.2 as js-mode
 ;;(autoload 'espresso-mode "espresso")
-(add-to-list 'auto-mode-alist '("\\.js$" . javascript-mode))
 (add-to-list 'auto-mode-alist '("\\.json$" . javascript-mode))
 (add-to-list 'auto-mode-alist '("\\.conkerorrc\\'" . javascript-mode))
 
@@ -111,9 +100,6 @@
 ;; I'm getting a lot of false positives in keywords and strings.
 (setq rainbow-html-colors-alist nil)
 
-;; Flymake mode
-(require 'flymake)
-;;(autoload 'flymake-mode "flymake" "" t)
 
 (defun my-flymake-show-err ()
   "Display error message at point"
@@ -121,65 +107,6 @@
   (let ((err (get-char-property (point) 'help-echo)))
     (when err
       (message err))))
-
-(defun flymake-php-init()
-  "Use php to check the syntax of the current file."
-  (let* ((temp
-          (flymake-init-create-temp-buffer-copy
-           (if (or (string-match "/ftp:" buffer-file-name)
-                   (string-match "/scp:" buffer-file-name)
-                   (string-match "/scpc:" buffer-file-name))
-               'flymake-create-temp-with-folder-structure
-             'flymake-create-temp-inplace)))
-
-         (local (file-relative-name temp (file-name-directory
-                                          buffer-file-name))))
-    (list "php" (list "-f" local "-l"))))
-
-(defun flymake-php-add-hooks ()
-  ;; The php syntax check uses the -l (lint) option so the file won't be executed
-
-  (add-to-list 'flymake-err-line-patterns
-               '("\\(Parse\\|Fatal\\) error: +\\(.*?\\) in \\(.*?\\) on line \\([0-9]+\\)$" 3 4 nil 2))
-
-  (add-to-list 'flymake-allowed-file-name-masks '("\\.php$" flymake-php-init))
-  (add-to-list 'flymake-allowed-file-name-masks '("\\.inc$" flymake-php-init))
-  ;; Drupal-type extensions
-  (add-to-list 'flymake-allowed-file-name-masks '("\\.module$" flymake-php-init))
-  ;; Automatically activating flymake for php-mode creates all kinds of trouble
-  ;; when the buffer isn't associated with a file
-  ;;(add-hook php-mode-hook (lambda () (flymake-mode 1)))
-  (define-key php-mode-map '[M-S-up] 'flymake-goto-prev-error)
-  (define-key php-mode-map '[M-S-down] 'flymake-goto-next-error)
-  (define-key php-mode-map "\C-ce" 'my-flymake-show-err))
-  
-(eval-after-load "php-mode"
-  '(flymake-php-add-hooks))
-
-(eval-after-load "javascript-mode"
-  '(progn
-     (defun flymake-javascript-init()
-       "Use jslint.js to check the syntax of the current file."
-       (let* ((ftpindex (string-match "/ftp:" buffer-file-name))
-	      (temp
-	       (flymake-init-create-temp-buffer-copy
-		(if (and ftpindex (= ftpindex 0))
-		    'flymake-create-temp-with-folder-structure
-		  'flymake-create-temp-inplace)))
-	      (local (file-relative-name temp (file-name-directory buffer-file-name))))
-	 (list "/usr/local/sbin/jslint" (list local))))
-
-     (add-to-list 'flymake-err-line-patterns
-		  '("^Lint at line \\([[:digit:]]+\\) character \\([[:digit:]]+\\): \\(.+\\)$" nil 1 2 3))
-
-     (add-to-list 'flymake-allowed-file-name-masks '("^\\(/Users\\|/Volumes\\|/var\\).*\\.js$" flymake-javascript-init))
-
-     (define-key javascript-mode-map '[M-S-up] 'flymake-goto-prev-error)
-     (define-key javascript-mode-map '[M-S-down] 'flymake-goto-next-error)
-     (define-key javascript-mode-map "\C-ce" 'my-flymake-show-err)
-
-     (add-hook 'javascript-mode-hook (lambda () (flymake-mode 1)))))
-
 
 ;; Ledger mode
 (autoload 'ledger-mode "ledger" "Autoload ledger mode" t)
@@ -242,9 +169,6 @@ able to send strings"
 (autoload 'quenya-add-lesson "quenya" "Autoloads quenya lessons" t)
 (autoload 'spacing-simple-repitition "spacing-simple" "Autoloads spacing-simple" t)
 
-;;(autoload 'twit-show-recent-tweets "twit" "Autoloads twitter client" t)
-
-(autoload 'twit "twittering-mode" "Autoload twittering mode" t)
 (setq twittering-use-master-password t)
 
 
@@ -268,8 +192,6 @@ able to send strings"
 ;;)
 
 (autoload 'etags-select-find-tag-at-point "etags-select" "Autoload etag-select" t)
-
-(autoload 'pomodoro "pomodoro" "Autoload pomodoro" t)
 
 (require 'compile)
 
@@ -347,3 +269,4 @@ able to send strings"
 
 (if (and my-start-bitlbee-on-boot (require 'erc nil t))
     (load "erc-conf.el"))
+
