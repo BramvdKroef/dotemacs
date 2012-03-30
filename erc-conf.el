@@ -26,25 +26,17 @@
 (defun erc-notify-on-nick (matched-type nick msg)
   "Send a notification when the user's nick is mentioned."
   (when (and (string= matched-type "current-nick")
-             (string-match "\\([^:]*\\).*:\\(.*\\)" msg)
-             (not (string= (buffer-name) "&bitlbee")))
-    (let((text (match-string 2 msg))
-         (from (erc-extract-nick nick))
-         (icon "/usr/share/icons/hicolor/48x48/apps/emacs.png"))
-      
+             (not (string= (buffer-name) "&bitlbee"))
+             (string-match "\\([^:]*\\).*:\\(.*\\)" msg))
+    (let ((text (match-string 2 msg))
+          (from (erc-extract-nick nick))
+          (maxlength 128))
       (when text
-        (let ((maxlength 128))
-          (if ( > (length msg) maxlength )
-              (setq msg (concat (substring msg 0 20) ".. *snip* .. "
-                                (substring msg (- 30)) "."))))
-	
-        (setq msg (concat from " : " msg))
-        (shell-command (concat "notify-send"
-                               " -i " icon
-                               " bitlbee '"
-                               (format "%s:%d" from (% (nth 1
-                                                            (current-time)) 3))
-                               msg "'"))))))
+        (if ( > (length msg) maxlength)
+            (setq msg (concat (substring msg 0 20) ".. *snip* .. "
+                              (substring msg (- 30)) ".")))
+	(setq msg (concat from " : " msg))
+        (inotify-message "bitlbee" msg)))))
 
 (add-hook 'erc-text-matched-hook 'erc-notify-on-nick)
 
