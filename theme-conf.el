@@ -321,14 +321,12 @@
 
 ;; Set color theme 
 (if (require 'color-theme nil t)
-    (progn (color-theme-initialize)
-	   ;;(color-theme-midnight)
-	   (color-theme-bram)
+     ;;(color-theme-midnight)
+    (color-theme-bram)
 	   ;;(color-theme-taylor)
 	   ;;(color-theme-charcoal-black)
 	   ;;(color-theme-late-night)
 	   ;;(color-theme-comidia)
-	   )
   ;; if color-theme isn't found, manually set colors and faces
   (set-foreground-color "#aea3ff")
   (set-background-color "gray10")
