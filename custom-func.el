@@ -117,7 +117,6 @@ emacs is killed"
 
 (defun generate-password (&optional n)
   (interactive "p")
-  (message "%s" n)
   (or (> n 1) (setq n 12))
   (insert (shell-command-to-string (concat "echo -n `</dev/urandom "
                                            "tr -dc A-Za-z0-9 "
@@ -125,3 +124,13 @@ emacs is killed"
                                            "| head -c"
                                            (number-to-string n)
                                            "`"))))
+
+(defun inotify-message (message &optional title icon)
+  (setq message (shell-quote-argument message))
+  (setq title (if title (shell-quote-argument title) ""))
+  (if (not icon)
+      (setq icon "/usr/share/icons/hicolor/48x48/apps/emacs.png"))
+  (setq icon (if icon (concat "-i '" (shell-quote-argument icon) "'") ""))
+  (shell-command (concat "notify-send "
+                         icon " " title " " message)))
+
