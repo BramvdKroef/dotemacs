@@ -176,7 +176,6 @@ seconds it is deleted from the kill-ring."
 
 ; open .h files in c++ mode instead of c mode
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
-(add-to-list 'auto-mode-alist '("\\.less$" . css-mode))
 
 ;;(load "find-file-root.el")
 
