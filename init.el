@@ -39,6 +39,13 @@
                                  . "http://tromey.com/elpa/"))
 (package-initialize)
 
+;; How to install a package from a url:
+;;(let ((buffer (url-retrieve-synchronously
+;;               "http://...")))
+;;  (set-buffer buffer)
+;;  (package-install-from-buffer (package-buffer-info) 'single))
+
+
 ;; Load theme configuration
 (load "theme-conf.el")
 
