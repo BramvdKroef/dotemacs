@@ -32,6 +32,7 @@
           (from ".*@rackspace.com" "mail.junk")
           (from ".*(kroef|goudzwaard).*" "mail.personal")
           (from ".*\\(amazon\\|mouser\\).*" "mail.stores")
+          (from ".*\\(thinkgeek\\|ferret\\).*" "mail.stores")
           (to "bram@fortfrances\\.com" "mail.todo")
           (to "bramvdkroef@yahoo\\.ca" "mail.todo")
           (to "bramvdk@yahoo\\.co\\.uk" "mail.todo")
