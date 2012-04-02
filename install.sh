@@ -7,9 +7,9 @@ TMPDIR=/tmp
 # Get the date from the latest checkout and format it as 'yyymmdd'
 function get_version () {
     if [ "$repo" == "cvs" ]; then
-        version=`cvs log -N | grep ^date: | sort | tail -1 | cut -c7-16 | sed 's|/||g'`
+        cvs log -N | grep ^date: | sort | tail -1 | cut -c7-16 | sed 's|[^0-9]||g'
     elif [ "$repo" == "git" ]; then
-        version=`git log -1 -format="%ci" | cut -c-10 | sed 's|-||g'`
+        git log -1 --format="%ci" | cut -c-10 | sed 's|[^0-9]||g'
     fi
 }
 
@@ -18,7 +18,7 @@ function get_source () {
     if [ "$repo" == "cvs" ]; then
         echo "No password is set.  Just hit Enter/Return key."
         cvs -d $url login 
-        cvs -d $url checkout $package
+        cvs -d $url -Q checkout $package
     elif [ "$repo" == "git" ]; then
         git clone $url
     fi
@@ -26,8 +26,8 @@ function get_source () {
 
 # Delete source and the directory used to assemble the package 
 function cleanup () {
-    rm -r $package
-    rm -r $pkgdir
+    rm -rf $package
+    rm -rf $pkgdir
 }
 
 # Create a new package:
@@ -40,19 +40,24 @@ function cleanup () {
 #    created during step 1, 3 and 4.
 function make_package () {
     pkgname=$package-$repo
-    pkgdir=$pkgname-$version
 
+    if [ -f $PACKAGEDIR/$pkgname-*.tar ]; then
+        return
+    fi
+    
     cd $TMPDIR
     
     get_source
     
     cd $package
     if [ -n "$build" ]; then
-        $build
+        eval $build || exit
     fi
-    get_version
+    version=`get_version`
     cd ..
 
+    pkgdir=$pkgname-$version
+    
     mkdir $pkgdir
     cp -r `$sources` $pkgdir/
     echo "(define-package \"${pkgname}\" \"${version}\" \
@@ -67,6 +72,10 @@ function make_package () {
 
 # Install the package.el package manager
 function get_package_el () {
+    if [ -f ~/.emacs.d/package.el ]; then
+        return
+    fi
+    
     cd ~/.emacs.d/
     wget "http://repo.or.cz/w/emacs.git/blob_plain/1a0a666f941c99882093d7bd08ced15033bc3f0c:/lisp/emacs-lisp/package.el"
 }
@@ -77,8 +86,8 @@ function get_bbdb() {
     description='A phone number and address database program for Emacs'
     repo=cvs
     url=:pserver:anonymous@bbdb.cvs.sourceforge.net:/cvsroot/bbdb
-    build='make autoloads'
-    sources='ls bbdb/lisp/*.el | grep -v xemacs'
+    build="autoconf; ./configure; make autoloads"
+    sources="ls bbdb/lisp/*.el | grep -v xemacs"
 
     make_package
 }
@@ -107,20 +116,39 @@ function get_w3m () {
 }
 
 
-# Needs proper version ( is csv id tag )
+# Needs proper version ( is csv id tag ) 
 function get_csvmode () {
+    if [ -f $PACKAGEDIR/csv-mode.el ]; then
+        return
+    fi
+    
     cd $PACKAGEDIR
     wget http://centaur.maths.qmul.ac.uk/Emacs/files/csv-mode.el
+    sed 's/^;; Version: \(.*\)$/;; Version: 1.50\n;; Id: \1/' \
+        csv-mode.el > csv-mode.el.2
+    mv csv-mode.el.2 csv-mode.el
 }
 
 # Needs version
 function get_moz () {
+    if [ -f $PACKAGEDIR/moz.el ]; then
+        return
+    fi
+    
     cd $PACKAGEDIR
     wget https://raw.github.com/bard/mozrepl/master/chrome/content/moz.el
+    head -1 moz.el > moz2.el
+    echo ";; Version: 0.1" >> moz2.el
+    sed '1d' moz.el >> moz2.el
+    mv moz2.el moz.el
 }
 
 # Imports fine
 function get_noword () {
+    if [ -f $PACKAGEDIR/no-word.el ]; then
+        return
+    fi
+    
     cd $PACKAGEDIR
     wget http://www.emacswiki.org/emacs/download/no-word.el
 }
@@ -155,3 +183,13 @@ function get_typopunct () {
     cd $PACKAGEDIR
     wget 'https://raw.github.com/emacsmirror/typopunct/d9da7e57d0d0172c6313a02d9b4b896b222bbffe/typopunct.el'
 }
+
+
+get_package_el
+
+get_bbdb
+get_emms
+get_w3m
+get_csvmode
+get_moz
+get_noword
