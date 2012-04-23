@@ -115,15 +115,27 @@ emacs is killed"
   (shell-command-on-region (region-beginning) (region-end) "php -r 'eval(file_get_contents(\"php://stdin\"));'")
   )
 
-(defun generate-password (&optional n)
+(defun generate-password (&optional len)
+  "Generates a string with equal amounts of lower case letters,
+upper case letters and numbers.
+ - n   Specify the length of the password. The default is 12."
   (interactive "p")
-  (or (> n 1) (setq n 12))
-  (insert (shell-command-to-string (concat "echo -n `</dev/urandom "
-                                           "tr -dc A-Za-z0-9 "
-                                           "2> /dev/null "
-                                           "| head -c"
-                                           (number-to-string n)
-                                           "`"))))
+  (or (and (integerp len) (> len 1)) (setq len 12))
+  
+  (random t)
+  (let ((result (make-string len ?x))
+        (letters "abcdefghijklmnopqrstuvwxyz")
+        (ltype 0))
+    (dotimes (i len)
+      (setq ltype (random 3))
+      (aset result i
+              (cond ((eq ltype 0)
+                     (aref letters (random (length letters))))
+                    ((eq ltype 1)
+                     (upcase (aref letters (random (length letters)))))
+                    ((eq ltype 2)
+                     (string-to-char (number-to-string (random 9)))))))
+    result))
 
 (defun inotify-message (message &optional title icon)
   (setq message (shell-quote-argument message))
