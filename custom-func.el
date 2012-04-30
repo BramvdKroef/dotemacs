@@ -137,6 +137,21 @@ upper case letters and numbers.
                      (string-to-char (number-to-string (random 9)))))))
     result))
 
+(defun generate-phonetic-password (&optional len)
+  (interactive "p")
+  (or (and (integerp len) (> len 1)) (setq len 12))
+  
+  (random t)
+  (let ((result (make-string len ?x))
+        (consonants "bcdfghjklmnpqrstvwxyz")
+        (vowels "aeiouy"))
+    (dotimes (i len)
+      (aset result i
+            (if (eq (% i 2) 0)
+                (aref consonants (random (length consonants)))
+              (aref vowels (random (length vowels))))))
+    result))
+
 (defun inotify-message (message &optional title icon)
   (setq message (shell-quote-argument message))
   (setq title (if title (shell-quote-argument title) ""))
