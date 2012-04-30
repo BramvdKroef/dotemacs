@@ -26,17 +26,16 @@
 (defun erc-notify-on-nick (matched-type nick msg)
   "Send a notification when the user's nick is mentioned."
   (when (and (string= matched-type "current-nick")
-             (not (string= (buffer-name) "&bitlbee"))
              (string-match "\\([^:]*\\).*:\\(.*\\)" msg))
     (let ((text (match-string 2 msg))
           (from (erc-extract-nick nick))
           (maxlength 128))
       (when text
         (if ( > (length msg) maxlength)
-            (setq msg (concat (substring msg 0 20) ".. *snip* .. "
+            (setq msg (concat (substring msg 0 20) "\n.. *snip* .. \n"
                               (substring msg (- 30)) ".")))
 	(setq msg (concat from " : " msg))
-        (inotify-message "bitlbee" msg)))))
+        (inotify-message msg "bitlbee")))))
 
 (add-hook 'erc-text-matched-hook 'erc-notify-on-nick)
 
