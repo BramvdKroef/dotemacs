@@ -68,15 +68,12 @@
 ;; Make looking up login information easier
 (defun login-lookup (machine port)
   (let* ((authinfo (netrc-parse authinfo-file))
-	 (machine (netrc-machine authinfo machine port port))
-	 (process)
-	 )
+	 (machine (netrc-machine authinfo machine port port)))
     (if machine
 	machine
       (unless authinfo
 	(message "Couldn't parse authinfo file"))
-      nil
-      )))
+      nil)))
 
 (defalias 'login-get 'netrc-get)
 
