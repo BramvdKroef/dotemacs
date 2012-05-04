@@ -135,9 +135,11 @@ upper case letters and numbers.
                      (upcase (aref letters (random (length letters)))))
                     ((eq ltype 2)
                      (string-to-char (number-to-string (random 9)))))))
-    result))
+    (insert result)))
 
 (defun generate-phonetic-password (&optional len)
+  "Generates a string that alternates consonants and vowels to make a
+password that is less secure but more easy to communicate."
   (interactive "p")
   (or (and (integerp len) (> len 1)) (setq len 12))
   
@@ -150,7 +152,7 @@ upper case letters and numbers.
             (if (eq (% i 2) 0)
                 (aref consonants (random (length consonants)))
               (aref vowels (random (length vowels))))))
-    result))
+    (insert result)))
 
 (defun inotify-message (message &optional title icon)
   (setq message (shell-quote-argument message))
