@@ -26,7 +26,6 @@
 (defun erc-notify-on-nick (matched-type nick msg)
   "Send a notification when the user's nick is mentioned."
   (when (and (string= matched-type "current-nick")
-             (not (string= (buffer-name) "&bitlbee"))
              (string-match "\\([^:]*\\).*:\\(.*\\)" msg))
     (let ((text (match-string 2 msg))
           (from (erc-extract-nick nick))
@@ -43,11 +42,9 @@
 (defun erc-sound-notification (matched-type nick msg)
   (when (and (string= matched-type "current-nick")
              (string-match "\\([^:]*\\).*:\\(.*\\)" msg))
-    (let((text (match-string 2 msg))
-         (from (erc-extract-nick nick)))
-      
-      (when text
-        (play-sound-file "~/.emacs.d/site-lisp/notify.wav")))))
+    (when (match-string 2 msg)
+      (play-sound-file "~/.emacs.d/site-lisp/notify.wav"))))
+
 (add-hook 'erc-text-matched-hook 'erc-sound-notification)
 
 (require 'bitlbee)
