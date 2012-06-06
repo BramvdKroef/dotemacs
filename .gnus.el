@@ -1,7 +1,6 @@
 
 ; Set gnus inbox reading
 (setq gnus-select-method '(nnml ""))
-(setq gnus-secondary-select-methods '())
 
 (setq nnmail-crosspost nil)
 (setq nnmail-split-methods
@@ -61,7 +60,8 @@
 
 (setq gnus-keep-backlog 500)
 
-(setq gnus-auto-expirable-newsgroups "mail.junk\\|mail.server")
+(setq gnus-auto-expirable-newsgroups
+      "mail.junk\\|mail.server\\|nnimap+Mail:INBOX.Trash")
 
 (setq gnus-message-archive-method '(nnml ""))
 (setq gnus-message-archive-group 
@@ -150,9 +150,4 @@ addresses match the argument then the smtp settings are set to that account."
     (gnus-group-exit)))
 
 (add-hook 'my-kill-emacs-hook 'my-kill-gnus)
-
-;; Indexing using swish-e
-
-(require 'nnir)
-(setq nnir-search-engine 'swish-e)
 
