@@ -137,8 +137,8 @@ seconds it is deleted from the kill-ring."
 
 (load "custom-func.el")
 
-(if window-system
-    (require 'w3m-load))
+;(if window-system
+;    (require 'w3m-load))
 
 ;; Lorum Ipsum generator for creating random text
 (autoload 'lorem-ipsum-insert-paragraphs "lorem-ipsum" "Autoload lorem ipsum generator" t)
