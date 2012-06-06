@@ -1,7 +1,6 @@
 
 ; Set gnus inbox reading
 (setq gnus-select-method '(nnml ""))
-(setq gnus-secondary-select-methods '())
 
 (setq nnmail-crosspost nil)
 (setq nnmail-split-methods
