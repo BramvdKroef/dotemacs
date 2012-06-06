@@ -37,12 +37,25 @@
 
 (defun clean-dirty-html ()
   (interactive)
-  (perform-replace "</?font[^>]*>" "" 't 't nil nil nil (point-min) (point-max))
-  (perform-replace "</?span[^>]*>" "" 't 't nil nil nil (point-min) (point-max))
-  (perform-replace " align=\"[^\"]*\"" "" 't 't nil nil nil (point-min) (point-max))
-  (perform-replace " style=\"[^\"]*\"" "" 't 't nil nil nil (point-min) (point-max))
-  )
+  (let ((badtags '("font" "span"))
+        (badattrs '("align" "style" "mce_[a-z]*")))
+    (perform-replace
+     (concat "</?\\("
+             (mapconcat (lambda (x) x) badtags "\\|")
+             "\\)[^>]*>")
+             "" 't 't nil nil nil (point-min) (point-max))
+    (perform-replace
+     (concat " \\("
+             (mapconcat (lambda (x) x) badattrs "\\|")
+             "\\)=\"[^\"]*\"")
+     "" 't 't nil nil nil (point-min) (point-max))
+    (perform-replace "&nbsp;" " " 't 't nil nil nil
+                     (point-min) (point-max))))
 
+(defun html-remove-tables ()
+  (interactive)
+  (perform-replace "</?\\(table\\|tbody\\|tr\\|td\\)[^>]*>" "" 't 't nil nil nil (point-min) (point-max)))
+  
 (defun volume-set (volume)
   "Runs a script that changes to volume. The volume argument can be 0.0 to 1.99 (i think)"
   (call-process "~/scripts/volume.sh" nil nil nil volume)
