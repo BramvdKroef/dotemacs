@@ -5,7 +5,7 @@
 ;; global-font-lock-mode t nil 'font-lock
 
 ;; Turn off noob gui parts
-(scroll-bar-mode nil)
+(scroll-bar-mode 0)
 (menu-bar-mode 0)
 (tool-bar-mode 0)
 (setq inhibit-startup-message t) 
