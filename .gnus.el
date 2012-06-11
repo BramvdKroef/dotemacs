@@ -73,7 +73,7 @@
 	   (t "mail.sent")))))
 
 ; Prefer not to show the html part if there is a plaintext part
-(setq mm-discouraged-alternatives '("text/richtext"))
+(setq mm-discouraged-alternatives '("text/richtext" "text/html"))
 
 (defun my-gnus-summary-view-html-alternative-in-mozilla ()
       "Display the HTML part of the current multipart/alternative MIME message
