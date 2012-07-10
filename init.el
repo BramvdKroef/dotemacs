@@ -68,13 +68,28 @@
 ;; Make looking up login information easier
 (defun login-lookup (machine port)
   (let* ((authinfo (netrc-parse authinfo-file))
-	 (machine (netrc-machine authinfo machine port port)))
-    (if machine
-	machine
+	 (account))
+       
+    (if (setq account (netrc-machine authinfo machine port))
+	account
       (unless authinfo
 	(message "Couldn't parse authinfo file"))
       nil)))
 
+(defadvice netrc-parse (after wipe-netrc-cache)
+  "Empty the netrc-cache variable. netrc-parse stores the contents of
+  gpg files in memory using what the author considers 'heavy
+  encryption': rot13 and base64 encoding. The cache exists as long as
+  emacs is running.
+
+  Run emacsclient -e '(base64-decode-string (rot13-string (cdr
+  netrc-cache)))' on a machine of a user that uses a gpg encrypted
+  netrc file to get all his passwords.
+
+  This only affects files that end in .gpg."
+  (setq netrc-cache nil))
+(ad-activate 'netrc-parse)
+  
 (defalias 'login-get 'netrc-get)
 
 (defvar clipboard-paste-bin
