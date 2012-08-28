@@ -115,7 +115,7 @@
 
 ;; Gnus
 (setq gnus-init-file "~/.emacs.d/site-lisp/.gnus.el")
-(gnus)
+;;(gnus)
 
 
 ;; Predictive
