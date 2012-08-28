@@ -13,15 +13,12 @@
 (setq erc-nick-serv '(("localhost" . "&bitlbee")))
 (add-hook 'erc-after-connect
     	  '(lambda (server nick)
-             (message server)
-    	     (let* ((login (login-lookup server "irc")))
-	       (if login
-		   (erc-message "PRIVMSG"
-                                (format "%s identify %s" 
-                                        (if (string-match server "localhost.localdomain")
-                                            "&bitlbee"
-                                          (erc-default-target))
-                                        (login-get login "password")))))))
+    	     (erc-message "PRIVMSG"
+                          (format "%s identify %s" 
+                                  (if (string-match server "localhost.localdomain")
+                                      "&bitlbee"
+                                    (erc-default-target))
+                                  "bitlbee123"))))
 
 (defun erc-notify-on-nick (matched-type nick msg)
   "Send a notification when the user's nick is mentioned."
