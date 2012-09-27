@@ -16,33 +16,32 @@
 (global-set-key "\M-p" 'backward-paragraph)
 (global-set-key "\M-n" 'forward-paragraph)
 
-;set C-space to hippy expand
+;;set C-space to hippy expand
 (global-set-key [(control ? )] 'hippie-expand)
-;remap set mark to C-ret
+;;remap set mark to C-ret
 (global-set-key [(control return)] 'set-mark-command)
 
 (add-hook 'latex-mode-hook
-	  (lambda () (local-set-key [(control return)] 'set-mark-command)))
+          (lambda () (local-set-key [(control return)] 'set-mark-command)))
 (add-hook 'html-mode-hook
-	  (lambda () (local-set-key [(control return)] 'set-mark-command)))
+          (lambda () (local-set-key [(control return)] 'set-mark-command)))
 
 (global-set-key "\M-g" 'goto-line)
 
 ;;(require 'cc-mode)
 (eval-after-load "cc-mode"
-  '(define-key c-mode-base-map (kbd "RET") 'newline-and-indent)
-)
+  '(define-key c-mode-base-map (kbd "RET") 'newline-and-indent))
 (define-key global-map (kbd "RET") 'newline-and-indent)
 
-;when a paren or brace or bracket is typed add the closing match
+;; when a paren or brace or bracket is typed add the closing match
 
 (require 'skeleton)
 (setq skeleton-pair t)
 (global-set-key (kbd "[") 'skeleton-pair-insert-maybe)
 
-;typing % goes to the matching paren
+;; typing % goes to the matching paren
 (global-set-key "\C-cp" 'match-paren)
-;match paren function
+;; match paren function
 (defun match-paren (arg)
   "Go to the matching parenthesis if on parenthesis otherwise insert %."
   (interactive "p")
@@ -50,20 +49,11 @@
         ((looking-at "\\s\)") (forward-char 1) (backward-list 1))
         (t (self-insert-command (or arg 1)))))
 
-;f5 for playing the last recorded macro
+                                        ;f5 for playing the last recorded macro
 (global-set-key [f5] 'call-last-kbd-macro)
 
-;f4 for ispell
+                                        ;f4 for ispell
 (global-set-key (kbd "<f4>") 'ispell)
-
-(defun my-gnus-get-news ()
-  (interactive)
-  (if (commandp 'gnus-group-get-new-news)
-      (progn (gnus-group-get-new-news 3)
-	     (switch-to-buffer "*Group*")
-	     )
-    (gnus))
-  )
 
 ;; Global keys
 (global-set-key (kbd "C-1") 'my-to-main-agenda)
@@ -78,7 +68,6 @@
 (global-set-key (kbd "<down>") 'nil)
 ;;(global-set-key (kbd "TAB") 'indent-according-to-mode)
 
-(load "moveline.el")
 (global-set-key [(meta up)] 'move-line-up)
 (global-set-key [(meta down)] 'move-line-down)
 
@@ -107,19 +96,26 @@
 
 ;; have M-. use word-at-point for the tag instead of asking for it
 (global-set-key "\M-." 'etags-select-find-tag-at-point)
- 
+
 ;; org-mode
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
 (define-key global-map "\C-c\C-r" 'org-remember)
 
 (add-hook 'org-mode-hook
-	  (lambda ()
-	    (local-set-key "\C-c\C-x\C-a" 'org-advertized-archive-subtree)
-            (local-set-key [(control return)] 'set-mark-command)
-	    )
-	  )
+          (lambda ()
+            (local-set-key "\C-c\C-x\C-a" 'org-advertized-archive-subtree)
+            (local-set-key [(control return)] 'set-mark-command)))
 (global-set-key "\C-c\C-q" 'quick-calc)
 (global-set-key "\C-x\C-c" 'my-kill-emacs)
 
 (global-set-key "\C-ce" 'my-flymake-show-err)
+
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key "\C-c\C-c" 'recompile)
+(global-set-key "\C-c\C-n" 'cleanup-buffer)
+
+(global-set-key "\C-cs" 'dictionary-search)
+(global-set-key "\C-cm" 'dictionary-match-words)

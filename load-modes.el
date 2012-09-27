@@ -6,8 +6,6 @@
 	     (cons (concat "\\." (regexp-opt '("xml" "xsd" "sch" "rng" "xslt" "svg" "rss") t) "\\'")
 		   'nxml-mode))
 
-(unify-8859-on-decoding-mode)
-
 (setq magic-mode-alist
       (cons '("<＼＼?xml " . nxml-mode)
 	    magic-mode-alist))
@@ -45,6 +43,16 @@
 ;;(require 'ido)
 (ido-mode t)
 
+;; Modify all modes based on c-mode
+(add-hook 'c-mode-common-hook
+	  (lambda ()
+	    ;; Highlight FIXME, TODO and BUG words
+	    (font-lock-add-keywords nil
+				    '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))
+	    
+	    ;; Reckognize studlyCaps as seperate words when moving around
+	    (subword-mode 1)))
+
 ;; Snippets
 (autoload 'yas/hippie-try-expand "yasnippet" "Autoload yasnippet" t)
 (eval-after-load "yasnippet"
@@ -58,8 +66,6 @@
 
 ;; Dictionary lookup
 (load "dictionary-init" t)
-(global-set-key "\C-cs" 'dictionary-search)
-(global-set-key "\C-cm" 'dictionary-match-words)
 
 ;; tidy
 ;;(autoload 'tidy-buffer "tidy" "Run Tidy HTML parser on current buffer" t)
@@ -74,26 +80,10 @@
 
 
 (autoload 'no-word "no-word" "word to txt")
-(add-to-list 'auto-mode-alist '("\\.doc\\'" . no-word))
 
 ;; PHP mode
 (autoload 'php-mode "php-mode" "" t)
 
-;; open drupal modules in php mode
-(add-to-list 'auto-mode-alist '("\\.module\\'" . php-mode))
-(add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
-(add-to-list 'auto-mode-alist '("\\.inc\\'" . php-mode))
-
-;; cakephp views
-(add-to-list 'auto-mode-alist '("\\.ctp\\'" . html-mode))
-
-;; Espresso mode
-;; espresso is now included in emacs 23.2 as js-mode
-;;(autoload 'espresso-mode "espresso")
-(add-to-list 'auto-mode-alist '("\\.json$" . javascript-mode))
-(add-to-list 'auto-mode-alist '("\\.conkerorrc\\'" . javascript-mode))
-
-(add-to-list 'auto-mode-alist '("\\.stumpwmrc\\'" . lisp-mode))
 
 (autoload 'rainbow-mode "rainbow-mode" "" t)
 (add-hook 'css-mode-hook 'rainbow-mode)
@@ -101,22 +91,12 @@
 ;; I'm getting a lot of false positives in keywords and strings.
 (setq rainbow-html-colors-alist nil)
 
-
-(defun my-flymake-show-err ()
-  "Display error message at point"
-  (interactive)
-  (let ((err (get-char-property (point) 'help-echo)))
-    (when err
-      (message err))))
-
 ;; Ledger mode
 (autoload 'ledger-mode "ledger" "Autoload ledger mode" t)
-(add-to-list 'auto-mode-alist '("\\.ledger\\'" . ledger-mode))
 
 ;; Gnus
-(setq gnus-init-file "~/.emacs.d/site-lisp/.gnus.el")
+(setq gnus-init-file "~/.emacs.d/site-lisp/.gnus")
 ;;(gnus)
-
 
 ;; Predictive
 (autoload 'predictive-mode "predictive" "predictive" t)
@@ -165,7 +145,6 @@ able to send strings"
 ;;(add-hook 'javascript-mode-hook 'javascript-custom-setup)
 
 (autoload 'csv-mode "csv-mode" "Autoloads csv-mode" t)
-(add-to-list 'auto-mode-alist '("\\.[Cc][Ss][Vv]\\'" . csv-mode))
 
 (autoload 'quenya-add-lesson "quenya" "Autoloads quenya lessons" t)
 (autoload 'spacing-simple-repitition "spacing-simple" "Autoloads spacing-simple" t)
@@ -207,19 +186,19 @@ able to send strings"
                                      (file-name-directory d))))))
     nil))
 
-;; This creates an infinite loop on remote files
 (add-hook 'c-mode-hook
           (lambda () 
             (set (make-local-variable 'compile-command)
                  (format "make -f %s" (get-above-makefile)))))
 
-(add-hook 'css-mode-hook
+(add-hook 'less-css-mode-hook
           (lambda ()
             (let ((file buffer-file-name))
-              (when (string= (file-name-extension file) "less")
                 (set (make-local-variable 'compile-command)
-                     (format "lessc %s %s" file
-                             (concat (file-name-sans-extension file) ".css")))))))
+                     (format "lessc %s -o %s" file
+                             (concat (file-name-sans-extension file)
+                                     ".css"))))
+            (define-key less-css-mode-map "\C-c\C-c" 'less-css-compile)))
 
 (require 'typopunct)
 (typopunct-change-language 'english t)
@@ -266,8 +245,5 @@ able to send strings"
     (self-insert-command arg))))
 (define-key typopunct-map "." 'typopunct-insert-ellipsis-or-middot)
 
-(defvar my-start-bitlbee-on-boot t)
-
-(if (and my-start-bitlbee-on-boot (require 'erc nil t))
-    (load "erc-conf.el"))
+(load "erc-conf")
 

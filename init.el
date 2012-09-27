@@ -29,9 +29,9 @@
 
 ;; My keybindings. It is importand that this is loaded before the experimental stuff
 ;; so that, in case of an error, emacs is usable.
-(load "keybindings.el")
+(load "keybindings")
 
-(load "~/.emacs.d/package.el")
+(load "~/.emacs.d/package")
 
 (add-to-list 'package-archives '("marmalade"
                                  . "http://marmalade-repo.org/packages/"))
@@ -47,7 +47,7 @@
 
 
 ;; Load theme configuration
-(load "theme-conf.el")
+(load "theme-conf")
 
 ;; EasyPG encryption. Has to be set up first because the conf files
 ;; need the password file.
@@ -153,7 +153,7 @@ kill-ring. After 15 seconds it is deleted from the kill-ring."
 ;; Load the files in the home folder
 ;;-----------
 
-(load "custom-func.el")
+(load "custom-func")
 
 ;(if window-system
 ;    (require 'w3m-load))
@@ -170,27 +170,20 @@ kill-ring. After 15 seconds it is deleted from the kill-ring."
 ;;-----------
 
 ;; setup major modes
-(load "load-modes.el")
+(load "load-modes")
 
-(setq default-major-mode 'org-mode)
+(setq major-mode 'org-mode)
 
 ;; Turn on auto fill for all text modes (doesn't seem to be working)
 (add-hook 'text-mode-hook 'text-mode-hook-identify)
 ;; Turn on auto fill for all modes instead
 (setq-default auto-fill-function 'do-auto-fill)
 
-;; Modify all modes based on c-mode
-(add-hook 'c-mode-common-hook
-	  (lambda ()
-	    ;; Highlight FIXME, TODO and BUG words
-	    (font-lock-add-keywords nil
-				    '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))
-	    
-	    ;; Reckognize studlyCaps as seperate words when moving around
-	    (subword-mode 1)))
 
-; open .h files in c++ mode instead of c mode
-(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+(autoload 'move-line-up "moveline" "Autoload moveline" t)
+(autoload 'move-line-down "moveline" "Autoload moveline" t)
+
+(load "automode")
 
 ;;(load "find-file-root.el")
 
@@ -206,8 +199,6 @@ kill-ring. After 15 seconds it is deleted from the kill-ring."
 
 (put 'downcase-region 'disabled nil)
 (fset 'yes-or-no-p 'y-or-n-p)
-
-(org-agenda-list)
 
 (require 'comint)
 ;; close all shells on shutdown

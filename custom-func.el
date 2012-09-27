@@ -1,20 +1,20 @@
 ;; Indent pasted code
 (defadvice yank (after indent-region activate)
   (if (member major-mode
-	      '(emacs-lisp-mode lisp-mode c-mode c++-mode latex-mode python-mode))
+              '(emacs-lisp-mode lisp-mode c-mode c++-mode latex-mode python-mode))
       (let ((mark-even-if-inactive t))
-	(indent-region (region-beginning) (region-end) nil))))
+        (indent-region (region-beginning) (region-end) nil))))
 
 ;; When pressing C-k at the end of a line, eat indentation
 (defadvice kill-line (before check-position activate)
   (if (member major-mode '(emacs-lisp-mode scheme-mode lisp-mode
-					   c-mode c++-mode objc-mode
-					   latex-mode plain-tex-mode php-mode))
-
+                                           c-mode c++-mode objc-mode
+                                           latex-mode plain-tex-mode
+                                           php-mode))
       (if (and (eolp) (not (bolp)))
-	  (progn (forward-char 1)
-		 (just-one-space 0)
-		 (backward-char 1)))))
+          (progn (forward-char 1)
+                 (just-one-space 0)
+                 (backward-char 1)))))
 
 ;; Remove all the carriage returns (^M) from files in dos format
 (defun dos2unix ()
@@ -24,16 +24,7 @@
     (goto-char (point-min))
     (while (search-forward (string ?\C-m) nil t)
       (replace-match (string ?\C-j) nil t))
-    (set-buffer-file-coding-system 'unix 't)
-    ))
-
-
-;; Delete trailing whitespace and indent the buffer
-(defun cleanup ()
-  "indent whole buffer"
-  (interactive)
-  (delete-trailing-whitespace)
-  (indent-region (point-min) (point-max) nil))
+    (set-buffer-file-coding-system 'unix 't)))
 
 (defun clean-dirty-html ()
   (interactive)
@@ -43,7 +34,7 @@
      (concat "</?\\("
              (mapconcat (lambda (x) x) badtags "\\|")
              "\\)[^>]*>")
-             "" 't 't nil nil nil (point-min) (point-max))
+     "" 't 't nil nil nil (point-min) (point-max))
     (perform-replace
      (concat " \\("
              (mapconcat (lambda (x) x) badattrs "\\|")
@@ -55,11 +46,10 @@
 (defun html-remove-tables ()
   (interactive)
   (perform-replace "</?\\(table\\|tbody\\|tr\\|td\\)[^>]*>" "" 't 't nil nil nil (point-min) (point-max)))
-  
+
 (defun volume-set (volume)
   "Runs a script that changes to volume. The volume argument can be 0.0 to 1.99 (i think)"
-  (call-process "~/scripts/volume.sh" nil nil nil volume)
-  )
+  (call-process "~/scripts/volume.sh" nil nil nil volume))
 
 (defun volume-set-normal ()
   "Set the volume to normal"
@@ -88,17 +78,16 @@
 (defcustom my-kill-emacs-hook '()
   "Add hooks to this list that have to be called right before
 emacs is killed"
-  :type '(repeat function))
+  :type '(repeat function)
+  :group 'my-custom-functions)
 
 (defun my-kill-emacs ()
   "Run all my-kill-emacs hooks."
   (interactive)
   (run-hooks 'my-kill-emacs-hook)
-  (save-some-buffers)
   ;; Give hooks some time to shut down.
   (sleep-for 2)
   (save-buffers-kill-emacs))
-
 
 (defun my-count-words-in-region (start end)
   "Return the number of words in the region."
@@ -116,8 +105,7 @@ emacs is killed"
 (defun my-count-chars-in-region ()
   "Return the number of characters in the region."
   (interactive)
-  (message "%d characters" (- (region-end) (region-beginning)))
-  )
+  (message "%d characters" (- (region-end) (region-beginning))))
 
 (defun eval-php (str)
   (shell-command-to-string
@@ -125,8 +113,11 @@ emacs is killed"
 
 (defun eval-php-region ()
   (interactive)
-  (shell-command-on-region (region-beginning) (region-end) "php -r 'eval(file_get_contents(\"php://stdin\"));'")
-  )
+  (shell-command-on-region (region-beginning) (region-end) "php -r 'eval(file_get_contents(\"php://stdin\"));'"))
+
+(defun eval-python-region ()
+  (interactive)
+  (shell-command-on-region (region-beginning) (region-end) "python2"))
 
 (defun generate-password (&optional len)
   "Generates a string with equal amounts of lower case letters,
@@ -134,7 +125,7 @@ upper case letters and numbers.
  - n   Specify the length of the password. The default is 12."
   (interactive "p")
   (or (and (integerp len) (> len 1)) (setq len 12))
-  
+
   (random t)
   (let ((result (make-string len ?x))
         (letters "abcdefghijklmnopqrstuvwxyz")
@@ -142,12 +133,12 @@ upper case letters and numbers.
     (dotimes (i len)
       (setq ltype (random 3))
       (aset result i
-              (cond ((eq ltype 0)
-                     (aref letters (random (length letters))))
-                    ((eq ltype 1)
-                     (upcase (aref letters (random (length letters)))))
-                    ((eq ltype 2)
-                     (string-to-char (number-to-string (random 9)))))))
+            (cond ((eq ltype 0)
+                   (aref letters (random (length letters))))
+                  ((eq ltype 1)
+                   (upcase (aref letters (random (length letters)))))
+                  ((eq ltype 2)
+                   (string-to-char (number-to-string (random 9)))))))
     (insert result)))
 
 (defun generate-phonetic-password (&optional len)
@@ -155,7 +146,7 @@ upper case letters and numbers.
 password that is less secure but more easy to communicate."
   (interactive "p")
   (or (and (integerp len) (> len 1)) (setq len 12))
-  
+
   (random t)
   (let ((result (make-string len ?x))
         (consonants "bcdfghjklmnpqrstvwxyz")
@@ -176,3 +167,33 @@ password that is less secure but more easy to communicate."
   (shell-command (concat "notify-send "
                          icon " " title " " message)))
 
+(defun untabify-buffer ()
+  (interactive)
+  (untabify (point-min) (point-max)))
+
+(defun indent-buffer ()
+  (interactive)
+  (indent-region (point-min) (point-max)))
+
+(defun cleanup-buffer-safe ()
+  "Perform a bunch of safe operations on the whitespace content of a buffer.
+Does not indent buffer, because it is used for a before-save-hook, and that
+might be bad."
+  (interactive)
+  (untabify-buffer)
+  (delete-trailing-whitespace)
+  (set-buffer-file-coding-system 'utf-8))
+
+(defun cleanup-buffer ()
+  "Perform a bunch of operations on the whitespace content of a buffer.
+Including indent-buffer, which should not be called automatically on save."
+  (interactive)
+  (cleanup-buffer-safe)
+  (indent-buffer))
+
+(defun my-flymake-show-err ()
+  "Display error message at point"
+  (interactive)
+  (let ((err (get-char-property (point) 'help-echo)))
+    (when err
+      (message err))))
