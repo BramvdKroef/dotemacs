@@ -55,20 +55,20 @@
 
 (add-hook 'my-kill-emacs-hook 'my-kill-bitlbee)
 
-(when (require 'bitlbee nil t)
-  ;; Fire up the bitlbee server
-  (bitlbee-start)
+;; Fire up the bitlbee server
+(defadvice bitlbee-start (after erc-connect-to-bitlbee)
   (sleep-for 2)
   ;; Connect
-  (erc :server "localhost" :port 6667 :nick "bram")
+  (erc :server "localhost" :port 6667 :nick "bram"))
+(ad-activate 'bitlbee-start)
 
-  (when 'lunch-break
-    (add-hook 'lunch-break-start-hook
-	      '(lambda ()
-		 (with-current-buffer "&bitlbee"
-		   (erc-cmd-AWAY "Food"))))
-    
-    (add-hook 'lunch-break-stop-hook
-	      '(lambda ()
-		 (with-current-buffer "&bitlbee"
-		   (erc-cmd-AWAY " "))))))
+(when 'lunch-break
+  (add-hook 'lunch-break-start-hook
+            '(lambda ()
+               (with-current-buffer "&bitlbee"
+                 (erc-cmd-AWAY "Food"))))
+  
+  (add-hook 'lunch-break-stop-hook
+            '(lambda ()
+               (with-current-buffer "&bitlbee"
+                 (erc-cmd-AWAY " ")))))
