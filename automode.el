@@ -16,3 +16,5 @@
 (add-to-list 'auto-mode-alist '("\\.[Cc][Ss][Vv]\\'" . csv-mode))
 (add-to-list 'auto-mode-alist '("\\.doc\\'" . no-word))
 (add-to-list 'auto-mode-alist '("\\.ledger\\'" . ledger-mode))
+
+(add-to-list 'auto-mode-alist '("PKGBUILD\\'" . sh-mode))
