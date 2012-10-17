@@ -145,6 +145,15 @@ addresses match the argument then the smtp settings are set to that account."
                                              "odt2txt" 'file))
 	       identity))
 
+;; extract text from pdf documents with pdftotext
+(add-to-list 'mm-inlined-types "application/pdf")
+(add-to-list 'mm-inline-media-tests
+	     '("application/pdf"
+	       (lambda (handle)
+                 (mm-inline-render-with-file handle nil
+                                             "pdftotext" 'file "-"))
+	       identity))
+
 (defun my-kill-gnus ()
   (bbdb-save-db)
   (let ((gnus-interactive-exit nil))
