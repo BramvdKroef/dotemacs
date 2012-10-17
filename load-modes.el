@@ -36,6 +36,11 @@
 	 jde-jdk-registry (quote (("1.6.0" . "/usr/lib/jvm/java-6-sun")))
 	 jde-mode-abbreviations (quote (("ab" . "abstract") ("bo" . "boolean") ("br" . "break") ("by" . "byte") ("byv" . "byvalue") ("cas" . "cast") ("ca" . "catch") ("ch" . "char") ("cl" . "class") ("co" . "const") ("con" . "continue") ("de" . "default") ("dou" . "double") ("el" . "else") ("ex" . "extends") ("fa" . "false") ("fi" . "final") ("fin" . "finally") ("fl" . "float") ("fo" . "for") ("fu" . "future") ("ge" . "generic") ("go" . "goto") ("impl" . "implements") ("impo" . "import") ("ins" . "instanceof") ("inte" . "interface") ("lo" . "long") ("na" . "native") ("ne" . "new") ("nu" . "null") ("pa" . "package") ("pri" . "private") ("pro" . "protected") ("pu" . "public") ("re" . "return") ("sh" . "short") ("st" . "static") ("su" . "super") ("sw" . "switch") ("sy" . "synchronized") ("th" . "this") ("thr" . "throw") ("thro" . "throws") ("tra" . "transient") ("tr" . "true") ("vo" . "void") ("vol" . "volatile") ("wh" . "while")))))
 
+(require 'comint)
+
+(eval-after-load "ange-ftp"
+  '(progn (setq ange-ftp-netrc-filename authinfo-file)
+          (setq ange-ftp-try-passive-mode t)))
 
 ;;(load-file "~/.emacs.d/site-lisp/tramp/lisp/tramp-loaddefs.el")
 
@@ -96,7 +101,6 @@
 
 ;; Gnus
 (setq gnus-init-file "~/.emacs.d/site-lisp/.gnus")
-;;(gnus)
 
 ;; Predictive
 (autoload 'predictive-mode "predictive" "predictive" t)
@@ -118,78 +122,27 @@
 (autoload 'moz-minor-mode "moz" "Mozilla Minor and Inferior Mozilla Modes" t)
 (autoload 'inferior-moz-process "moz" "Mozilla Minor and Inferior Mozilla Modes" t)
 
-(defun moz-send-string (str)
-  "The author of mozRepl.el doesn't understand delegates so I had to write this function in order to be
-able to send strings"
-  (comint-send-string (inferior-moz-process)
-                      str))
-(defun moz-stop()
-  (comint-delchar-or-maybe-eof (inferior-moz-process)))
-
-(defun conkeror-reload ()
-  "Reloads the current page in conkeror"
-  (interactive)
-  (moz-send-string "buffers.current.document.location.reload();\n"))
-
-(defun conkeror-open-url (url arg)
-  "Loads the given url conkeror"
-  (moz-send-string (concat "conkeror.browser_object_follow(buffers.current, conkeror.OPEN_NEW_BUFFER, '"
-			   url
-			   "');\n")))
-;; open links in conkeror
-(setq browse-url-browser-function 'browse-url-generic)
-
-;;(defun javascript-custom-setup ()
-;;  (moz-minor-mode 1))
-
-;;(add-hook 'javascript-mode-hook 'javascript-custom-setup)
+(autoload 'move-line-up "moveline" "Autoload moveline" t)
+(autoload 'move-line-down "moveline" "Autoload moveline" t)
 
 (autoload 'csv-mode "csv-mode" "Autoloads csv-mode" t)
 
 (autoload 'quenya-add-lesson "quenya" "Autoloads quenya lessons" t)
 (autoload 'spacing-simple-repitition "spacing-simple" "Autoloads spacing-simple" t)
 
+;; Lorum Ipsum generator for creating random text
+(autoload 'lorem-ipsum-insert-paragraphs "lorem-ipsum" "Autoload lorem ipsum generator" t)
+
 (setq twittering-use-master-password t)
-
-
-;; (eval-after-load "sql"
-;;     '(progn
-;;        ;; configure a mysql connection with the test server
-;;        (setq sql-server "192.168.181.80")
-
-;;        (let ((login (login-lookup sql-server "mysql")))
-;; 	 (when login 
-;; 	   (setq
-;; 	    sql-user (login-get login "login")
-;; 	    sql-password (login-get login "password")
-;; 	    )))
-;;        ))
-
-
-;;(when (require 'mmm-mode nil t)
-;;  (mmm-add-mode-ext-class 'html-mode "\\.php\\'" 'html-php)
-;;  (set-face-background 'mmm-default-submode-face "gray15")
-;;)
 
 (autoload 'etags-select-find-tag-at-point "etags-select" "Autoload etag-select" t)
 
 (require 'compile)
 
-(defun get-above-makefile ()
-  (if (not (tramp-tramp-file-p default-directory))
-      (expand-file-name "Makefile"
-                        (let ((d default-directory))
-                          (while (not (or (file-exists-p (expand-file-name
-                                                          "Makefile" d))
-                                          (string-equal "/" d)))
-                            (setq d (directory-file-name
-                                     (file-name-directory d))))))
-    nil))
-
 (add-hook 'c-mode-hook
           (lambda () 
             (set (make-local-variable 'compile-command)
-                 (format "make -f %s" (get-above-makefile)))))
+                 (format "make -f %s" (my-get-above-makefile)))))
 
 (add-hook 'less-css-mode-hook
           (lambda ()

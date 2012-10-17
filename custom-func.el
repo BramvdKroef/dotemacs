@@ -197,3 +197,33 @@ Including indent-buffer, which should not be called automatically on save."
   (let ((err (get-char-property (point) 'help-echo)))
     (when err
       (message err))))
+
+(defun moz-send-string (str)
+  "The author of mozRepl.el doesn't understand delegates so I had to write this function in order to be
+able to send strings"
+  (comint-send-string (inferior-moz-process)
+                      str))
+(defun moz-stop()
+  (comint-delchar-or-maybe-eof (inferior-moz-process)))
+
+(defun conkeror-reload ()
+  "Reloads the current page in conkeror"
+  (interactive)
+  (moz-send-string "buffers.current.document.location.reload();\n"))
+
+(defun conkeror-open-url (url arg)
+  "Loads the given url conkeror"
+  (moz-send-string (concat "conkeror.browser_object_follow(buffers.current, conkeror.OPEN_NEW_BUFFER, '"
+			   url
+			   "');\n")))
+
+(defun my-get-above-makefile ()
+  (if (not (tramp-tramp-file-p default-directory))
+      (expand-file-name "Makefile"
+                        (let ((d default-directory))
+                          (while (not (or (file-exists-p (expand-file-name
+                                                          "Makefile" d))
+                                          (string-equal "/" d)))
+                            (setq d (directory-file-name
+                                     (file-name-directory d))))))
+    nil))
