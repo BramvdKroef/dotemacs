@@ -6,6 +6,8 @@
 (add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.inc\\'" . php-mode))
 
+(add-to-list 'auto-mode-alist '("\\.tpl.php\\'" . html-mode))
+
 ;; cakephp views
 (add-to-list 'auto-mode-alist '("\\.ctp\\'" . html-mode))
 
