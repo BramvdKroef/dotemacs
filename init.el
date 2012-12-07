@@ -32,14 +32,15 @@
 (load "keybindings")
 
 ;;(load "~/.emacs.d/package")
-
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(require 'package)
 ;;(add-to-list 'package-archives '("marmalade"
 ;;                                 . "http://marmalade-repo.org/packages/"))
 ;;(add-to-list 'package-archives '("ELPA"
 ;;                                 . "http://tromey.com/elpa/"))
 (package-initialize)
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+;;(setq 'package-archives
+;;      '(("gnu" . "http://elpa.gnu.org/packages/") ("melpa" . "http://melpa.milkbox.net/packages/")))
 
 ;; How to install a package from a url:
 ;;(let ((buffer (url-retrieve-synchronously
