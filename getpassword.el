@@ -123,13 +123,15 @@
 
   (if (equal (length accounts) 1)
       (car accounts)
-    (let ((login
-           (completing-read "Login: " (netrc-list-attr accounts "login")
+    (let ((alias
+           (completing-read "Login: "
+                            (netrc-list-attr accounts "alias" "login")
                             nil t nil 'password-history-login))
           account)
       (catch 'account
         (while accounts
-          (if (string= (netrc-get (car accounts) "login") login)
+          (if (or (string= (netrc-get (car accounts) "alias") alias)
+                  (string= (netrc-get (car accounts) "login") alias))
               (throw 'account (car accounts)))
           (pop accounts))
         (error "No account found that match that login.")))))
@@ -202,11 +204,21 @@ machine login and optionally the port. If a port is given, accounts
     (if result
         (car result))))
 
-(defun netrc-list-attr (accounts attrname)
-  "Extract values for a given attribute from accounts."
+(defun netrc-list-attr (accounts attrname &optional default)
+  "Extract values for a given attribute from accounts.
+
+ - accounts is a list of accounts returned by netrc-parse or
+   password-netrc-parse.
+ - attrname is the name of an attribute. For example 'login' or
+   'password'.
+ - default is the name of an attribute to include if an account does
+   not contain a value for attrname."
   (let (machines)
     (while accounts
-      (push (netrc-get (car accounts) attrname) machines)
+      (push (or (netrc-get (car accounts) attrname)
+                (if default
+                    (netrc-get (car accounts) default)))
+            machines)
       (pop accounts))
     machines))
 
@@ -229,19 +241,19 @@ optionally a port. Essentially it works like netrc-machine but gives a
   "Look up root password for the server"
   (interactive)
   (password-attribute-to-clipboard
-   (netrc-machine-login (netrc-parse authinfo-file)
+   (netrc-machine-login (password-netrc-parse authinfo-file)
                         "fortfrances.com" "root") "password"))
 
 (defun password-to-clipboard-dev ()
   "Look up root password for bram@leapontheweb.com"
   (interactive)
   (password-attribute-to-clipboard
-   (netrc-machine-login (netrc-parse authinfo-file)
+   (netrc-machine-login (password-netrc-parse authinfo-file)
                         "leapontheweb.com" "bram") "password"))
 
 (defun password-to-clipboard-rack ()
   "Look up root password for bvanderkroef@fortfrances.com"
   (interactive)
   (password-attribute-to-clipboard
-   (netrc-machine-login (netrc-parse authinfo-file)
+   (netrc-machine-login (password-netrc-parse authinfo-file)
                         "fortfrances.com" "bvanderkroef" "ssh") "password"))
