@@ -1,5 +1,6 @@
 (autoload 'netrc-parse "netrc")
 (autoload 'netrc-machine "netrc")
+(autoload 'netrc-get "netrc")
 
 (defadvice netrc-parse (after wipe-netrc-cache) 
   "Empty the netrc-cache variable. netrc-parse stores the contents of
