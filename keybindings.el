@@ -59,7 +59,6 @@
 (global-set-key (kbd "C-1") 'my-to-main-agenda)
 (global-set-key (kbd "C-2") 'gnus)
 (global-set-key (kbd "C-3") 'emms-smart-browse)
-(global-set-key (kbd "C-4") 'twit)
 
 ;; disable arrow island
 (global-set-key (kbd "<left>") 'nil)
