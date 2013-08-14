@@ -3,47 +3,6 @@
 (setq gnus-select-method '(nnml ""))
 
 (setq nnmail-crosspost nil)
-(setq nnmail-split-methods
-      '(("mail.junk" "^X-Spam-Status: Yes")
-        ("mail.junk" "X-YahooFilteredBulk:")
-        ("mail.personal" "^From:.*(kroef|goudzwaard)")
-        ("mail.stores" "^From:.*\\(amazon\\|mouser\\|thinkgeek\\.com\\|ferret\\)")
-        ("mail.todo" "^To:.*(bram@fortfrances.com\\|bramvdkroef@yahoo.ca\\|bramvdk@yahoo.co.uk)")
-	("mail.todo" "^To:.*bram@fortfrances.com")
-        ("mail.mailinglist" "^To:.*@gnu.org")
-        ("mail.junk" "^Subject:.*Backup")
-	("mail.server" "^From:.*\\(apache\\|root\\|Server\\)")
-	("mail.junk" "^Subject:.*Event Submitted")
-	("mail.junk" "^Subject:.*Detected \\(Potential Junk Mail\\|spam comment\\)")
-	("mail.junk" "^Subject:.*Undelivered Mail Returned to Sender")
-	("mail.junk" "^Subject:.*Out of Office")
-	("mail.junk" "^From:.*support@rackspace.com")
-        ("mail.junk" "^From: Facebook")
-	("mail.update" "updates@fortfrances.com")
-	("mail.update" "office@fortfrances.com")
-	("mail.update" "linda@fortfrances.com")
-	("mail.junk" "")))
-
-(setq nnmail-split-methods 'nnmail-split-fancy)
-(setq nnmail-split-fancy
-      '(| ("X-Spam-Status" "yes" "mail.junk")
-          ("X-YahooFilteredBulk" ".+" "mail.junk")
-          (from ".*@rackspace.com" "mail.junk")
-          (from ".*(kroef|goudzwaard).*" "mail.personal")
-          (from ".*\\(amazon\\|mouser\\).*" "mail.stores")
-          (from ".*\\(thinkgeek\\|ferret\\).*" "mail.stores")
-          (to "bram@fortfrances\\.com" "mail.todo")
-          (to "bramvdkroef@yahoo\\.ca" "mail.todo")
-          (to "bramvdk@yahoo\\.co\\.uk" "mail.todo")
-          (to "bram@fortfrances.com" "mail.todo")
-          (to ".*@gnu.org" "mail.mailinglist")
-          ("subject" ".*Backup.*" "mail.junk")
-          (from ".*\\(apache\\|root\\|Server\\).*" "mail.server")
-          ("subject" ".*Undelivered Mail Returned to Sender.*" "mail.junk")
-          ("subject" ".*Out of Office" "mail.junk")
-          (from "Facebook" "mail.junk")
-          (any "\\(updates\\|office\\|linda\\)@fortfrances.com" "mail.update")
-          "mail.junk"))
 
 ;(eval-after-load "mail-source" '(require 'pop3))
 (setq pop3-debug t)
@@ -69,7 +28,7 @@
       '((lambda (x)
 	  (cond
 	   ;; Store personal mail messages is the same group
-	   ((string-match "mail.*" group) group)
+;;	   ((string-match "mail.*" group) group)
 	   (t "mail.sent")))))
 
 ; Prefer not to show the html part if there is a plaintext part
@@ -160,4 +119,3 @@ addresses match the argument then the smtp settings are set to that account."
     (gnus-group-exit)))
 
 (add-hook 'my-kill-emacs-hook 'my-kill-gnus)
-
