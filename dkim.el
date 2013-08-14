@@ -149,7 +149,8 @@ The privatekey argument is a path to the file containing the private
   (with-temp-buffer
     ;; Canonicalize headers (downcase names and trim spaces from values)
     (mapc
-     (lambda (x) (insert (concat (downcase (car x)) ":" (cdr x))))
+     (lambda (x) (insert (concat (downcase (car x)) ":" (cdr x)))
+       (newline))
      headers)
     
     (insert (concat "dkim-signature:" (substring dkim-header 16)))
@@ -159,8 +160,9 @@ The privatekey argument is a path to the file containing the private
 
     ;; use openssl to create a signed digest of the headers
     (call-process-region (point-min) (point-max) dkim-openssl-bin t t nil
-                         "dgst" "-" (symbol-name dkim-hash-algo) "-sign"
-                         (expand-file-name privatekey))
+                         "dgst"
+                         (concat "-" (symbol-name dkim-hash-algo))
+                         "-sign" (expand-file-name privatekey))
 
     (encode-coding-region (point-min) (point-max) 'raw-text)
     (base64-encode-region (point-min) (point-max) t)
