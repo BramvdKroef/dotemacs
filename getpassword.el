@@ -238,23 +238,3 @@ optionally a port. Essentially it works like netrc-machine but gives a
       (pop accounts))
     newaccounts))
 
-(defun password-to-clipboard-server ()
-  "Look up root password for the server"
-  (interactive)
-  (password-attribute-to-clipboard
-   (netrc-machine-login (password-netrc-parse authinfo-file)
-                        "fortfrances.com" "root") "password"))
-
-(defun password-to-clipboard-dev ()
-  "Look up root password for bram@leapontheweb.com"
-  (interactive)
-  (password-attribute-to-clipboard
-   (netrc-machine-login (password-netrc-parse authinfo-file)
-                        "leapontheweb.com" "bram") "password"))
-
-(defun password-to-clipboard-rack ()
-  "Look up root password for bvanderkroef@fortfrances.com"
-  (interactive)
-  (password-attribute-to-clipboard
-   (netrc-machine-login (password-netrc-parse authinfo-file)
-                        "fortfrances.com" "bvanderkroef" "ssh") "password"))
