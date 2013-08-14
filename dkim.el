@@ -46,7 +46,9 @@
 ;; configuration if the address in the From: header is email@example.com.
 ;; `dkim-keys' can contain multiple configurations if you happen to
 ;; use more than one address.
-;;
+
+;; Usage:
+
 ;; When writing an email you can call `dkim-sign' to insert a dkim
 ;; signature into your email.
 ;;
@@ -57,7 +59,7 @@
 
 
 (defgroup dkim nil
-  "Retrieves cover images for albums in the EMMS browser"
+  "DKIM email signing."
   :prefix "dkim-"
   :group 'gnus
   :group 'news
