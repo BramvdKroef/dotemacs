@@ -1,3 +1,60 @@
+;; Copyright 2013 Bram van der Kroef
+
+;; This file is part of dkim.el.
+
+;; dkim.el is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; dkim.el is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with dkim.el.  If not, see <http://www.gnu.org/licenses/>. 
+
+;; Author: Bram van der Kroef <bram@vanderkroef.net>
+
+;; Commentary:
+
+;; Add DKIM signing to your emails. dkim.el is made to work with
+;; message.el. 
+;;
+;; To use this you should have a public and private rsa key. Your
+;; public key should be available as a TXT dns record for your email
+;; domain.
+;;
+;; dkim.el requires openssl.
+
+;; Installing:
+
+;; Place the file dkim.el in Emacs's load path and use the following
+;; to load dkim:
+;; 
+;; (require 'dkim)
+;;
+;; Next, configure your private key using M-x, customize-variable,
+;; dkim-keys or using lisp:
+;;
+;; (setq dkim-keys '(("email@example.com" "example.com" "selector"
+;;                    "path/to/private/key")))
+;;
+;; In this example the public key would be at
+;; selector._domainkey.example.com and dkim.el would use this
+;; configuration if the address in the From: header is email@example.com.
+;; `dkim-keys' can contain multiple configurations if you happen to
+;; use more than one address.
+;;
+;; When writing an email you can call `dkim-sign' to insert a dkim
+;; signature into your email.
+;;
+;; Alternatively, if you wish to have every email you send signed you
+;; could add it to the `message-send-hook':
+;; 
+;; (add-hook 'message-send-hook 'dkim-sign)
+
 
 (defgroup dkim nil
   "Retrieves cover images for albums in the EMMS browser"
@@ -76,7 +133,7 @@ Each element is a list of the form (EMAIL DOMAIN SELECTOR KEYFILE)"
       (message-add-header (concat dkim-header headerhash)))))
 
 (defun dkim-header-hash (headers dkim-header privatekey)
-  "Canonicalize headers and create a signed sha256 digest.
+  "Canonicalize headers and create a signed digest.
 
 The headers argument is a list with each element being a string
   containing a full copy of a header.
@@ -100,7 +157,7 @@ The privatekey argument is a path to the file containing the private
 
     ;; use openssl to create a signed digest of the headers
     (call-process-region (point-min) (point-max) dkim-openssl-bin t t nil
-                         "dgst" "-sha256" "-sign"
+                         "dgst" "-" (symbol-name dkim-hash-algo) "-sign"
                          (expand-file-name privatekey))
 
     (encode-coding-region (point-min) (point-max) 'raw-text)
@@ -111,21 +168,22 @@ The privatekey argument is a path to the file containing the private
   "Formats and hashes the body content.
 Make sure the body ends with 1 newline and is encoded with CRLF line
   endings.
-The content is hashed with sha256 and returned encoded in base64."
+The content is hashed and returned encoded in base64."
   (string-match "[\n \t]*\\'" body)
   (setq body (replace-match "\n" nil nil body))
 
   (setq body (encode-coding-string body 'dos))
   
   (base64-encode-string
-   (secure-hash 'sha256 body nil nil t)))
+   (secure-hash dkim-hash-algo body nil nil t)))
 
 (defun dkim-create-header (privatekey headers bodyhash signature
                                       &optional timestamp)
   "Generate a DKIM-Signature email header."
   (setq timestamp (or timestamp (format-time-string "%s")))
   (concat "DKIM-Signature: " 
-          "v=1; a=rsa-sha256; c=relaxed/simple; d=" (nth 1 privatekey) "; s="
+          "v=1; a=rsa-" (symbol-name dkim-hash-algo)
+          "; c=relaxed/simple; d=" (nth 1 privatekey) "; s="
           (nth 2 privatekey) "; t=" timestamp "; bh=" bodyhash
           "; h=" headers "; b=" signature))
 
