@@ -227,3 +227,21 @@ able to send strings"
                             (setq d (directory-file-name
                                      (file-name-directory d))))))
     nil))
+
+(defun kill-empty-lines-in-region (start end)
+  "Look through the lines in a region and delete lines that have no
+content or only whitespace."
+  (interactive "r")
+  (goto-char start)
+  (while (< (point) end) 
+    (beginning-of-line)
+    (skip-chars-forward " \t")
+    (if (eolp)
+        (kill-line)
+      (forward-line))))
+
+(defun kill-empty-lines-in-buffer ()
+  "Go through the buffer and remove all empty lines or lines with only
+whitespace."
+  (interactive)
+  (kill-empty-lines-in-region (point-min) (point-max)))
