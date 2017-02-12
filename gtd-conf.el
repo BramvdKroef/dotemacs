@@ -4,6 +4,7 @@
 
 ; Initialize bbdb
 (require 'bbdb)
+(require 'org)
 
 (bbdb-initialize)
 (add-hook 'gnus-startup-hook 'bbdb-insinuate-gnus)
@@ -12,10 +13,10 @@
 
 (require 'org-clock)
 (require 'org-agenda)
-(require 'remember)
+(require 'org-capture)
 
 (org-clock-persistence-insinuate)
-(org-remember-insinuate)
+
 (add-hook 'remember-mode-hook 'org-remember-apply-template)
 ;;(setq org-default-notes-file (concat org-directory
 ;;"/bookmarks.org"))

@@ -162,18 +162,18 @@
   (around minus-or-pm activate)
   (cond
    ((or (eq (char-before) typopunct-em-dash)
-        (looking-back "\\([[:blank:]]\\|^\\)\\^"))
+        (looking-back "\\([[:blank:]]\\|^\\)\\^" nil))
     (delete-char -1)
     (insert typopunct-minus))
-   ((looking-back "[^[:blank:]]\\^")
+   ((looking-back "[^[:blank:]]\\^" nil)
     (insert typopunct-minus))
-   ((looking-back "+/")
+   ((looking-back "+/" nil)
     (progn (replace-match "")
            (insert typopunct-pm)))
    (t ad-do-it)))
 (defun typopunct-insert-mp (arg)
   (interactive "p")
-  (if (and (= 1 arg) (looking-back "-/"))
+  (if (and (= 1 arg) (looking-back "-/" nil))
       (progn (replace-match "")
              (insert typopunct-mp))
     (self-insert-command arg)))
@@ -191,12 +191,16 @@
     (insert typopunct-middot))
    ((and (= 1 arg)
          (eq this-command last-command)
-         (looking-back "\\.\\."))
+         (looking-back "\\.\\." nil))
     (replace-match "")
     (insert typopunct-ellipsis))
    (t
     (self-insert-command arg))))
 (define-key typopunct-map "." 'typopunct-insert-ellipsis-or-middot)
 
-(load "erc-conf")
+(eval-after-load "erc"
+  '(load "erc-conf"))
 
+;; Configure emms player
+(eval-after-load "emms"
+  '(load "emms-conf"))
