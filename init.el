@@ -66,9 +66,6 @@
 ;; Configure the calendar and holidays
 (load "calendar-conf")
 
-;; Configure emms player
-(load "emms-conf")
-
 ;; Configure planner, remember and hooks
 (load "gtd-conf")
 
@@ -90,10 +87,6 @@
 ;;(load "find-file-root.el")
 
 ;;(require 'lunch-break)
-
-; Schedule lunch
-;;(if 'growl
- ;;   (run-at-time "12:00" nil '(lambda () (growl "Lunch time" "It's time for lunch"))))
 
 (if window-system
   (server-start))
