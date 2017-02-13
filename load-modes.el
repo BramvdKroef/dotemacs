@@ -131,7 +131,7 @@
 (autoload 'spacing-simple-repitition "spacing-simple" "Autoloads spacing-simple" t)
 
 ;; Lorum Ipsum generator for creating random text
-(autoload 'lorem-ipsum-insert-paragraphs "lorem-ipsum" "Autoload lorem ipsum generator" t)
+;;(autoload 'lorem-ipsum-insert-paragraphs "lorem-ipsum" "Autoload lorem ipsum generator" t)
 
 (setq twittering-use-master-password t)
 
@@ -147,11 +147,20 @@
 (add-hook 'less-css-mode-hook
           (lambda ()
             (let ((file buffer-file-name))
-                (set (make-local-variable 'compile-command)
-                     (format "lessc %s -o %s" file
-                             (concat (file-name-sans-extension file)
-                                     ".css"))))
-            (define-key less-css-mode-map "\C-c\C-c" 'less-css-compile)))
+              (if (and (not (string= (file-name-nondirectory file) "style.less"))
+                       (file-exists-p (concat
+                                       (file-name-directory file)
+                                       "style.less")))
+                  (setq file (concat
+                              (file-name-directory file)
+                              "style.less")))
+              (set (make-local-variable 'compile-command)
+                   (format "lessc %s -o %s" file
+                           (expand-file-name (concat (file-name-directory file)
+                                                     "../css/"
+                                                     (file-name-base file) ".css")))))
+              (define-key less-css-mode-map "\C-c\C-c" 'compile)))
+
 
 (require 'typopunct)
 (typopunct-change-language 'english t)
@@ -200,3 +209,4 @@
 
 (load "erc-conf")
 
+(setq magit-last-seen-setup-instructions "1.4.0")
