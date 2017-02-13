@@ -114,6 +114,7 @@
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key "\C-c\C-c" 'recompile)
+(global-set-key "\C-xc" 'recompile)
 (global-set-key "\C-c\C-n" 'cleanup-buffer)
 
 (global-set-key "\C-cs" 'dictionary-search)
