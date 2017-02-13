@@ -76,6 +76,7 @@
   "Georgia" "Constance" "Lillie" "Claudia" "Jackie" "Marcia" "Tanya"
   "Nellie" "Minnie" "Marlene" "Heidi" "Glenda" "Lydia" "Viola"
   "Courtney" "Marian" "Stella" "Caroline" "Dora" "Jo" "Vickie"
+
   "Mattie" "Terry" "Maxine" "Irma" "Mabel" "Marsha" "Myrtle" "Lena"
   "Christy" "Deanna" "Patsy" "Hilda" "Gwendolyn" "Jennie" "Nora"
   "Margie" "Nina" "Cassandra" "Leah" "Penny" "Kay" "Priscilla" "Naomi"
@@ -323,11 +324,76 @@
   "Huber" "Barlow" "Boyle" "Mcmahon" "Buckner" "Rocha" "Puckett"
   "Langley" "Knowles" "Cooke" "Velazquez" "Whitley" "Noel" "Vang"))
 
+(defvar test-data-salutations
+  '((male "Dr" "Mr")
+    (female "Dr" "Ms" "Mrs")))
+
+
+(defvar test-data-company-names
+  '("Acme, inc." "Widget Corp" "123 Warehousing" "Demo Company"
+    "Smith and Co." "Foo Bars" "ABC Telecom" "Fake Brothers"
+    "QWERTY Logistics" "Demo, inc." "Sample Company" "Sample, inc"
+    "Acme Corp" "Allied Biscuit" "Ankh-Sto Associates"
+    "Extensive Enterprise" "Galaxy Corp" "Globo-Chem" "Mr. Sparkle"
+    "Globex Corporation" "LexCorp" "LuthorCorp"
+    "North Central Positronics" "Omni Consimer Products"
+    "Praxis Corporation" "Sombra Corporation" "Sto Plains Holdings"
+    "Tessier-Ashpool" "Wayne Enterprises" "Wentworth Industries"
+    "ZiffCorp" "Bluth Company" "Strickland Propane" "Thatherton Fuels"
+    "Three Waters" "Water and Power" "Western Gas & Electric"
+    "Mammoth Pictures" "Mooby Corp" "Gringotts" "Thrift Bank"
+    "Flowers By Irene" "The Legitimate Businessmens Club"
+    "Osato Chemicals" "Transworld Consortium" "Universal Export"
+    "United Fried Chicken" "Virtucon" "Kumatsu Motors"
+    "Keedsler Motors" "Powell Motors" "Industrial Automation"
+    "Sirius Cybernetics Corporation" "U.S. Robotics and Mechanical Men"
+    "Colonial Movers" "Corellian Engineering Corporation"
+    "Incom Corporation" "General Products" "Leeding Engines Ltd."
+    "Blammo" "Input, Inc." "Mainway Toys" "Videlectrix" "Zevo Toys"
+    "Ajax" "Axis Chemical Co." "Barrytron" "Carrys Candles"
+    "Cogswell Cogs" "Spacely Sprockets" "General Forge and Foundry"
+    "Duff Brewing Company" "Dunder Mifflin"
+    "General Services Corporation" "Monarch Playing Card Co."
+    "Krustyco" "Initech" "Roboto Industries" "Primatech"
+    "Sonky Rubber Goods" "St. Anky Beer" "Stay Puft Corporation"
+    "Vandelay Industries" "Wernham Hogg" "Gadgetron"
+    "Burleigh and Stronginthearm" "BLAND Corporation"
+    "Nordyne Defense Dynamics" "Petrox Oil Company" "Roxxon"
+    "McMahon and Tate" "Sixty Second Avenue" "Charles Townsend Agency"
+    "Spade and Archer" "Megadodo Publications" "Rouster and Sideways"
+    "C.H. Lavatory and Sons" "Globo Gym American Corp" "The New Firm"
+    "SpringShield" "Compuglobalhypermeganet" "Data Systems"
+    "Gizmonic Institute" "Initrode" "Taggart Transcontinental"
+    "Atlantic Northern" "Niagular" "Plow King" "Big Kahuna Burger"
+    "Big T Burgers and Fries" "Chez Quis" "Chotchkies"
+    "The Frying Dutchman" "Klimpys" "The Krusty Krab" "Monks Diner"
+    "Milliways" "Minuteman Cafe" "Taco Grande" "Tip Top Cafe"
+    "Moes Tavern" "Central Perk" "Chasers"))
+
 (defvar test-data-street-names
   '("Second" "Third" "First" "Fourth" "Park" "Fifth" "Main" "Sixth"
   "Oak" "Seventh" "Pine" "Maple" "Cedar" "Eighth" "Elm" "View"
-  "Washington" "Ninth" "Lake" "Hill"))
+  "Washington" "Ninth" "Lake" "Hill" "Birch" "Railway" "River"
+  "Spruce" "Mill" "Church" "Poplar" "Willow" "Victoria" "King"
+  "Sunset" "Lake" "Aspen" "Centre" "Mountain" "Lakeview" "Queen"
+  "Tenth" "Eleventh" "James" "Smith" "George" "Martin" "Albert"
+  "Campbell" "William" "North" "Woodland" "Wilson" "Elizabeth"
+  "Riverside" "Bellevue" "Beach" "John" "Hillcrest" "Bayview" "Scott"
+  "Evergreen" "Charles" "Ross" "Forest" "Taylor" "Nelson" "Roy"
+  "Wellington" "Fir" "Hillside" "Riverview" "Thompson" "Pioneer"
+  "Fiftieth" "Fraser" "Water" "Thomas" "West" "Hill" "Cameron"
+  "Centennial" "Forty Ninth" "Douglas" "Robert"))
 
+(defvar test-data-street-suffixes
+  '("St" "Ave" "Rd"))
+
+(defvar test-data-street-directions
+  '("E" "N" "NE" "NW" "S" "SE" "SW" "W"))
+
+(defvar test-data-street-units
+  '("Apt" "Unit"))
+
+;; province, province short code, population, towns
 (defvar test-data-towns-canada
   '(("Alberta" "AB" 3725 ("Airdrie" "Brooks" "Calgary" "Camrose"
                      "Cold Lake" "Edmonton" "Fort Saskatchewan"
@@ -426,6 +492,44 @@
     ("Yukon" "YT" 34 ("Whitehorse"))
     ))
 
+(defvar test-data-postal-codes
+  '(("NL" "A")
+    ("NS" "B")
+    ("PE" "C")
+    ("NB" "E")
+    ("QC" "G" "H" "J")
+    ("ON" "K" "L" "M" "N" "P")
+    ("MB" "R")
+    ("SK" "S")
+    ("AB" "T")
+    ("BC" "V")
+    ("NU" "X")
+    ("NT" "X")
+    ("YT" "Y")
+    ))
+
+(defvar test-data-phone-areacodes
+  '(("AB" "403" "587" "780")
+    ("BC" "236" "250" "604" "778")
+    ("MB" "204" "431")
+    ("NB" "506")
+    ("NL" "709")
+    ("NT" "867")
+    ("NS" "902")
+    ("NU" "867")
+    ("ON" "226" "249" "289" "343" "365" "416" "437" "519" "613" "647"
+     "705" "807" "905")
+    ("QC" "418" "438" "450" "514" "579" "581" "819" "873")
+    ("SK" "306" "639")
+    ("YT" "867")
+    ))
+
+(defvar test-data-weights
+  '((streetdirection . 50)
+    (streetunit . 10)
+    (box . 20)
+    (company . 5)))
+
 (defun test-data-pick-gender ()
   (test-data-random-element '(male female)))
 
@@ -442,11 +546,51 @@
 (defun test-data-pick-name (&optional gender)
   (concat (test-data-pick-first-name gender) " " (test-data-pick-last-name)))
 
-(defun test-data-pick-address ()
-  (concat (number-to-string (random 500)) " "
-          (test-data-random-element test-data-street-names) " "
-          (test-data-random-element '("St." "Ave."))))
+(defun test-data-pick-company-name ()
+  (test-data-random-element test-data-company-names))
 
+(defun test-data-pick-salutation (&optional gender)
+  (test-data-random-element
+   (cdr (assoc (if (eq gender nil)
+                   (test-data-pick-gender) gender)
+               test-data-salutations))))
+
+(defun test-data-pick-housenumber ()
+  (number-to-string (random 500)))
+
+(defun test-data-pick-street ()
+  (test-data-random-element test-data-street-names))
+
+(defun test-data-pick-streetsuffix ()
+  (test-data-random-element test-data-street-suffixes))
+
+(defun test-data-pick-streetdirection ()
+  (test-data-random-element test-data-street-directions))
+
+(defun test-data-pick-streetunit ()
+  (test-data-random-element test-data-street-units))
+
+(defun test-data-pick-streetunitnumber ()
+  (number-to-string (random 5)))
+
+(defun test-data-pick-postal-code (&optional provincecode)
+  (concat
+   (test-data-random-element
+    (cdr
+     (if (eq provincecode nil)
+         (test-data-random-element test-data-postal-codes)
+       (assoc provincecode test-data-postal-codes))))
+   (number-to-string (random 9))
+   (make-string 1 (aref "ABCDEFGHIJKLMNOPQRSTUVWXYZ" (random 25)))
+   " "
+   (number-to-string (random 9))
+   (make-string 1 (aref "ABCDEFGHIJKLMNOPQRSTUVWXYZ" (random 25)))
+   (number-to-string (random 9))
+   ))
+
+(defun test-data-pick-pobox ()
+  (number-to-string (+ 50 (random 100))))
+  
 (defun test-data-pick-province ()
   (let ((total 0)
         index)
@@ -467,12 +611,137 @@
             (setq provinces (cdr provinces))))
       (car provinces))))
 
-(defun test-data-pick-town ()
-  (let ((province (test-data-pick-province)))
-    (concat (test-data-random-element (nth 3 province))
-            ", " (nth 1 province))))
+(defun test-data-pick-town (&optional province)
+  (if (eq province nil)
+      (setq province (test-data-pick-province)))
+  (test-data-random-element (nth 3 province)))
+
+(defun test-data-pick-personemail (firstname lastname)
+  (concat
+   (substring (downcase firstname) 0 1)
+   "."
+   (downcase lastname)
+   "@example.com"))
+
+(defun test-data-pick-companyemail (company)
+  (concat
+   (replace-regexp-in-string "[^a-z-]" "" (replace-regexp-in-string " +" "-" (downcase company)))
+   "@example.com"))
+
+(defun test-data-pick-phone (&optional provincecode)
+  (concat
+   (test-data-random-element
+    (cdr
+     (if (eq provincecode nil)
+         (test-data-random-element test-data-phone-areacodes)
+       (assoc provincecode test-data-phone-areacodes))))
+   "-"
+   (number-to-string (+ 200 (random 799)))
+   "-"
+   (number-to-string (+ 1000 (random 8999)))))
+
+
+
+(defun test-data-pick-address (address weights)
+  (let ((province))
+
+    (if (< (random 100) (cdr (assoc 'box weights)))
+        (setcdr (assoc 'box address) (test-data-pick-pobox))
+      (progn
+        (setcdr (assoc 'housenumber address) (test-data-pick-housenumber))
+        (setcdr (assoc 'street address) (test-data-pick-street))
+        (setcdr (assoc 'streetsuffix address) (test-data-pick-streetsuffix))
+        (if (< (random 100) (cdr (assoc 'streetdirection weights)))
+            (setcdr (assoc 'streetdirection address) (test-data-pick-streetdirection)))
+        (if (< (random 100) (cdr (assoc 'streetunit weights)))
+            (progn
+              (setcdr (assoc 'unit address) (test-data-pick-streetunit))
+              (setcdr (assoc 'unitnumber address)
+                      (test-data-pick-streetunitnumber))))))
+
+    (if (cdr (assoc 'province address))
+        (setq province (assoc (cdr (assoc 'province address)) test-data-towns-canada))
+      (progn
+        (setq province (test-data-pick-province))
+        (setcdr (assoc 'province address) (car province))))
+
+    (if (not (cdr (assoc 'town address)))
+        (setcdr (assoc 'town address) (test-data-random-element (nth 3 province))))
+    (if (not (cdr (assoc 'postalcode address)))
+        (setcdr (assoc 'postalcode address) (test-data-pick-postal-code
+                                             (nth 1 province))))
+
+    
+    address))
+
+(defun test-data-pick-profile (profile weights)
+  (if (< (random 100) (cdr (assoc 'company weights)))
+      (progn
+        (setcdr (assoc 'company profile) (test-data-pick-company-name))
+        (setcdr (assoc 'email profile)
+                (test-data-pick-companyemail
+                 (cdr (assoc 'company profile)))))
+    (progn
+      (setcdr (assoc 'gender profile) (test-data-pick-gender))
+      (setcdr (assoc 'salutation profile)
+              (test-data-pick-salutation (cdr (assoc 'gender profile))))
+      (setcdr (assoc 'firstname profile)
+              (test-data-pick-first-name (cdr (assoc 'gender profile))))
+      (setcdr (assoc 'lastname profile) (test-data-pick-last-name))
+      (setcdr (assoc 'email profile)
+              (test-data-pick-personemail
+               (cdr (assoc 'firstname profile))
+               (cdr (assoc 'lastname profile))))))
+  (test-data-pick-address (cdr (assoc 'address profile)) weights)
+  (setcdr (assoc 'phone profile)
+          (test-data-pick-phone
+           (nth 1 (cdr (assoc 'province (cdr (assoc 'address profile)))))))
+  profile)
+
+
+(defun test-data-init-address ()
+  '((housenumber . nil)
+        (street . nil)
+        (streetsuffix . nil)
+        (streetdirection . nil)
+        (province . nil)
+        (town . nil)
+        (postalcode . nil)
+        (box . nil)
+        (unit . nil)
+        (unitnumber . nil)))
+
+(defun test-data-init-profile ()
+  (list '(gender . nil)
+        '(salutation . nil)
+        '(firstname . nil)
+        '(lastname . nil)
+        '(company . nil)
+        (cons 'address (test-data-init-address))
+        '(email . nil)
+        '(phone . nil)))
+
 
 (defun test-data-random-element (list)
   (nth (random (safe-length list)) list))
+
+(defun test-data-insert-address (address-buffer address)
+  (let ((address-i))
+    (with-current-buffer address-buffer
+      (setq address-i (number-to-string (line-number-at-pos)))
+      (insert
+       address-i ","
+       (or (cdr (assoc 'housenumber address)) "") ","
+       (or (cdr (assoc 'street address)) "") ","
+       (or (cdr (assoc 'streetsuffix address)) "") ","
+       (or (cdr (assoc 'streetdirection address)) "") ","
+       (or (cdr (assoc 'box address)) "") ","
+       (or (cdr (assoc 'unit address)) "") ","
+       (or (cdr (assoc 'unitnumber address)) "") ","
+       (cdr (assoc 'town address)) ","
+       (nth 1 (cdr (assoc 'province address))) ","
+       (cdr (assoc 'postalcode address)) "\n"))
+    address-i))
+
 
 (provide 'test-data)
