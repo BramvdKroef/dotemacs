@@ -292,7 +292,7 @@
      ;; yas
      (yas/field-highlight-face ((t (:background "DarkSlateGrey"))))
      ;; flymake
-     (flymake-errline ((t (:background "indianred2"))))
+     (flymake-errline ((t (:background "firebrick"))))
      ;; widget
      (widget-button-face ((t (:bold t :weight bold))))
      (widget-button-pressed-face ((t (:foreground "red"))))
