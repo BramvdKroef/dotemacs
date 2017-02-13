@@ -15,8 +15,8 @@
 (require 'remember)
 
 (org-clock-persistence-insinuate)
-(org-remember-insinuate)
-(add-hook 'remember-mode-hook 'org-remember-apply-template)
+;;(org-remember-insinuate)
+;;(add-hook 'remember-mode-hook 'org-remember-apply-template)
 ;;(setq org-default-notes-file (concat org-directory
 ;;"/bookmarks.org"))
 
@@ -47,6 +47,7 @@
 
 ;; turn on fly-spell mode in org-mode
 (add-hook 'org-mode-hook 'flyspell-mode)
+(add-hook 'org-mode-hook 'auto-revert-mode)
 
 (add-hook 'lunch-break-start-hook
 	  '(lambda ()
