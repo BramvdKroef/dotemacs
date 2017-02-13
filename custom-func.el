@@ -115,6 +115,13 @@ emacs is killed"
   (interactive)
   (shell-command-on-region (region-beginning) (region-end) "php -r 'eval(file_get_contents(\"php://stdin\"));'"))
 
+
+(defun my-php-unserialize-region ()
+  (interactive)
+  (shell-command-on-region
+   (region-beginning) (region-end)
+   "php -r 'var_export(unserialize(file_get_contents(\"php://stdin\")));'" nil t))
+
 (defun eval-python-region ()
   (interactive)
   (shell-command-on-region (region-beginning) (region-end) "python2"))
