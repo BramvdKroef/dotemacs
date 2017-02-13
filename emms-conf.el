@@ -11,8 +11,6 @@
 ;; We'll be using  mplayer
 (setq emms-player-list '(emms-player-mplayer))
 
-(setq emms-source-file-default-directory "~/Music/")
-
 ;; Use my custom mp3 tag reader instead of mp3info (which only reads v1)
 (require 'emms-info-eyed3)
 (require 'emms-info-ogginfo)
@@ -30,18 +28,13 @@
 (require 'emms-browser)
 
 ;; lastfm config
-(require 'emms-lastfm-client)
-(setq emms-lastfm-client-username "bramvdk")
-
-;; consumer key
-(setq emms-lastfm-client-api-key "35d768105e509b60cb562afb868bb98e")
-(setq emms-lastfm-client-api-secret-key "1f860debfd1cd58f1a03cccd13d33387")
+;;(require 'emms-lastfm-client)
 
 ;;(emms-lastfm-scrobbler-enable)
 
 ;; Enable album covers
-(require 'emms-cover)
-(setq emms-browser-covers 'emms-cover-find)
+;;(require 'emms-cover)
+;;(setq emms-browser-covers 'emms-cover-find)
 
 ;; Stop playing on lunch break
 (add-hook 'lunch-break-start-hook

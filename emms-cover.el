@@ -29,8 +29,7 @@
   :group 'emms-cover
   :type '(repeat string))
 
-(defcustom emms-cover-download-functions '(emms-cover-download-rhapsody
-					   emms-cover-download-lastfm)
+(defcustom emms-cover-download-functions '(emms-cover-download-lastfm)
   "A List of functions that taks an artist and album as argument and return a url to an image cover"
   :group 'emms-cover
   :type '(repeat function))
