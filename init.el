@@ -89,17 +89,18 @@
 
 ;;(load "find-file-root.el")
 
-(require 'lunch-break)
+;;(require 'lunch-break)
 
 ; Schedule lunch
-(if 'growl
-    (run-at-time "12:00" nil '(lambda () (growl "Lunch time" "It's time for lunch"))))
+;;(if 'growl
+ ;;   (run-at-time "12:00" nil '(lambda () (growl "Lunch time" "It's time for lunch"))))
 
 (if window-system
   (server-start))
 
 (put 'downcase-region 'disabled nil)
 (fset 'yes-or-no-p 'y-or-n-p)
+(setq compilation-ask-about-save nil)
 
 ;; close all shells on shutdown
 (add-hook 'my-emacs-kill-hook
