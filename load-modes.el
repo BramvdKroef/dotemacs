@@ -214,3 +214,6 @@
 (eval-after-load "emms"
   '(load "emms-conf"))
 
+
+(setq web-mode-engines-alist
+      '(("php"    . "\\.phtml\\'")))
