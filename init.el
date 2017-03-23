@@ -38,7 +38,9 @@
 ;;(add-to-list 'package-archives '("ELPA"
 ;;                                 . "http://tromey.com/elpa/"))
 (package-initialize)
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+;;(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives
+             '("melpa-stable" . "https://stable.melpa.org/packages/"))
 ;;(setq 'package-archives
 ;;      '(("gnu" . "http://elpa.gnu.org/packages/") ("melpa" . "http://melpa.milkbox.net/packages/")))
 
