@@ -13,9 +13,9 @@
 ;; -------
 
 ;; Allow window switching using M-[number]
-(require 'window-number)
-(window-number-mode)
-(window-number-meta-mode)
+;(require 'window-naumber)
+;(window-number-mode)
+;(window-number-meta-mode)
 
 ;; Give buffers with the same file name a unique name based on their path
 (require 'uniquify)
