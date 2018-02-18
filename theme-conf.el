@@ -69,7 +69,7 @@
                             :overline nil :underline nil :slant normal :weight
                             normal :width normal
                             :height 140
-                            :family "Inconsolata-g"
+                            :family "Inconsolata"
                             :embolden t))))
      
      (bold ((t (:bold t :weight bold))))
@@ -80,7 +80,7 @@
      (highlight ((t (:background "darkolivegreen"))))
      
      (cursor ((t (:background "steel blue"))))
-     (fixed-pitch ((t (:family "Inconsolata-g"))))
+     (fixed-pitch ((t (:family "Inconsolata"))))
      (variable-pitch ((t (:family "helv"))))
      (fringe ((t (:family "outline-courier new" :width normal :weight
                           normal :slant normal :underline nil
@@ -332,4 +332,4 @@
   (set-background-color "gray10")
   (set-face-background 'region "blue"))
 
-(set-frame-font "Inconsolata-g-12")
+(set-frame-font "Inconsolata-14")
