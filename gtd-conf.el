@@ -2,14 +2,7 @@
 ;;   
 
 
-; Initialize bbdb
-(require 'bbdb)
 (require 'org)
-
-(bbdb-initialize)
-(add-hook 'gnus-startup-hook 'bbdb-insinuate-gnus)
-(setq bbdb/news-auto-create-p t)
-(add-to-list 'hippie-expand-try-functions-list 'bbdb-complete-name t)
 
 (require 'org-clock)
 (require 'org-agenda)
