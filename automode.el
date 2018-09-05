@@ -6,10 +6,12 @@
 (add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.inc\\'" . php-mode))
 
-(add-to-list 'auto-mode-alist '("\\.tpl.php\\'" . html-mode))
+(add-to-list 'auto-mode-alist '("\\.tpl.php\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
 
 ;; cakephp views
-(add-to-list 'auto-mode-alist '("\\.ctp\\'" . html-mode))
+(add-to-list 'auto-mode-alist '("\\.ctp\\'" . web-mode))
 
 (add-to-list 'auto-mode-alist '("\\.json$" . javascript-mode))
 (add-to-list 'auto-mode-alist '("\\.conkerorrc\\'" . javascript-mode))
