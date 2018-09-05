@@ -24,41 +24,23 @@
 ;; no-tabs
 (setq-default indent-tabs-mode nil)
 
-;; Enable copying to the clipboard
-(setq x-select-enable-clipboard t)
-
 ;; My keybindings. It is importand that this is loaded before the
 ;; experimental stuff so that, in case of an error, emacs is usable.
 (load "keybindings")
 
-;;(load "~/.emacs.d/package")
-(require 'package)
-;;(add-to-list 'package-archives '("marmalade"
-;;                                 . "http://marmalade-repo.org/packages/"))
-;;(add-to-list 'package-archives '("ELPA"
-;;                                 . "http://tromey.com/elpa/"))
-(package-initialize)
-;;(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-(add-to-list 'package-archives
-             '("melpa-stable" . "https://stable.melpa.org/packages/"))
-;;(setq 'package-archives
-;;      '(("gnu" . "http://elpa.gnu.org/packages/") ("melpa" . "http://melpa.milkbox.net/packages/")))
-
-;; How to install a package from a url:
-;;(let ((buffer (url-retrieve-synchronously
-;;               "http://...")))
-;;  (set-buffer buffer)
-;;  (package-install-from-buffer (package-buffer-info) 'single))
-
-(require 'org)
-
 ;; Load theme configuration
 (load "theme-conf")
 
+;; Load package manager
+(require 'package)
+(package-initialize)
+(add-to-list 'package-archives
+             '("melpa-stable" . "https://stable.melpa.org/packages/"))
+
+(require 'org)
+
 ;; This is where all the passwords are stored
 (defvar authinfo-file "~/.authinfo.gpg")
-
-(load "getpassword")
 
 ;; Load the files in the home folder
 ;;-----------
@@ -86,9 +68,7 @@
 
 (setq browse-url-browser-function 'browse-url-generic)
 
-;;(load "find-file-root.el")
-
-;;(require 'lunch-break)
+(setq-default fill-column 80)
 
 (if window-system
   (server-start))
