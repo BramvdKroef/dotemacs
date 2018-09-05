@@ -106,3 +106,4 @@
 
 (global-set-key "\C-cs" 'dictionary-search)
 (global-set-key "\C-cm" 'dictionary-match-words)
+(global-set-key (kbd "C-x o") 'ace-window)
