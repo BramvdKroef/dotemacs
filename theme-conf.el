@@ -332,4 +332,4 @@
   (set-background-color "gray10")
   (set-face-background 'region "blue"))
 
-(set-frame-font "Inconsolata-g-12")
+(set-frame-font "Inconsolata-14")
