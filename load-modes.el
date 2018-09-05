@@ -144,22 +144,10 @@
             (set (make-local-variable 'compile-command)
                  (format "make -f %s" (my-get-above-makefile)))))
 
-(add-hook 'less-css-mode-hook
-          (lambda ()
-            (let ((file buffer-file-name))
-              (if (and (not (string= (file-name-nondirectory file) "style.less"))
-                       (file-exists-p (concat
-                                       (file-name-directory file)
-                                       "style.less")))
-                  (setq file (concat
-                              (file-name-directory file)
-                              "style.less")))
-              (set (make-local-variable 'compile-command)
-                   (format "lessc %s -o %s" file
-                           (expand-file-name (concat (file-name-directory file)
-                                                     "../css/"
-                                                     (file-name-base file) ".css")))))
-              (define-key less-css-mode-map "\C-c\C-c" 'compile)))
+(add-hook 'less-css-mode-hook 
+          (lambda () 
+            (set (make-local-variable 'compile-command)
+                 (format "make -C %s" (file-name-directory (my-get-above-makefile))))))
 
 
 (require 'typopunct)
@@ -217,3 +205,6 @@
 
 (setq web-mode-engines-alist
       '(("php"    . "\\.phtml\\'")))
+
+(add-hook 'after-init-hook #'global-flycheck-mode)
+(setq-default flycheck-disabled-checkers '(less))
