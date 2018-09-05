@@ -1,12 +1,8 @@
 ;; /file calendar-conf.el  configures the calendar sets the holidays
 ;; 
-;; $Id: calendar-conf.el,v 1.4 2009-02-27 22:05:15 twd Exp $
 
 (require 'calendar)
 (require 'holidays)
-(setq calendar-latitude [48 36 north])
-(setq calendar-longitude [93 23 east])
-(setq calendar-location-name "Fort Frances, CA")
 
 (setq calendar-christian-all-holidays-flag nil)
 
@@ -42,8 +38,7 @@
         (holiday-easter-etc 0 "Easter Sunday")
         (holiday-easter-etc 39 "Ascension Day")
         (holiday-easter-etc 49 "Pentecost (Whitsunday)")
-        (holiday-fixed 10 31 "Halloween")
-        ))
+        (holiday-fixed 10 31 "Halloween")))
 
 ; The above settings won't be used because calendar-holidays has already been
 ; generated; it has to be re-filled. 
@@ -65,9 +60,8 @@
 (setq calendar-mark-holidays-flag t)
 
 (defun holiday-list-to-dates (holidays y1 y2)
-  (let* ((y1 2017)
-         (y2 2017)
-         (calendar-holidays holidays)
+  "Convert a list of holidays to a list of dates"
+  (let* ((calendar-holidays holidays)
          (s (calendar-absolute-from-gregorian (list 2 1 y1)))
          (e (calendar-absolute-from-gregorian (list 11 1 y2)))
          (displayed-month 2)
@@ -81,7 +75,21 @@
                (list displayed-month 1 displayed-year))))
     holiday-list))
 
+
 (defun generate-garbage-dates (y garbage-start-day n tag)
+  "Generate a list of garbage pickup dates. My town doesn't
+  provide the schedule in digital form and it's easier to
+  generate the schedule than to enter all of the dates manually.
+
+The event starts at day 'garbage-start-day' of January of 'y' and
+is repeated every 'n' days. For every holiday the following event
+is moved up one day; unless the next day is Saturday, then it is
+moved two more days to Monday.
+
+y is the year for which to generate the dates.
+garbage-start-day is integer with the first pickup day.
+n  is how many days between pickups (7 for every week).
+tag is a string with the name of the events."
   (let* ((garbage-date garbage-start-day)
          (m 1)
          (holiday-list (holiday-list-to-dates
@@ -112,4 +120,4 @@
       (setq m (1+ m)))
     garbage-date))
 
-;;(generate-garbage-dates 2017 4 7 "Garbage")
+;;(generate-garbage-dates 2018 2 7 "Garbage")
