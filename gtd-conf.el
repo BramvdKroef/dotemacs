@@ -1,24 +1,13 @@
 ;; /file gtd-conf.el   Setup org-mode, remember, bbdb, and the hooks into other modes
 ;;   
 
-
-; Initialize bbdb
-(require 'bbdb)
 (require 'org)
-
-(bbdb-initialize)
-(add-hook 'gnus-startup-hook 'bbdb-insinuate-gnus)
-(setq bbdb/news-auto-create-p t)
-(add-to-list 'hippie-expand-try-functions-list 'bbdb-complete-name t)
 
 (require 'org-clock)
 (require 'org-agenda)
 (require 'org-capture)
 
 (org-clock-persistence-insinuate)
-
-;;(setq org-default-notes-file (concat org-directory
-;;"/bookmarks.org"))
 
 (setq org-agenda-files
       (list (concat org-directory "/work.org")
