@@ -57,8 +57,6 @@
 
 ;; Global keys
 (global-set-key (kbd "C-1") 'my-to-main-agenda)
-(global-set-key (kbd "C-2") 'gnus)
-(global-set-key (kbd "C-3") 'emms-smart-browse)
 
 ;; disable arrow island
 (global-set-key (kbd "<left>") 'nil)
@@ -72,23 +70,12 @@
 
 (global-set-key "\C-z" nil)
 
-;; volume keys
-(global-set-key "\C-xv1" 'volume-set-normal)
-;; set the volume to loud
-(global-set-key "\C-xv2" 'volume-set-loud)
-;; set the volume to quiet
-(global-set-key "\C-xv3" 'volume-set-quiet)
-
 ;; Emms keybindings
 (global-set-key "\C-xpp" 'emms-pause)
 (global-set-key "\C-xpf" 'emms-next)
 (global-set-key "\C-xpb" 'emms-previous)
 (global-set-key "\C-xps" 'emms-stop)
 (global-set-key "\C-xpl" 'emms-smart-browse)
-
-(setq yas/trigger-key (kbd "<f11>"))
-
-(global-set-key "\C-x\C-r" 'conkeror-reload)
 
 ;;; Disable text resize key that I keep hitting by accident
 (global-set-key (kbd "C-x C--") 'nil)
