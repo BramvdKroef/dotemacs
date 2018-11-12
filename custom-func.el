@@ -188,9 +188,6 @@ Including indent-buffer, which should not be called automatically on save."
 
 (defun my-get-above-makefile ()
   "Find the make file."
-  (if (tramp-tramp-file-p default-directory)
-      nil
-    
     (expand-file-name "Makefile"
                       (let ((d default-directory))
                         (while (not (or (file-exists-p (expand-file-name
@@ -198,7 +195,7 @@ Including indent-buffer, which should not be called automatically on save."
                                           (string-equal "/" d)))
                             (setq d (file-name-directory
                                      (directory-file-name d))))
-                        d))))
+                        d)))
 
 (defun kill-empty-lines-in-region (start end)
   "Look through the lines in a region and delete lines that have no content or
