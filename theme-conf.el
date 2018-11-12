@@ -4,20 +4,6 @@
 
 ;; global-font-lock-mode t nil 'font-lock
 
-;; Turn off noob gui parts
-(scroll-bar-mode 0)
-(menu-bar-mode 0)
-(tool-bar-mode 0)
-(setq inhibit-startup-message t) 
-(setq inhibit-startup-screen t)
-
-;; set parenthesis matching to highlighting instead of cursor jumping
-(show-paren-mode 1)
-(mouse-avoidance-mode 'animate)
-(setq transient-mark-mode t)
-
-(setq fill-column 80)
-
 (defun color-theme-bram ()
   "Dark Color theme by Bram."
   (interactive)
@@ -332,4 +318,4 @@
   (set-background-color "gray10")
   (set-face-background 'region "blue"))
 
-(set-frame-font "Inconsolata-14")
+

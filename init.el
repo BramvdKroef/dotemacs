@@ -26,6 +26,22 @@
 ;; no-tabs
 (setq-default indent-tabs-mode nil)
 
+;; Turn off noob gui parts
+(scroll-bar-mode 0)
+(menu-bar-mode 0)
+(tool-bar-mode 0)
+(setq inhibit-startup-message t) 
+(setq inhibit-startup-screen t)
+
+(setq fill-column 80)
+
+;; set parenthesis matching to highlighting instead of cursor jumping
+(show-paren-mode 1)
+(mouse-avoidance-mode 'animate)
+(setq transient-mark-mode t)
+
+(set-frame-font "Inconsolata-14")
+
 ;; My keybindings. It is importand that this is loaded before the
 ;; experimental stuff so that, in case of an error, emacs is usable.
 (load "keybindings")
