@@ -328,7 +328,7 @@
 	   ;;(color-theme-late-night)
 	   ;;(color-theme-comidia)
   ;; if color-theme isn't found, manually set colors and faces
-  (set-foreground-color "#aea3ff")
+  (set-foreground-color "gray45")
   (set-background-color "gray10")
   (set-face-background 'region "blue"))
 

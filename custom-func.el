@@ -56,20 +56,6 @@ Automate M-% C-q C-m RET C-q C-j RET"
   (interactive)
   (perform-replace "</?\\(table\\|tbody\\|tr\\|td\\)[^>]*>" "" 't 't nil nil nil (point-min) (point-max)))
 
-
-(defcustom my-kill-emacs-hook '()
-  "Add hooks to this list that have to be called right before Emacs is killed."
-  :type '(repeat function)
-  :group 'my-custom-functions)
-
-(defun my-kill-emacs ()
-  "Run all my-kill-emacs hooks."
-  (interactive)
-  (run-hooks 'my-kill-emacs-hook)
-  ;; Give hooks some time to shut down.
-  (sleep-for 2)
-  (save-buffers-kill-emacs))
-
 (defun my-count-words-in-region (start end)
   "Return the number of words in the region."
   (let ((text (buffer-substring-no-properties start end)))

@@ -28,13 +28,11 @@
 
 (global-set-key "\M-g" 'goto-line)
 
-;;(require 'cc-mode)
+(define-key global-map (kbd "RET") 'newline-and-indent)
 (eval-after-load "cc-mode"
   '(define-key c-mode-base-map (kbd "RET") 'newline-and-indent))
-(define-key global-map (kbd "RET") 'newline-and-indent)
 
 ;; when a paren or brace or bracket is typed add the closing match
-
 (require 'skeleton)
 (setq skeleton-pair t)
 (global-set-key (kbd "[") 'skeleton-pair-insert-maybe)
@@ -49,26 +47,14 @@
         ((looking-at "\\s\)") (forward-char 1) (backward-list 1))
         (t (self-insert-command (or arg 1)))))
 
-                                        ;f5 for playing the last recorded macro
-(global-set-key [f5] 'call-last-kbd-macro)
-
-                                        ;f4 for ispell
-(global-set-key (kbd "<f4>") 'ispell)
-
-;; Global keys
-(global-set-key (kbd "C-1") 'my-to-main-agenda)
-
 ;; disable arrow island
 (global-set-key (kbd "<left>") 'nil)
 (global-set-key (kbd "<right>") 'nil)
 (global-set-key (kbd "<up>") 'nil)
 (global-set-key (kbd "<down>") 'nil)
-;;(global-set-key (kbd "TAB") 'indent-according-to-mode)
 
 (global-set-key [(meta up)] 'move-line-up)
 (global-set-key [(meta down)] 'move-line-down)
-
-(global-set-key "\C-z" nil)
 
 ;; Emms keybindings
 (global-set-key "\C-xpp" 'emms-pause)
@@ -79,6 +65,8 @@
 
 ;;; Disable text resize key that I keep hitting by accident
 (global-set-key (kbd "C-x C--") 'nil)
+;;; Also unset control z
+(global-set-key "\C-z" nil)
 
 ;; have M-. use word-at-point for the tag instead of asking for it
 (global-set-key "\M-." 'etags-select-find-tag-at-point)
@@ -92,8 +80,9 @@
           (lambda ()
             (local-set-key "\C-c\C-x\C-a" 'org-advertized-archive-subtree)
             (local-set-key [(control return)] 'set-mark-command)))
+
 (global-set-key "\C-c\C-q" 'quick-calc)
-(global-set-key "\C-x\C-c" 'my-kill-emacs)
+(global-set-key "\C-x\C-c" 'kill-emacs)
 
 (global-set-key "\C-ce" 'my-flymake-show-err)
 
@@ -107,3 +96,12 @@
 (global-set-key "\C-cs" 'dictionary-search)
 (global-set-key "\C-cm" 'dictionary-match-words)
 (global-set-key (kbd "C-x o") 'ace-window)
+
+(add-hook 'php-mode-hook
+          (lambda () (local-set-key "\C-c\C-y" 'yas/create-php-snippet)))
+
+(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "C-x C-f") #'helm-find-files)
+(global-set-key (kbd "C-x b") #'helm-buffers-list)
+
+

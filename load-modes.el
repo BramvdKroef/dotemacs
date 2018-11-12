@@ -1,21 +1,3 @@
-;; --- nXML mode ---
-
-;;(load  "rng-auto.el")
-
-(add-to-list 'auto-mode-alist
-	     (cons (concat "\\." (regexp-opt '("xml" "xsd" "sch" "rng" "xslt" "svg" "rss") t) "\\'")
-		   'nxml-mode))
-
-(setq magic-mode-alist
-      (cons '("<＼＼?xml " . nxml-mode)
-	    magic-mode-alist))
-(fset 'xml-mode 'nxml-mode)
-;; -------
-
-;; Allow window switching using M-[number]
-;(require 'window-naumber)
-;(window-number-mode)
-;(window-number-meta-mode)
 
 ;; Give buffers with the same file name a unique name based on their path
 (require 'uniquify)
@@ -42,19 +24,9 @@
   '(progn (setq ange-ftp-netrc-filename authinfo-file)
           (setq ange-ftp-try-passive-mode t)))
 
-;;(load-file "~/.emacs.d/site-lisp/tramp/lisp/tramp-loaddefs.el")
-
-;; Make buffer-switch and find-file list easier
-;;(require 'ido)
-(ido-mode t)
-
 ;; Modify all modes based on c-mode
 (add-hook 'c-mode-common-hook
 	  (lambda ()
-	    ;; Highlight FIXME, TODO and BUG words
-	    (font-lock-add-keywords nil
-				    '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))
-	    
 	    ;; Reckognize studlyCaps as seperate words when moving around
 	    (subword-mode 1)))
 
@@ -73,22 +45,10 @@
 (load "dictionary-init" t)
 
 ;; tidy
-;;(autoload 'tidy-buffer "tidy" "Run Tidy HTML parser on current buffer" t)
-;;(autoload 'tidy-parse-config-file "tidy" "Parse the `tidy-config-file'" t)
-;;(autoload 'tidy-save-settings "tidy" "Save settings to `tidy-config-file'" t)
 (setq tidy-config-file "~/.tidy"
       tidy-temp-dir "/tmp")
 
-;; Jabber
-;;(if (require 'jabber nil t)
-;;    (load "jabber-conf.el"))
-
-
 (autoload 'no-word "no-word" "word to txt")
-
-;; PHP mode
-(autoload 'php-mode "php-mode" "" t)
-
 
 (autoload 'rainbow-mode "rainbow-mode" "" t)
 (add-hook 'css-mode-hook 'rainbow-mode)
@@ -111,10 +71,6 @@
       predictive-add-to-dict-ask nil
       predictive-use-auto-learn-cache nil
       predictive-which-dict t)
-;; (add-hook 'c-mode-common-hook
-;;           (lambda ()
-;;             (if (not (tramp-tramp-file-p (buffer-file-name)))
-;;                 (predictive-mode))))
 
 ;; Pabbrev causes problems with files loaded over ftp
 (autoload 'pabbrev-mode "pabbrev" "Autoloads pabbrev mode" t)
@@ -129,11 +85,6 @@
 
 (autoload 'quenya-add-lesson "quenya" "Autoloads quenya lessons" t)
 (autoload 'spacing-simple-repitition "spacing-simple" "Autoloads spacing-simple" t)
-
-;; Lorum Ipsum generator for creating random text
-;;(autoload 'lorem-ipsum-insert-paragraphs "lorem-ipsum" "Autoload lorem ipsum generator" t)
-
-(setq twittering-use-master-password t)
 
 (autoload 'etags-select-find-tag-at-point "etags-select" "Autoload etag-select" t)
 
@@ -202,9 +153,8 @@
 (eval-after-load "emms"
   '(load "emms-conf"))
 
-
-(setq web-mode-engines-alist
-      '(("php"    . "\\.phtml\\'")))
-
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (setq-default flycheck-disabled-checkers '(less))
+
+(ac-config-default)
+

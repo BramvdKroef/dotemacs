@@ -1,7 +1,9 @@
 
+;; Start the timer
+(defvar *emacs-load-start* (current-time))
+
 ;; Include Common Lisp support
 (require 'cl) 
-(defvar *emacs-load-start* (current-time))
 
 ;; Get rid of that abominable beep
 (setq ring-bell-function (lambda () (message "*beep*")))
@@ -28,9 +30,6 @@
 ;; experimental stuff so that, in case of an error, emacs is usable.
 (load "keybindings")
 
-;; Load theme configuration
-(load "theme-conf")
-
 ;; Load package manager
 (require 'package)
 (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
@@ -44,8 +43,6 @@
     (add-to-list 'package-archives (cons "gnu" (concat proto "://elpa.gnu.org/packages/")))))
 (package-initialize)
 
-(require 'org)
-
 ;; This is where all the passwords are stored
 (defvar authinfo-file "~/.authinfo.gpg")
 
@@ -57,16 +54,11 @@
 ;; Configure the calendar and holidays
 (load "calendar-conf")
 
-;; Configure planner, remember and hooks
-(load "gtd-conf")
-
 ;; Setup major modes
 (load "load-modes")
 
 (load "automode")
 ;;-----------
-
-(setq major-mode 'org-mode)
 
 ;; Turn on auto fill for all text modes (doesn't seem to be working)
 (add-hook 'text-mode-hook 'text-mode-hook-identify)
@@ -77,6 +69,7 @@
 
 (setq-default fill-column 80)
 
+;; Start the server 
 (if window-system
   (server-start))
 
@@ -84,19 +77,6 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 (setq compilation-ask-about-save nil)
 
-;; close all shells on shutdown
-(add-hook 'my-emacs-kill-hook
-          '(lambda ()
-             (let ((shell-buffer (get-buffer "*shell*")))
-               (when shell-buffer
-                 (set-buffer shell-buffer)
-                 (comint-send-eof)
-                 (delete-process "*shell*")))
-
-             (let ((shell-buffer (get-buffer "*SQL*")))
-               (when shell-buffer
-                 (set-buffer shell-buffer)
-                 (comint-send-eof)))))
 
 (message "Done loading in %ds"
          (- (second (current-time))
