@@ -1,9 +1,10 @@
 
+;;
+;; Basic emacs preferences
+;;
+
 ;; Start the timer
 (defvar *emacs-load-start* (current-time))
-
-;; Include Common Lisp support
-(require 'cl) 
 
 ;; Get rid of that abominable beep
 (setq ring-bell-function (lambda () (message "*beep*")))
@@ -15,7 +16,6 @@
 
 ;; Show key sequences immediately
 (setq echo-keystrokes 0.01)
-
 ;; Push UTF-8
 (prefer-coding-system 'utf-8)
 (set-language-environment "utf-8")
@@ -33,8 +33,6 @@
 (setq inhibit-startup-message t) 
 (setq inhibit-startup-screen t)
 
-(setq fill-column 80)
-
 ;; set parenthesis matching to highlighting instead of cursor jumping
 (show-paren-mode 1)
 (mouse-avoidance-mode 'animate)
@@ -42,9 +40,30 @@
 
 (set-frame-font "Inconsolata-14")
 
-;; My keybindings. It is importand that this is loaded before the
-;; experimental stuff so that, in case of an error, emacs is usable.
-(load "keybindings")
+;; Turn on auto fill for all text modes (doesn't seem to be working)
+(add-hook 'text-mode-hook 'text-mode-hook-identify)
+;; Turn on auto fill for all modes instead
+(setq-default auto-fill-function 'do-auto-fill)
+
+(setq browse-url-browser-function 'browse-url-generic)
+
+(setq-default fill-column 80)
+
+;; This is where all the passwords are stored
+(defvar authinfo-file "~/.authinfo.gpg")
+
+(put 'downcase-region 'disabled nil)
+
+(fset 'yes-or-no-p 'y-or-n-p)
+
+(setq compilation-ask-about-save nil)
+
+;;
+;; Load extensions                                       ;
+;;
+
+;; Include Common Lisp support
+(require 'cl) 
 
 ;; Load package manager
 (require 'package)
@@ -59,8 +78,9 @@
     (add-to-list 'package-archives (cons "gnu" (concat proto "://elpa.gnu.org/packages/")))))
 (package-initialize)
 
-;; This is where all the passwords are stored
-(defvar authinfo-file "~/.authinfo.gpg")
+;; My keybindings. It is importand that this is loaded before the
+;; experimental stuff so that, in case of an error, emacs is usable.
+(load "keybindings")
 
 ;; Load the files in the home folder
 ;;-----------
@@ -76,25 +96,13 @@
 (load "automode")
 ;;-----------
 
-;; Turn on auto fill for all text modes (doesn't seem to be working)
-(add-hook 'text-mode-hook 'text-mode-hook-identify)
-;; Turn on auto fill for all modes instead
-(setq-default auto-fill-function 'do-auto-fill)
-
-(setq browse-url-browser-function 'browse-url-generic)
-
-(setq-default fill-column 80)
+(load-theme 'zenburn)
 
 ;; Start the server 
 (if window-system
   (server-start))
 
-(put 'downcase-region 'disabled nil)
-(fset 'yes-or-no-p 'y-or-n-p)
-(setq compilation-ask-about-save nil)
-
-
 (message "Done loading in %ds"
          (- (second (current-time))
             (second *emacs-load-start*)))
-         
+
