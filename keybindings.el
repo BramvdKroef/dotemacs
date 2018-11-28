@@ -68,9 +68,6 @@
 ;;; Also unset control z
 (global-set-key "\C-z" nil)
 
-;; have M-. use word-at-point for the tag instead of asking for it
-(global-set-key "\M-." 'etags-select-find-tag-at-point)
-
 ;; org-mode
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)

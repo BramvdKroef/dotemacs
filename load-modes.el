@@ -86,8 +86,6 @@
 (autoload 'quenya-add-lesson "quenya" "Autoloads quenya lessons" t)
 (autoload 'spacing-simple-repitition "spacing-simple" "Autoloads spacing-simple" t)
 
-(autoload 'etags-select-find-tag-at-point "etags-select" "Autoload etag-select" t)
-
 (require 'compile)
 
 (add-hook 'c-mode-hook
@@ -156,5 +154,5 @@
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (setq-default flycheck-disabled-checkers '(less))
 
-(ac-config-default)
-
+(projectile-mode +1)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
