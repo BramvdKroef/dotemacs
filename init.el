@@ -35,7 +35,7 @@
 
 ;; set parenthesis matching to highlighting instead of cursor jumping
 (show-paren-mode 1)
-(mouse-avoidance-mode 'animate)
+;;(mouse-avoidance-mode 'none)
 (setq transient-mark-mode t)
 
 (set-frame-font "Inconsolata-14")
@@ -58,6 +58,7 @@
 
 (setq compilation-ask-about-save nil)
 
+(setq use-dialog-box nil)
 ;;
 ;; Load extensions                                       ;
 ;;
