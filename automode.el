@@ -10,8 +10,10 @@
 (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.html.twig\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
 
 (setq web-mode-engines-alist '(("php"    . "\\.phtml\\'")))
+(setq web-mode-engines-alist '(("mustache"    . "\\.mustache\\'")))
 
 ;; cakephp views
 (add-to-list 'auto-mode-alist '("\\.ctp\\'" . web-mode))
