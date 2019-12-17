@@ -1,6 +1,11 @@
 
 ;; Give buffers with the same file name a unique name based on their path
 (require 'uniquify)
+
+;;;
+;;; Code: Mode customization
+;;;
+
 (setq uniquify-buffer-name-style (quote post-forward))
 
 ;; JDE mode
@@ -89,12 +94,12 @@
 (require 'compile)
 
 (add-hook 'c-mode-hook
-          (lambda () 
+          (lambda ()
             (set (make-local-variable 'compile-command)
                  (format "make -f %s" (my-get-above-makefile)))))
 
-(add-hook 'less-css-mode-hook 
-          (lambda () 
+(add-hook 'less-css-mode-hook
+          (lambda ()
             (set (make-local-variable 'compile-command)
                  (format "make -C %s" (file-name-directory (my-get-above-makefile))))))
 
@@ -153,6 +158,55 @@
 
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (setq-default flycheck-disabled-checkers '(less))
+
+(defun my/flycheck-local-config ()
+  "See if the file is in a project with local executables."
+  (and (projectile-project-p)
+       (let ((stylelintrc (expand-file-name ".stylelintrc"
+                                            (projectile-project-root)))
+             (phpmd-ruleset (expand-file-name "ruleset.xml"
+                                            (projectile-project-root))))
+         (when (file-readable-p stylelintrc)
+           (setq-local flycheck-stylelintrc stylelintrc))
+         (when (file-readable-p phpmd-ruleset)
+           (setq-local flycheck-phpmd-rulesets phpmd-ruleset)))
+       ))
+
+(add-hook 'flycheck-mode-hook #'my/flycheck-local-config)
+
+(flycheck-define-checker twig-twigcs
+  "A twig syntax checker.
+
+See URL `https://github.com/friendsoftwig/twigcs'."
+  :command ("twigcs" "--no-interaction"
+            source)
+  :standard-input nil
+  :error-patterns
+  ((info line-start "l." line " c." column " : NOTICE "
+            (message)
+            line-end)
+   (warning line-start "l." line " c." column " : WARNING "
+            (message)
+            line-end)
+   (error (or (seq line-start "l." line " c." column " : ERROR "
+                   (message)
+                   line-end)
+              (seq line-start "In " (file-name) " line " line ":"
+                   line-end))))
+  :modes (web-mode))
+
+(defun my/configure-web-mode-flycheck-checkers ()
+  "Enable checkers for web mode
+
+In order to have flycheck enabled in web-mode, add an entry to this
+   cond that matches the web-mode engine/content-type/etc and returns the
+   appropriate checker."
+  (-when-let (checker (cond
+                       ((string= (file-name-extension buffer-file-name) "twig")
+                        'twig-twigcs)))
+    (flycheck-mode)
+    (flycheck-select-checker checker)))
+(add-hook 'web-mode-hook #'my/configure-web-mode-flycheck-checkers)
 
 (projectile-mode +1)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
