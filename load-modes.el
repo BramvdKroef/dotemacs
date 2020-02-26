@@ -1,11 +1,11 @@
+;;; load-modes -- Load mode customizations
+;;; Commentary:
+;;; Code:
 
 ;; Give buffers with the same file name a unique name based on their path
 (require 'uniquify)
 
-;;;
-;;; Code: Mode customization
-;;;
-
+;; unique buffer names
 (setq uniquify-buffer-name-style (quote post-forward))
 
 ;; JDE mode
@@ -156,8 +156,11 @@
 (eval-after-load "emms"
   '(load "emms-conf"))
 
+(projectile-mode +1)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+
 (add-hook 'after-init-hook #'global-flycheck-mode)
-(setq-default flycheck-disabled-checkers '(less))
+;;(setq-default flycheck-disabled-checkers '(less))
 
 (defun my/flycheck-local-config ()
   "See if the file is in a project with local executables."
@@ -165,35 +168,30 @@
        (let ((stylelintrc (expand-file-name ".stylelintrc"
                                             (projectile-project-root)))
              (phpmd-ruleset (expand-file-name "ruleset.xml"
-                                            (projectile-project-root))))
+                                              (projectile-project-root)))
+             (gherkin-lintrc (expand-file-name ".gherkin-lintrc"
+                                               (projectile-project-root))))
          (when (file-readable-p stylelintrc)
            (setq-local flycheck-stylelintrc stylelintrc))
          (when (file-readable-p phpmd-ruleset)
-           (setq-local flycheck-phpmd-rulesets phpmd-ruleset)))
-       ))
+           (setq-local flycheck-phpmd-rulesets phpmd-ruleset))
+         (when (file-readable-p gherkin-lintrc)
+           (setq-local flycheck-gherkin-lintrc gherkin-lintrc)))))
 
-(add-hook 'flycheck-mode-hook #'my/flycheck-local-config)
+(eval-after-load 'flycheck
+  '(add-hook 'flycheck-mode-hook #'my/flycheck-local-config))
 
-(flycheck-define-checker twig-twigcs
-  "A twig syntax checker.
+(autoload 'flycheck-twig-setup "flycheck-twig" "Autoloads twig" t)
+(autoload 'flycheck-gherkin-setup "flycheck-gherkin" "Autoloads gherkin" t)
 
-See URL `https://github.com/friendsoftwig/twigcs'."
-  :command ("twigcs" "--no-interaction"
-            source)
-  :standard-input nil
-  :error-patterns
-  ((info line-start "l." line " c." column " : NOTICE "
-            (message)
-            line-end)
-   (warning line-start "l." line " c." column " : WARNING "
-            (message)
-            line-end)
-   (error (or (seq line-start "l." line " c." column " : ERROR "
-                   (message)
-                   line-end)
-              (seq line-start "In " (file-name) " line " line ":"
-                   line-end))))
-  :modes (web-mode))
+
+(eval-after-load 'flycheck
+  '(add-hook 'flycheck-mode-hook #'flycheck-twig-setup))
+
+(eval-after-load 'flycheck
+  '(add-hook 'flycheck-mode-hook #'flycheck-gherkin-setup))
+
+(require 'flycheck-twig)
 
 (defun my/configure-web-mode-flycheck-checkers ()
   "Enable checkers for web mode
@@ -206,11 +204,67 @@ In order to have flycheck enabled in web-mode, add an entry to this
                         'twig-twigcs)))
     (flycheck-mode)
     (flycheck-select-checker checker)))
+
 (add-hook 'web-mode-hook #'my/configure-web-mode-flycheck-checkers)
 
-(projectile-mode +1)
-(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+(add-hook 'after-init-hook 'global-company-mode)
+(setq company-backends
+      '(company-nxml company-css company-eclim
+      company-semantic company-cmake
+      company-capf company-files
+      company-dabbrev-code company-gtags
+      company-etags company-keywords
+      company-dabbrev
+      company-ispell))
 
-(global-company-mode)
+(add-hook 'php-mode-hook
+          (lambda ()
+            (add-to-list 'company-backends 'company-phpactor)))
 
-(editorconfig-mode)
+(add-hook 'after-init-hook 'editorconfig-mode)
+
+(add-hook 'before-save-hook 'php-cs-fixer-before-save)
+
+(setq-default phpactor-executable "~/bin/phpactor")
+(add-hook 'php-mode-hook
+          (lambda ()
+            (make-local-variable 'eldoc-documentation-function)
+            (setq eldoc-documentation-function
+                  'phpactor-hover)))
+
+(with-eval-after-load 'php-mode
+  (phpactor-smart-jump-register))
+
+(require 'transient)
+
+(define-transient-command php-transient-menu ()
+  "Php"
+  [["Class"
+    ("cc" "Copy" phpactor-copy-class)
+    ("cn" "New" phpactor-create-new-class)
+    ("cr" "Move" phpactor-move-class)
+    ("ci" "Inflect" phpactor-inflect-class)
+    ("n"  "Namespace" phpactor-fix-namespace)]
+   ["Properties"
+    ("a"  "Accessor" phpactor-generate-accessors)
+    ("pc" "Constructor" phpactor-complete-constructor)
+    ("pm" "Add missing props" phpactor-complete-properties)
+    ("r" "Rename var locally" phpactor-rename-variable-local)
+    ("R" "Rename var in file" phpactor-rename-variable-file)]
+   ["Extract"
+    ("ec" "constant" phpactor-extract-constant)
+    ("ee" "expression" phpactor-extract-expression)
+    ("em"  "method" phpactor-extract-method)]
+   ["Methods"
+    ("i" "Implement Contracts" phpactor-implement-contracts)
+    ("m"  "Generate method" phpactor-generate-method)]
+   ["Navigate"
+    ("x" "List refs" phpactor-list-references)
+    ("X" "Replace refs" phpactor-replace-references)
+    ("."  "Goto def" phpactor-goto-definition)]
+   ["Phpactor"
+    ("s" "Status" phpactor-status)
+    ("u" "Install" phpactor-install-or-update)]])
+
+(provide 'load-modes)
+;;; load-modes.el ends here
