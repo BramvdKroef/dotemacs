@@ -27,3 +27,5 @@
 (add-to-list 'auto-mode-alist '("\\.ledger\\'" . ledger-mode))
 
 (add-to-list 'auto-mode-alist '("PKGBUILD\\'" . sh-mode))
+(add-to-list 'auto-mode-alist '("\\.env\\'" . sh-mode))
+(add-to-list 'auto-mode-alist '("\\.env\\.local\\'" . sh-mode))
