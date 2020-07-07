@@ -38,7 +38,7 @@
 ;;(mouse-avoidance-mode 'none)
 (setq transient-mark-mode t)
 
-(set-frame-font "Inconsolata-14")
+(set-frame-font "firacode-13")
 
 ;; Turn on auto fill for all text modes (doesn't seem to be working)
 (add-hook 'text-mode-hook 'text-mode-hook-identify)
