@@ -18,7 +18,7 @@
 ;; cakephp views
 (add-to-list 'auto-mode-alist '("\\.ctp\\'" . web-mode))
 
-(add-to-list 'auto-mode-alist '("\\.json$" . javascript-mode))
+;;(add-to-list 'auto-mode-alist '("\\.json$" . json-mode))
 (add-to-list 'auto-mode-alist '("\\.conkerorrc\\'" . javascript-mode))
 
 (add-to-list 'auto-mode-alist '("\\.stumpwmrc\\'" . lisp-mode))
@@ -27,3 +27,5 @@
 (add-to-list 'auto-mode-alist '("\\.ledger\\'" . ledger-mode))
 
 (add-to-list 'auto-mode-alist '("PKGBUILD\\'" . sh-mode))
+(add-to-list 'auto-mode-alist '("\\.env\\'" . sh-mode))
+(add-to-list 'auto-mode-alist '("\\.env\\.local\\'" . sh-mode))

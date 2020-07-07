@@ -1,6 +1,11 @@
+;;; load-modes -- Load mode customizations
+;;; Commentary:
+;;; Code:
 
 ;; Give buffers with the same file name a unique name based on their path
 (require 'uniquify)
+
+;; unique buffer names
 (setq uniquify-buffer-name-style (quote post-forward))
 
 ;; JDE mode
@@ -89,12 +94,12 @@
 (require 'compile)
 
 (add-hook 'c-mode-hook
-          (lambda () 
+          (lambda ()
             (set (make-local-variable 'compile-command)
                  (format "make -f %s" (my-get-above-makefile)))))
 
-(add-hook 'less-css-mode-hook 
-          (lambda () 
+(add-hook 'less-css-mode-hook
+          (lambda ()
             (set (make-local-variable 'compile-command)
                  (format "make -C %s" (file-name-directory (my-get-above-makefile))))))
 
@@ -151,12 +156,192 @@
 (eval-after-load "emms"
   '(load "emms-conf"))
 
-(add-hook 'after-init-hook #'global-flycheck-mode)
-(setq-default flycheck-disabled-checkers '(less))
-
 (projectile-mode +1)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
-(global-company-mode)
+(add-hook 'after-init-hook #'global-flycheck-mode)
+;;(setq-default flycheck-disabled-checkers '(less))
 
-(editorconfig-mode)
+(defun my/flycheck-local-config ()
+  "See if the file is in a project with local executables."
+  (and (projectile-project-p)
+       (let ((stylelintrc (expand-file-name ".stylelintrc"
+                                            (projectile-project-root)))
+             (phpmd-ruleset (expand-file-name "ruleset.xml"
+                                              (projectile-project-root)))
+             (phpstan-config (expand-file-name "phpstan.neon"
+                                              (projectile-project-root)))
+             (gherkin-lintrc (expand-file-name ".gherkin-lintrc"
+                                               (projectile-project-root))))
+         (when (file-readable-p stylelintrc)
+           (setq-local flycheck-stylelintrc stylelintrc))
+         (when (file-readable-p phpmd-ruleset)
+           (setq-local flycheck-phpmd-rulesets phpmd-ruleset))
+         (when (file-readable-p phpstan-config)
+           (setq-local phpstan-config-file phpstan-config)
+           (setq-local phpstan-level 'max)
+           (setq-local phpstan-working-dir (projectile-project-root)))
+         (when (file-readable-p gherkin-lintrc)
+           (setq-local flycheck-gherkin-lintrc gherkin-lintrc)))))
+
+(eval-after-load 'flycheck
+  '(add-hook 'flycheck-mode-hook #'my/flycheck-local-config))
+
+(autoload 'flycheck-twig-setup "flycheck-twig" "Autoloads twig" t)
+(autoload 'flycheck-gherkin-setup "flycheck-gherkin" "Autoloads gherkin" t)
+
+
+(eval-after-load 'flycheck
+  '(add-hook 'flycheck-mode-hook #'flycheck-twig-setup))
+
+(eval-after-load 'flycheck
+  '(add-hook 'flycheck-mode-hook #'flycheck-gherkin-setup))
+
+(with-eval-after-load 'php-mode
+  (require 'flycheck-phpstan))
+
+(defun my/configure-web-mode-flycheck-checkers ()
+  "Enable checkers for web mode
+
+In order to have flycheck enabled in web-mode, add an entry to this
+   cond that matches the web-mode engine/content-type/etc and returns the
+   appropriate checker."
+  (-when-let (checker (cond
+                       ((string= (file-name-extension buffer-file-name) "twig")
+                        'twig-twigcs)))
+    (flycheck-mode)
+    (flycheck-select-checker checker)))
+
+(add-hook 'web-mode-hook #'my/configure-web-mode-flycheck-checkers)
+
+(add-hook 'after-init-hook 'global-company-mode)
+(setq company-backends
+      '(company-nxml company-css company-eclim
+      company-semantic company-cmake
+      company-capf company-files
+      company-dabbrev-code company-gtags
+      company-etags company-keywords
+      company-dabbrev
+      company-ispell))
+
+(add-hook 'php-mode-hook
+          (lambda ()
+            (add-to-list 'company-backends 'company-phpactor)))
+
+(add-hook 'after-init-hook 'editorconfig-mode)
+
+(add-hook 'before-save-hook 'php-cs-fixer-before-save)
+
+(setq-default phpactor-executable "~/bin/phpactor")
+(add-hook 'php-mode-hook
+          (lambda ()
+            (make-local-variable 'eldoc-documentation-function)
+            (setq eldoc-documentation-function
+                  'phpactor-hover)))
+
+(with-eval-after-load 'php-mode
+  (phpactor-smart-jump-register))
+
+(require 'transient)
+
+(define-transient-command php-transient-menu ()
+  "Php"
+  [["Class"
+    ("cc" "Copy" phpactor-copy-class)
+    ("cn" "New" phpactor-create-new-class)
+    ("cr" "Move" phpactor-move-class)
+    ("ci" "Inflect" phpactor-inflect-class)
+    ("n"  "Namespace" phpactor-fix-namespace)]
+   ["Properties"
+    ("a"  "Accessor" phpactor-generate-accessors)
+    ("pc" "Constructor" phpactor-complete-constructor)
+    ("pm" "Add missing props" phpactor-complete-properties)
+    ("r" "Rename var locally" phpactor-rename-variable-local)
+    ("R" "Rename var in file" phpactor-rename-variable-file)]
+   ["Extract"
+    ("ec" "constant" phpactor-extract-constant)
+    ("ee" "expression" phpactor-extract-expression)
+    ("em"  "method" phpactor-extract-method)]
+   ["Methods"
+    ("i" "Implement Contracts" phpactor-implement-contracts)
+    ("m"  "Generate method" phpactor-generate-method)]
+   ["Navigate"
+    ("x" "List refs" phpactor-list-references)
+    ("X" "Replace refs" phpactor-replace-references)
+    ("."  "Goto def" phpactor-goto-definition)]
+   ["Phpactor"
+    ("s" "Status" phpactor-status)
+    ("u" "Install" phpactor-install-or-update)]])
+
+(defun js--proper-indentation-custom (parse-status)
+  "Return the proper indentation for the current line according to PARSE-STATUS argument."
+  (save-excursion
+    (back-to-indentation)
+    (cond ((nth 4 parse-status)    ; inside comment
+           (js--get-c-offset 'c (nth 8 parse-status)))
+          ((nth 3 parse-status) 0) ; inside string
+          ((eq (char-after) ?#) 0)
+          ((save-excursion (js--beginning-of-macro)) 4)
+          ;; Indent array comprehension continuation lines specially.
+          ((let ((bracket (nth 1 parse-status))
+                 beg)
+             (and bracket
+                  (not (js--same-line bracket))
+                  (setq beg (js--indent-in-array-comp bracket))
+                  ;; At or after the first loop?
+                  (>= (point) beg)
+                  (js--array-comp-indentation bracket beg))))
+          ((js--ctrl-statement-indentation))
+          ((nth 1 parse-status)
+           ;; A single closing paren/bracket should be indented at the
+           ;; same level as the opening statement. Same goes for
+           ;; "case" and "default".
+           (let ((same-indent-p (looking-at "[]})]"))
+                 (switch-keyword-p (looking-at "default\\_>\\|case\\_>[^:]"))
+                 (continued-expr-p (js--continued-expression-p))
+                 (original-point (point))
+                 (open-symbol (nth 1 parse-status)))
+             (goto-char (nth 1 parse-status)) ; go to the opening char
+             (skip-syntax-backward " ")
+             (when (eq (char-before) ?\)) (backward-list))
+             (back-to-indentation)
+             (js--maybe-goto-declaration-keyword-end parse-status)
+             (let* ((in-switch-p (unless same-indent-p
+                                   (looking-at "\\_<switch\\_>")))
+                    (same-indent-p (or same-indent-p
+                                       (and switch-keyword-p
+                                            in-switch-p)))
+                    (indent
+                     (cond (same-indent-p
+                            (current-column))
+                           (continued-expr-p
+                            (goto-char original-point)
+                            ;; Go to beginning line of continued expression.
+                            (while (js--continued-expression-p)
+                              (forward-line -1))
+                            ;; Go to the open symbol if it appears later.
+                            (when (> open-symbol (point))
+                              (goto-char open-symbol))
+                            (back-to-indentation)
+                            (+ (current-column)
+                               js-indent-level
+                               js-expr-indent-offset))
+                           (t
+                            (+ (current-column) js-indent-level
+                               (pcase (char-after (nth 1 parse-status))
+                                 (?\( js-paren-indent-offset)
+                                 (?\[ js-square-indent-offset)
+                                 (?\{ js-curly-indent-offset)))))))
+               (if in-switch-p
+                   (+ indent js-switch-indent-offset)
+                 indent))))
+          ((js--continued-expression-p)
+           (+ js-indent-level js-expr-indent-offset))
+          (t 0))))
+
+(advice-add 'js--proper-indentation :override 'js--proper-indentation-custom)
+
+(setq js-switch-indent-offset 2)
+
+(provide 'load-modes)
+;;; load-modes.el ends here

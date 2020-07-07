@@ -92,7 +92,7 @@
 (load "calendar-conf")
 
 ;; Setup major modes
-(load "load-modes")
+(require 'load-modes)
 
 (load "automode")
 ;;-----------
