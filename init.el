@@ -75,6 +75,12 @@
     ;; For important compatibility libraries like cl-lib
     (add-to-list 'package-archives (cons "gnu" (concat proto "://elpa.gnu.org/packages/")))))
 
+
+(define-advice make-frame (:around (fn &rest args) suppress)
+  "Suppress making new frame; return existing frame."
+  (message "make-frame suppressed; proceed at your own peril.")
+  (selected-frame))
+
 ;; Load the files in the home folder
 ;;-----------
 ;; Custom functions
