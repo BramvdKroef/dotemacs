@@ -182,7 +182,7 @@ In order to have flycheck enabled in web-mode, add an entry to this
       (add-hook 'flycheck-mode-hook #'flycheck-gherkin-setup))
     (add-hook 'flycheck-mode-hook #'my/flycheck-local-config)
     (with-eval-after-load 'php-mode
-      (use-package flycheck-phpstan))))
+      (use-package flycheck-phpstan :ensure t))))
 
 (global-set-key "\C-ce" 'my-flymake-show-err)
 
@@ -358,7 +358,10 @@ In order to have flycheck enabled in web-mode, add an entry to this
          ("\\.env\\'" . sh-mode)
          ("\\.env\\.local\\'" . sh-mode)))
 
-(use-package magit
-  :ensure t)
+(use-package magit :ensure t)
+(use-package password-store :ensure t)
+(use-package helm-pass :ensure t)
+(use-package yaml-mode :ensure t)
+(use-package markdown-mode :ensure t)
 (provide 'load-modes)
 ;;; load-modes.el ends here
