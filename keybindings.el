@@ -16,8 +16,6 @@
 (global-set-key "\M-p" 'backward-paragraph)
 (global-set-key "\M-n" 'forward-paragraph)
 
-;;set C-space to hippy expand
-(global-set-key [(control ? )] 'hippie-expand)
 ;;remap set mark to C-ret
 (global-set-key [(control return)] 'set-mark-command)
 
@@ -31,11 +29,6 @@
 (define-key global-map (kbd "RET") 'newline-and-indent)
 (eval-after-load "cc-mode"
   '(define-key c-mode-base-map (kbd "RET") 'newline-and-indent))
-
-;; when a paren or brace or bracket is typed add the closing match
-(require 'skeleton)
-(setq skeleton-pair t)
-(global-set-key (kbd "[") 'skeleton-pair-insert-maybe)
 
 ;; typing % goes to the matching paren
 (global-set-key "\C-cp" 'match-paren)
@@ -52,16 +45,6 @@
 (global-set-key (kbd "<right>") 'nil)
 (global-set-key (kbd "<up>") 'nil)
 (global-set-key (kbd "<down>") 'nil)
-
-(global-set-key [(meta up)] 'move-line-up)
-(global-set-key [(meta down)] 'move-line-down)
-
-;; Emms keybindings
-(global-set-key "\C-xpp" 'emms-pause)
-(global-set-key "\C-xpf" 'emms-next)
-(global-set-key "\C-xpb" 'emms-previous)
-(global-set-key "\C-xps" 'emms-stop)
-(global-set-key "\C-xpl" 'emms-smart-browse)
 
 ;;; Disable text resize key that I keep hitting by accident
 (global-set-key (kbd "C-x C--") 'nil)
@@ -81,8 +64,6 @@
 (global-set-key "\C-c\C-q" 'quick-calc)
 (global-set-key "\C-x\C-c" 'kill-emacs)
 
-(global-set-key "\C-ce" 'my-flymake-show-err)
-
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
@@ -90,15 +71,6 @@
 (global-set-key "\C-xc" 'recompile)
 (global-set-key "\C-c\C-n" 'cleanup-buffer)
 
-(global-set-key "\C-cs" 'dictionary-search)
-(global-set-key "\C-cm" 'dictionary-match-words)
-(global-set-key (kbd "C-x o") 'ace-window)
-
 (add-hook 'php-mode-hook
           (lambda () (local-set-key "\C-c\C-y" 'yas/create-php-snippet)))
-
-(global-set-key (kbd "M-x") 'helm-M-x)
-(global-set-key (kbd "C-x C-f") #'helm-find-files)
-(global-set-key (kbd "C-x b") #'helm-buffers-list)
-
 
