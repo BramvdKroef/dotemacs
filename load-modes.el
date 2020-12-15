@@ -2,6 +2,11 @@
 ;;; Commentary:
 ;;; Code:
 
+(use-package zenburn-theme
+  :ensure t
+  :init
+  (load-theme 'zenburn t))
+
 ;; Give buffers with the same file name a unique name based on their path
 (use-package uniquify
   :config
@@ -21,11 +26,13 @@
 (use-package pabbrev :ensure t)
 (use-package json-mode :ensure t :mode "\\.json$")
 (use-package editorconfig
+  :ensure t
   :init
   (add-hook 'after-init-hook 'editorconfig-mode))
 
 ;; Snippets
 (use-package yasnippet
+  :ensure t
   :config
   (yas/initialize)
   (setq yas/root-directory '("~/.emacs.d/site-lisp/snippets"))
@@ -119,9 +126,12 @@
   :config (load "emms-conf"))
 
 (use-package helm
+  :ensure t
   :bind (("M-x" . helm-M-x)
          ("C-x C-f" . helm-find-files)
          ("C-x b" . helm-buffers-list)))
+
+(use-package projectile :ensure t)
 
 (defun my/flycheck-local-config ()
   "See if the file is in a project with local executables."
@@ -158,6 +168,7 @@ In order to have flycheck enabled in web-mode, add an entry to this
     (flycheck-select-checker checker)))
 
 (use-package flycheck
+  :ensure t
   :hook (web-mode . #'my/configure-web-mode-flycheck-checkers)
   :init
   (add-hook 'after-init-hook #'global-flycheck-mode)
@@ -201,8 +212,9 @@ In order to have flycheck enabled in web-mode, add an entry to this
                       (setq eldoc-documentation-function
                             'phpactor-hover)))
   :init
-  (use-package smart-jump :ensure t)
-  (with-eval-after-load 'php-mode (phpactor-smart-jump-register)))
+  (progn
+    (use-package smart-jump :ensure t)
+    (with-eval-after-load 'php-mode (phpactor-smart-jump-register))))
   
 (use-package company-phpactor
   :ensure t
@@ -211,6 +223,7 @@ In order to have flycheck enabled in web-mode, add an entry to this
                      (add-to-list 'company-backends 'company-phpactor))))
 
 (use-package php-cs-fixer
+  :ensure t
   :init
   (add-hook 'before-save-hook 'php-cs-fixer-before-save))
 
@@ -345,5 +358,7 @@ In order to have flycheck enabled in web-mode, add an entry to this
          ("\\.env\\'" . sh-mode)
          ("\\.env\\.local\\'" . sh-mode)))
 
+(use-package magit
+  :ensure t)
 (provide 'load-modes)
 ;;; load-modes.el ends here

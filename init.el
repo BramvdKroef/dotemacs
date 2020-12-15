@@ -87,8 +87,6 @@
 (require 'load-modes)
 ;;-----------
 
-(load-theme 'zenburn t)
-
 ;; Start the server
 (if window-system
     (server-start))
