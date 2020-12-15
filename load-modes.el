@@ -24,11 +24,6 @@
   :init
   (add-hook 'after-init-hook 'editorconfig-mode))
 
-(use-package ange-ftp
-  :config
-  (progn (setq ange-ftp-netrc-filename authinfo-file)
-         (setq ange-ftp-try-passive-mode t)))
-
 ;; Snippets
 (use-package yasnippet
   :config
