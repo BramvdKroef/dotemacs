@@ -36,6 +36,12 @@
   :init
   (add-hook 'after-init-hook 'editorconfig-mode))
 
+(use-package php-mode
+  :ensure t
+  :mode (("\\.module\\'" . php-mode)
+         ("\\.php\\'" . php-mode)
+         ("\\.inc\\'" . php-mode)))
+
 ;; Snippets
 (use-package yasnippet
   :ensure t
@@ -344,12 +350,6 @@ In order to have flycheck enabled in web-mode, add an entry to this
 
 ;; open .h files in c++ mode instead of c mode
 (use-package c++-mode :mode "\\.h\\'")
-
-(use-package php-mode
-  :ensure t
-  :mode (("\\.module\\'" . php-mode)
-         ("\\.php\\'" . php-mode)
-         ("\\.inc\\'" . php-mode)))
 
 (use-package web-mode
   :mode (("\\.tpl.php\\'" . web-mode)
