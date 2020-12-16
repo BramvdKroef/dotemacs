@@ -2,6 +2,9 @@
 ;;; Commentary:
 ;;; Code:
 
+(if (not (fboundp 'use-package))
+    (package-install 'use-package))
+
 (use-package zenburn-theme
   :ensure t
   :init
