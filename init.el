@@ -34,7 +34,7 @@
 (setq inhibit-startup-screen t)
 (setq inhibit-startup-echo-area-message t)
 (setq initial-scratch-message nil)
-(setq pop-up-windows nil)
+(setq pop-up-windows t)
 (save-place-mode 1)
 (put 'downcase-region 'disabled nil)
 (fset 'yes-or-no-p 'y-or-n-p)
