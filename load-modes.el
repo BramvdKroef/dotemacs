@@ -3,7 +3,10 @@
 ;;; Code:
 
 (if (not (fboundp 'use-package))
-    (package-install 'use-package))
+    (progn
+      (when (not package-archive-contents)
+        (package-refresh-contents))
+      (package-install 'use-package)))
 
 (use-package zenburn-theme
   :ensure t
