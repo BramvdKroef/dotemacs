@@ -38,6 +38,8 @@
   (setq yas/root-directory '("~/.emacs.d/site-lisp/snippets"))
   (mapc 'yas/load-directory yas/root-directory))
 
+(use-package yasnippet-snippets :ensure t)
+
 (use-package hippie-exp
   :bind ([(control ? )] . hippie-expand)
   :config
@@ -222,11 +224,13 @@ In order to have flycheck enabled in web-mode, add an entry to this
   (php-mode-hook . (lambda ()
                      (add-to-list 'company-backends 'company-phpactor))))
 
-(use-package php-cs-fixer
-  :ensure t
-  :init
-  (add-hook 'before-save-hook 'php-cs-fixer-before-save))
-
+;;(use-package php-cs-fixer
+;;  :ensure t
+;;  :init
+;;  (remove-hook 'before-save-hook 'php-cs-fixer-before-save))
+(use-package phpcbf
+  :ensure t)
+  
 (with-eval-after-load 'transient
   (define-transient-command php-transient-menu ()
     "Php"
