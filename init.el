@@ -81,6 +81,8 @@
   (message "make-frame suppressed; proceed at your own peril.")
   (selected-frame))
 
+(setq epg-pinentry-mode 'loopback)
+
 ;; Load the files in the home folder
 ;;-----------
 ;; Custom functions
