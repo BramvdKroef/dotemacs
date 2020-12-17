@@ -241,7 +241,9 @@ In order to have flycheck enabled in web-mode, add an entry to this
 ;;  :init
 ;;  (remove-hook 'before-save-hook 'php-cs-fixer-before-save))
 (use-package phpcbf
-  :ensure t)
+  :ensure t
+  :init
+  (add-hook 'php-mode-hook 'phpcbf-enable-on-save))
   
 (with-eval-after-load 'transient
   (define-transient-command php-transient-menu ()
@@ -371,7 +373,18 @@ In order to have flycheck enabled in web-mode, add an entry to this
 (use-package magit :ensure t)
 (use-package password-store :ensure t)
 (use-package helm-pass :ensure t)
+(use-package pass :ensure t)
 (use-package yaml-mode :ensure t)
 (use-package markdown-mode :ensure t)
+(use-package psysh :ensure t)
+
+(use-package eslint-fix
+  :ensure t
+  :init
+  (eval-after-load 'js-mode
+    '(add-hook 'js-mode-hook (lambda () (add-hook 'after-save-hook 'eslint-fix nil t)))))
+
+(use-package groovy-mode :ensure t)
+
 (provide 'load-modes)
 ;;; load-modes.el ends here
