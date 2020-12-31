@@ -386,8 +386,10 @@ In order to have flycheck enabled in web-mode, add an entry to this
 
 (use-package groovy-mode :ensure t)
 
-(use-package restclient :ensure t :mode "\\.rest\\'")
+(use-package restclient :ensure t :mode (("\\.rest\\'" . restclient-mode)))
 (use-package feature-mode :ensure t)
+
+(use-package twig-mode :ensure t)
 
 (provide 'load-modes)
 ;;; load-modes.el ends here
