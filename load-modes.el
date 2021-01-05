@@ -354,6 +354,7 @@ In order to have flycheck enabled in web-mode, add an entry to this
 (use-package c++-mode :mode "\\.h\\'")
 
 (use-package web-mode
+  :ensure t
   :mode (("\\.tpl.php\\'" . web-mode)
          ("\\.phtml\\'" . web-mode)
          ("\\.html\\'" . web-mode)
