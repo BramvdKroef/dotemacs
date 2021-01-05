@@ -99,6 +99,9 @@
 (if window-system
     (server-start))
 
+(set-face-attribute 'mode-line nil :box nil)
+(set-face-attribute 'mode-line-inactive nil :box nil)
+
 (message "Done loading in %ds"
          (- (time-to-seconds (current-time))
             (time-to-seconds *emacs-load-start*)))
