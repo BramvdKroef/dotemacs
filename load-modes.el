@@ -20,7 +20,7 @@
 
 ;; when a paren or brace or bracket is typed add the closing match
 (use-package skeleton
-  :bind ("[" . skeleton-pair-insert-maybe))
+  :bind (("[" . skeleton-pair-insert-maybe)))
 
 (use-package ace-window :ensure t :bind ("C-x o" . ace-window))
 (use-package comint)
@@ -170,7 +170,7 @@
            (setq-local flycheck-gherkin-lintrc gherkin-lintrc)))))
 
 (defun my/configure-web-mode-flycheck-checkers ()
-  "Enable checkers for web mode
+  "Enable checkers for web mode.
 
 In order to have flycheck enabled in web-mode, add an entry to this
    cond that matches the web-mode engine/content-type/etc and returns the
@@ -347,7 +347,9 @@ In order to have flycheck enabled in web-mode, add an entry to this
 (setq js-switch-indent-offset 2)
 
 (defun custom/kill-this-buffer ()
-  (interactive) (kill-buffer (current-buffer)))
+  "Kill current buffer."
+  (interactive)
+  (kill-buffer (current-buffer)))
 (global-set-key (kbd "C-x k") 'custom/kill-this-buffer)
 
 ;; open .h files in c++ mode instead of c mode
@@ -391,6 +393,11 @@ In order to have flycheck enabled in web-mode, add an entry to this
 (use-package feature-mode :ensure t)
 
 (use-package twig-mode :ensure t)
+
+(use-package disable-mouse
+  :ensure t
+  :config
+  (disable-mouse-global-mode))
 
 (provide 'load-modes)
 ;;; load-modes.el ends here
