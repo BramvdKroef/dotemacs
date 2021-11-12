@@ -28,7 +28,7 @@
 (use-package lisp-mode :mode "\\.stumpwmrc\\'")
 (use-package no-word :commands (no-word) :mode "\\.doc\\'")
 (use-package ledger :mode "\\.ledger\\'")
-(use-package csv-mode :mode "\\.csv\\'")
+(use-package csv-mode :mode "\\.csv\\'" :ensure t)
 (use-package pabbrev :ensure t)
 (use-package json-mode :ensure t :mode "\\.json$")
 (use-package editorconfig
@@ -130,20 +130,12 @@
   (defconst typopunct-middot   (decode-char 'ucs #xB7)) ; or 2219
   (define-key typopunct-map "." 'typopunct-insert-ellipsis-or-middot))
 
-;; Configure emms player
-(use-package emms
-  :bind (("\C-xpp" . emms-pause)
-         ("\C-xpf" . emms-next)
-         ("\C-xpb" . emms-previous)
-         ("\C-xps" . emms-stop)
-         ("\C-xpl" . emms-smart-browse))
-  :config (load "emms-conf"))
-
 (use-package helm
   :ensure t
   :bind (("M-x" . helm-M-x)
          ("C-x C-f" . helm-find-files)
-         ("C-x b" . helm-buffers-list)))
+         ("C-x b" . helm-buffers-list)
+         ("C-x p" . helm-pass)))
 
 (use-package projectile :ensure t)
 
@@ -196,7 +188,11 @@ In order to have flycheck enabled in web-mode, add an entry to this
       (add-hook 'flycheck-mode-hook #'flycheck-gherkin-setup))
     (add-hook 'flycheck-mode-hook #'my/flycheck-local-config)
     (with-eval-after-load 'php-mode
-      (use-package flycheck-phpstan :ensure t))))
+      (use-package flycheck-phpstan
+        :ensure t
+        :config
+        (flycheck-add-next-checker 'php 'phpstan)
+        ))))
 
 (global-set-key "\C-ce" 'my-flymake-show-err)
 
@@ -239,11 +235,11 @@ In order to have flycheck enabled in web-mode, add an entry to this
 ;;(use-package php-cs-fixer
 ;;  :ensure t
 ;;  :init
-;;  (remove-hook 'before-save-hook 'php-cs-fixer-before-save))
+;;  (add-hook 'before-save-hook 'php-cs-fixer-before-save))
 (use-package phpcbf
-  :ensure t
-  :init
-  (add-hook 'php-mode-hook 'phpcbf-enable-on-save))
+  :ensure t)
+;  :init
+;  (add-hook 'php-mode-hook 'phpcbf-enable-on-save))
   
 (with-eval-after-load 'transient
   (define-transient-command php-transient-menu ()
@@ -389,15 +385,32 @@ In order to have flycheck enabled in web-mode, add an entry to this
 
 (use-package groovy-mode :ensure t)
 
-(use-package restclient :ensure t :mode (("\\.rest\\'" . restclient-mode)))
+(use-package restclient
+  :ensure t
+  :mode (("\\.rest\\'" . restclient-mode))
+  :config (setq restclient-inhibit-cookies t))
 (use-package feature-mode :ensure t)
 
 (use-package twig-mode :ensure t)
+
+(use-package typescript-mode
+  :ensure t
+  :mode (("\\.tsx\'" . typescript-mode)
+         ("\\.ts\'" . typescript-mode)))
 
 (use-package disable-mouse
   :ensure t
   :config
   (disable-mouse-global-mode))
+
+(use-package emms
+  :ensure t)
+  ;;:bind (("\C-xpp" . emms-pause)
+  ;;      ("\C-xpf" . emms-next)
+  ;;     ("\C-xpb" . emms-previous)
+  ;;    ("\C-xps" . emms-stop)
+  ;;   ("\C-xpl" . emms-smart-browse))
+  :config (load "emms-conf"))
 
 (provide 'load-modes)
 ;;; load-modes.el ends here
