@@ -7,9 +7,7 @@ public function get${1:$(upcase-initials yas-text)}(): $2
     return \$this->$1;
 }
 
-public function set${1:$(upcase-initials yas-text)}($2 \$$1): self
+public function set${1:$(upcase-initials yas-text)}($2 \$$1): void
 {
    \$this->$1 = \$$1;
-
-   return \$this;
 }
