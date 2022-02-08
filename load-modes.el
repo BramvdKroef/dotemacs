@@ -395,8 +395,8 @@ In order to have flycheck enabled in web-mode, add an entry to this
 
 (use-package typescript-mode
   :ensure t
-  :mode (("\\.tsx\'" . typescript-mode)
-         ("\\.ts\'" . typescript-mode)))
+  :mode (("\\.tsx\\'" . typescript-mode)
+         ("\\.ts\\'" . typescript-mode)))
 
 (use-package disable-mouse
   :ensure t
@@ -404,7 +404,7 @@ In order to have flycheck enabled in web-mode, add an entry to this
   (disable-mouse-global-mode))
 
 (use-package emms
-  :ensure t)
+  :ensure t
   ;;:bind (("\C-xpp" . emms-pause)
   ;;      ("\C-xpf" . emms-next)
   ;;     ("\C-xpb" . emms-previous)
